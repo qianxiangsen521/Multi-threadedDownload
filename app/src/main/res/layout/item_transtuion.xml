@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/color_title"
+        android:layout_width="wrap_content"
+        android:transitionName="@string/action_grid_element"
+        android:layout_height="wrap_content"
+        />
+
+    <ImageView
+        android:id="@+id/color_item"
+        android:layout_width="wrap_content"
+        android:transitionName="@string/action_sign_in"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

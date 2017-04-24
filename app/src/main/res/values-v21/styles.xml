@@ -1,0 +1,29 @@
+<resources>
+
+    <style name="AppTheme.Home">
+
+        <!--<item name="android:windowExitTransition">
+            @transition/grid_exit
+        </item>-->
+    <item name="android:windowReenterTransition">
+            @android:transition/slide_top
+        </item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppThemeNoBar.Grid" parent="AppThemeNoBar">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@android:transition/explode</item>
+        <item name="android:windowExitTransition">@android:transition/explode</item>
+    </style>
+</resources>

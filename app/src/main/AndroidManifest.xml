@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="example.com.sunshine">
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WAKE_LOCK" >
+    </uses-permission>
+    <!--
+    <uses-permission android:name="android.permission.DEVICE_POWER" >
+    </uses-permission>
+    -->
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" >
+    </uses-permission>
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" >
+    </uses-permission>
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.VIBRATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" >
+    </uses-permission>
+    <!--
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" >
+    </uses-permission>
+    -->
+    <uses-permission android:name="android.permission.GET_TASKS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_LOGS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" >
+    </uses-permission>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppThemeNoBar" >
+        <activity android:name="example.com.sunshine.download.DownloadActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Main.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppThemeNoBar" ></activity>
+
+        <activity android:name=".Main.AnimatorActivity"
+            android:theme="@style/AppThemeNoBar" ></activity>
+        <activity android:name=".Main.InterpolatorActivity"
+            android:theme="@style/AppThemeNoBar" ></activity>
+        <activity android:name=".Main.SlideActivity"
+            android:theme="@style/AppThemeNoBar" ></activity>
+        <activity android:name=".Main.TransitionDetailActivity"
+            android:theme="@style/AppThemeNoBar" ></activity>
+
+        <activity android:name=".Main.TransitionActivity"
+            android:theme="@style/AppTheme.Home"></activity>
+
+        <activity android:name=".Main.SceneActivity"
+            android:theme="@style/AppThemeNoBar" ></activity>
+        <activity android:name=".Main.main"
+            android:theme="@style/AppThemeNoBar" ></activity>
+        <activity android:name=".Main.DynamicSurfacesActivity"
+            android:configChanges="orientation"
+            android:theme="@style/AppThemeNoBar" ></activity>
+
+        <activity android:name=".Main.GridActivity"
+            android:theme="@style/AppTheme.Home" ></activity>
+
+        <activity android:name=".Main.GridDetailAcitivty"
+            android:theme="@style/AppThemeNoBar"  ></activity>
+
+        <activity android:name=".single.ActivityStandard" android:launchMode="standard"
+            >
+        </activity>
+
+        <activity android:name="example.com.sunshine.HTTP.HttpActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".view.MyViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            >
+
+        </activity>
+      <activity android:name=".Process.SecondActivity"
+            android:configChanges="screenLayout"
+            android:process=":remote"></activity>
+        <activity android:name=".Process.ThirdActivity"
+            android:configChanges="screenLayout"
+            android:process="example.com.sunshine.remote"></activity>
+
+        <service android:name=".service.TestService"
+            android:process="example.com.sunshine.remote">
+
+        </service>
+
+        <service android:name=".service.Test1Service"></service>
+
+        <activity android:name=".MyActivity">
+
+        </activity>
+        <activity android:name=".MyOtherActivity">
+
+        </activity>
+        <activity android:name=".service.ActivityMessenger">
+
+        </activity>
+        <service android:name=".service.MessengerService">
+
+        </service>
+    </application>
+
+</manifest>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <changeBounds
+        android:duration="250">
+        <targets>
+            <target android:targetId="@+id/image_ib"/>
+        </targets>
+    </changeBounds>
+    <fade android:startDelay="300" android:duration="250">
+
+        <targets>
+            <target android:targetId="@+id/image_back"/>
+            <target android:targetId="@+id/tv1"/>
+        </targets>
+
+    </fade>
+</transitionSet>

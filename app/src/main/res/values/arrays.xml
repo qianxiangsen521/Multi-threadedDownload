@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="url">
+        <item>http://img.zcool.cn/community/01d28457d621800000018c1bb7877e.jpg</item>
+        <item>http://img.zcool.cn/community/01ae5656e1427f6ac72531cb72bac5.jpg</item>
+        <item>http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg</item>
+        <item>http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg</item>
+        <item>http://img.zcool.cn/community/01c8dc56e1428e6ac72531cbaa5f2c.jpg</item>
+        <item>http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg</item>
+        <item>http://img.zcool.cn/community/0192a557a352ef0000012e7ed104e4.jpg</item>
+    </array>
+    <string-array name="permissions">
+        <item>@string/permission_recode_audio_hint</item>
+        <item>@string/permission_get_accounts_hint</item>
+        <item>@string/permission_read_phone_hint</item>
+        <item>@string/permission_call_phone_hint</item>
+        <item>@string/permission_camera_hint</item>
+        <item>@string/permission_access_fine_location_hint</item>
+        <item>@string/permission_access_coarse_location_hint</item>
+        <item>@string/permission_read_external_hint</item>
+        <item>@string/permission_white_external_hint</item>
+        <item>@string/permission_read_sms_hint</item>
+        <item>@string/permission_battery_stats_hint</item>
+    </string-array>
+</resources>
