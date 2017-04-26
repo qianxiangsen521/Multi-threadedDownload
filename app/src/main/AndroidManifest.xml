@@ -88,6 +88,8 @@
 
         <activity android:name=".Main.TransitionActivity"
             android:theme="@style/AppTheme.Home"></activity>
+        <activity android:name="example.com.sunshine.download.DownloadFinishActivity"
+            android:theme="@style/AppTheme.Home"></activity>
 
         <activity android:name=".Main.SceneActivity"
             android:theme="@style/AppThemeNoBar" ></activity>

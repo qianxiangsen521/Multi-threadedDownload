@@ -9,12 +9,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 
-import com.golshadi.majid.report.listener.DownloadManagerListener;
-
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +20,7 @@ import java.util.concurrent.Executors;
  */
 
 public class DownloadMessage {
-    private static final String DOWNLOAD_PATH = "/Android/data/com.cnr.fm/download/";
+    private static final String DOWNLOAD_PATH = "/download/";
 
     private final static int MSG_WHAT_BASE = 1000000000;
     private final static int MSG_WHAT_ON_WAITING = MSG_WHAT_BASE + 1;
@@ -33,8 +29,10 @@ public class DownloadMessage {
     private final static int MSG_WHAT_ON_ERROR = MSG_WHAT_BASE + 4;
     private final static int MSG_WHAT_ON_PROJRESS = MSG_WHAT_BASE + 5;
 
+    private List<Task> mArrayFinish = new ArrayList<>();
     static volatile DownloadMessage singleton = null;
     final Context context;
+
     private HttpDownloader httpDownloader;
 
     static final InternalHandler sHandler = new InternalHandler();
@@ -78,8 +76,9 @@ public class DownloadMessage {
                         break;
                     }
                     case MSG_WHAT_ON_COMPLETE: {
-                        if (taskInfo.getDownloadUiListener() != null){
+
                             taskInfo.getDownloadUiListener().UiFinish(taskInfo);
+                            if (taskInfo.getDownloadUiListener() != null){
                         }
                         break;
                     }
@@ -179,11 +178,11 @@ public class DownloadMessage {
         }
     }
 
+
     public  Task addTask(Task task,DownloadUiListener downloadUiListener){
         task.setDownloadSize(0);
         int index = task.getUrl().lastIndexOf("/");
-        String destUri = Environment.getExternalStorageDirectory()
-                + DOWNLOAD_PATH
+        String destUri =FileUtils.getAlbumStorageDir(context)
                 + task.getUrl().substring(index + 1);
 
         task.setSave_address(destUri);
@@ -202,9 +201,7 @@ public class DownloadMessage {
 
             httpDownloader.databaseHelper.update(task);
         }
-
     }
-
     public void pauseDownload(Task token) {
         Task task= httpDownloader.databaseHelper.getTaskInfo(token);
 
@@ -213,6 +210,29 @@ public class DownloadMessage {
             httpDownloader.databaseHelper.update(task);
         }
     }
+    public boolean delete(Task task,boolean deleteTaskFile){
+        task = httpDownloader.databaseHelper.getTaskInfo(task);
+            if (deleteTaskFile) {
+              FileUtils.deleteFile(task.getSave_address());
+            }
+            return httpDownloader.databaseHelper.delete(task.getId());
+    }
 
+
+
+    public List<Task> getmArrayFinish(){
+       List<Task> mTask= httpDownloader.databaseHelper.getUnnotifiedCompleted();
+        if (mTask != null){
+            for(Task taskName : mTask){
+                if (Task.STATUS_COMPLETE.equals(taskName.getState())){
+                    if (mArrayFinish.contains(taskName)){
+                        mArrayFinish.remove(taskName);
+                    }
+                    mArrayFinish.add(taskName);
+                }
+            }
+        }
+        return mArrayFinish;
+    }
 
 }

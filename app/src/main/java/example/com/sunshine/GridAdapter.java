@@ -40,7 +40,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.mViewHolder>{
         public mViewHolder(View view){
             super(view);
             this.view = view;
-            mIamgeView =(ImageView)  view.findViewById(R.id.item_image);
+//            mIamgeView =(ImageView)  view.findViewById(R.id.item_image);
             mTextView = (TextView) view.findViewById(R.id.item_text);
         }
 
@@ -53,31 +53,31 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.mViewHolder>{
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new mViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid,null));
+        return new mViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_download,null));
     }
 
     @Override
     public void onBindViewHolder(final mViewHolder holder, final int position) {
         final ArrayList<String> content =  getContent();
         holder.mTextView.setText(content.get(position));
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, GridDetailAcitivty.class);
-                intent.putExtra("title", content.get(position));
-
-                Bundle bundle = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(mActivity, holder.mIamgeView,holder. mIamgeView.getTransitionName())
-                        .toBundle();
-
-                if (Build.VERSION.SDK_INT >= 21) {
-                    mActivity.startActivity(intent, bundle);
-                } else {
-                    intent.putExtras(bundle);
-                    mActivity.startActivity(intent);
-                }
-            }
-        });
+//        holder.view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mActivity, GridDetailAcitivty.class);
+//                intent.putExtra("title", content.get(position));
+//
+//                Bundle bundle = ActivityOptionsCompat
+//                        .makeSceneTransitionAnimation(mActivity, holder.mIamgeView,holder. mIamgeView.getTransitionName())
+//                        .toBundle();
+//
+//                if (Build.VERSION.SDK_INT >= 21) {
+//                    mActivity.startActivity(intent, bundle);
+//                } else {
+//                    intent.putExtras(bundle);
+//                    mActivity.startActivity(intent);
+//                }
+//            }
+//        });
     }
     private ArrayList<String> getContent(){
 

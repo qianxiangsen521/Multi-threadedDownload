@@ -66,21 +66,16 @@ public class DatabaseHelper {
     }
 
     public synchronized List<Task> getUnnotifiedCompleted() {
-        List<Task> completedTasks = new ArrayList<Task>();
+        List<Task> completedTasks = new ArrayList<>();
 
-        // SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
-        String query = "SELECT * FROM "+MyOpenHelper.TABLE_NAME+" WHERE "+ TASKS.COLUMN_NOTIFY+" != "+ SqlString.Int(1);
+        String query = "SELECT * FROM "+MyOpenHelper.TABLE_NAME;
         Cursor cr = database.rawQuery(query, null);
 
         if (cr != null){
-            cr.moveToFirst();
-
-            while (!cr.isAfterLast()){
+            while (cr.moveToNext()) {
                 Task task = new Task();
                 task.cursorToTask(cr);
                 completedTasks.add(task);
-
-                cr.moveToNext();
             }
 
             cr.close();
@@ -113,7 +108,7 @@ public class DatabaseHelper {
         return task;
     }
 
-    public synchronized boolean delete(int taskID) {
+    public synchronized boolean delete(long taskID) {
         int affectedRow = database
                 .delete(MyOpenHelper.TABLE_NAME, TASKS.COLUMN_ID + "=" + SqlString.Int(taskID), null);
 

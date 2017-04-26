@@ -61,6 +61,7 @@ public class Task {
     private String muniquely_id = " ";//主键，唯一标示，来自服务器，GID
     private boolean priority;
     private long Speed;
+    private String iamgeUrl;
 
     public Task(){
     	this.id			= 0;
@@ -76,11 +77,12 @@ public class Task {
         this.muniquely_id  = null;
         this.priority = false;  // low priority
         this.Speed = 0;
+        this.iamgeUrl = null;
     }
 
     public Task(long size, String name, String url,
                 String state, int chunks, String sdCardFolderAddress,
-                boolean priority,long Speed){
+                boolean priority,long Speed,String iamgeUrl){
     	this.id			= 0;
         this.name       = name;
         this.size       = size;
@@ -94,6 +96,7 @@ public class Task {
         this.muniquely_id  = "";
         this.priority = priority;
         this.Speed = Speed;
+        this.iamgeUrl = iamgeUrl;
     }
 
     public synchronized ContentValues convertToContentValues(){
@@ -114,6 +117,8 @@ public class Task {
             contentValues.put(TASKS.COLUMN_EXTENSION,    muniquely_id);
             contentValues.put(TASKS.COLUMN_PRIORITY,    priority);
             contentValues.put(TASKS.COLUMN_SPEED,Speed);
+            contentValues.put(TASKS.COLUMN_IAMGE,iamgeUrl);
+
         }
 
 
@@ -147,6 +152,16 @@ public class Task {
                 cr.getColumnIndex(TASKS.COLUMN_PRIORITY))>0;
         Speed = cr.getInt(
                 cr.getColumnIndex(TASKS.COLUMN_SPEED));
+        iamgeUrl =  cr.getString(
+                cr.getColumnIndex(TASKS.COLUMN_IAMGE));
+    }
+
+    public synchronized String getIamgeUrl() {
+        return iamgeUrl;
+    }
+
+    public synchronized void setIamgeUrl(String iamgeUrl) {
+        this.iamgeUrl = iamgeUrl;
     }
 
     public DownloadUiListener getDownloadUiListener() {

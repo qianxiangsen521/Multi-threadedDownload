@@ -47,7 +47,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
                 .append(TASKS.COLUMN_PRIORITY).append(" TEXT,")
                 .append(TASKS.COLUMN_SAVE_ADDRESS).append(" TEXT,")
                 .append(TASKS.COLUMN_EXTENSION).append(" TEXT,")
-                .append(TASKS.COLUMN_SPEED).append(" TEXT")
+                .append(TASKS.COLUMN_SPEED).append(" TEXT,")
+                .append(TASKS.COLUMN_IAMGE).append(" TEXT")
                 .append(");");
 
         db.execSQL(sb.toString());

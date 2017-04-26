@@ -20,4 +20,5 @@ public class TASKS {
     public final static String COLUMN_EXTENSION = "uniquely_id";
     public final static String COLUMN_PRIORITY  = "priority";
     public final static String COLUMN_SPEED  = "speed";
+    public final static String COLUMN_IAMGE = "iamgeUrl";
 }

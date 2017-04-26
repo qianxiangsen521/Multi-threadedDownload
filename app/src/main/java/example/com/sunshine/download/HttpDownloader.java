@@ -35,7 +35,6 @@ class HttpDownloader {
     /**
      * 临时下载量
      */
-    private long mdownloadsize;
 
     final DownloadManagerListenerModerator downloadManagerListenerModerator;
 
@@ -88,7 +87,7 @@ class HttpDownloader {
                 conn.setRequestProperty("Referer", request.getUrl());
                 conn.setRequestProperty("Charset", "UTF-8");
                 // 在conn.connect();之前new os 不然会导致暂停后无法重新下载
-                destFile = setupFile(request.getSave_address() + TEMP_SUFFIX);
+                destFile = FileUtils.setupFile(request.getSave_address() + TEMP_SUFFIX);
                 // 如果下载文件存在
                 if (destFile.exists()) {
 
@@ -207,13 +206,6 @@ class HttpDownloader {
         }
     }
 
-    private File setupFile(String destUri) {
-        File outFile = new File(destUri);
-        if (!outFile.getParentFile().exists()) {
-            outFile.getParentFile().mkdirs();
-        }
-        return outFile;
-    }
 
     synchronized private void notifyStart(Task request) {
         //开始状态
