@@ -59,7 +59,10 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
         setContentView(R.layout.activity_download);
 
         PermissionUtils.requestMultiPermissions(this, mPermissionGrant);
+
+
         downlaod = DownloadMessage.init(this);
+
         findViewById(R.id.down_finish).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
