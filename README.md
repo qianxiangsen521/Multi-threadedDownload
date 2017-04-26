@@ -17,11 +17,15 @@
 
   1.创建DownloadMessage实例
 
-  DownloadMessage downlaod = DownloadMessage.init(this);
+
+	DownloadMessage downlaod = DownloadMessage.init(this);
+
+  
 
   2.参数配置 需要一个Task对象。
 
   添加任务 
+
 
   Task task = downlaod.addTask(Task task,DownloadUiListener)
 
@@ -31,27 +35,37 @@
   task1.setId(1);
   task1.setmUniquely_id("102");
   task1.setUrl(Constants.URL1);
+ 
 
   2.1第二参数下载回掉默认是ui线程 提供了三个回掉方法
 
   开始下载
-  public void UiStrat()
+  
+	 public void UiStrat()
+ 
   
   下载的进度
-  public void UiProgress(Task task,long TotalSize ,int downloadSize)
+
+  	public void UiProgress(Task task,long TotalSize ,int downloadSize)
+  
   
   下载结束
-  public void UiFinish(Task task)
+
+	 public void UiFinish(Task task)
+
   
 
   3. 开始下载 
 
-  downlaod.startDownload(Task task);
+	downlaod.startDownload(Task task);
 
   4.暂停下载
 
-  downlaod.pauseDownload(Task task);
+	  downlaod.pauseDownload(Task task);
 
   5删除下载
-  downlaod.deletedelete(Task task,boolean deleteTaskFile)
+
+  	  downlaod.delete(Task task,boolean deleteTaskFile)
+
+
 	

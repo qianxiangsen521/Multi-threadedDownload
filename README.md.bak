@@ -21,7 +21,8 @@
 
   2.参数配置 需要一个Task对象。
 
-   添加任务 
+  添加任务 
+
   Task task = downlaod.addTask(Task task,DownloadUiListener)
 
   Task task1 = new Task();
