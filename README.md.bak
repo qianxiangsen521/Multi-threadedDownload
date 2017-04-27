@@ -8,7 +8,7 @@
 
 用法
 	
-   您需要将这些权限添加在您的AndroidManifest.xml文件中
+   您需要将这些权限添加在您的AndroidManifest.xml文件中 6.0以上需要动态申请权限
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -27,15 +27,16 @@
   添加任务 
 
 
-  Task task = downlaod.addTask(Task task,DownloadUiListener)
+	Task task = downlaod.addTask(Task task,DownloadUiListener)
 
-  Task task1 = new Task();
-  task1.setName("任务1");
-  task1.setIamgeUrl(Constants.IMG);
-  task1.setId(1);
-  task1.setmUniquely_id("102");
-  task1.setUrl(Constants.URL1);
+	Task task1 = new Task();
+	task1.setName("任务1");
+	task1.setIamgeUrl(Constants.IMG);
+	task1.setId(1);
+	task1.setmUniquely_id("102");
+	task1.setUrl(Constants.URL1);
  
+
 
   2.1第二参数下载回掉默认是ui线程 提供了三个回掉方法
 
@@ -46,7 +47,7 @@
   
   下载的进度
 
-  	public void UiProgress(Task task,long TotalSize ,int downloadSize)
+  	 public void UiProgress(Task task,long TotalSize ,int downloadSize)
   
   
   下载结束
@@ -57,7 +58,7 @@
 
   3. 开始下载 
 
-	downlaod.startDownload(Task task);
+	  downlaod.startDownload(Task task);
 
   4.暂停下载
 
