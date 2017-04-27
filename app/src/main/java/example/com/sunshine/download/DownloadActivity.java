@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,8 +26,20 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.concurrent.Callable;
 
 import example.com.sunshine.R;
+import example.com.sunshine.download.Rxjava.SomeType;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by qianxiangsen on 2017/4/20.
@@ -52,11 +65,21 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
     private Button mButton4,mButton6;
     private Task tas;
     private Task taskId;
-
+    private final CompositeDisposable disposables = new CompositeDisposable();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
+        SomeType someType = new SomeType();
+        someType.setValue("name");
+        io.reactivex.Observable<String> observable = someType.justObservable();
+        observable.subscribe(new Consumer<String>(){
+            @Override
+            public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
+                Log.d("TAG", "accept: "+s+"----"+ Thread.currentThread().getName());
+            }
+        });
+        onRunSchedulerExampleButtonClicked();
 
         PermissionUtils.requestMultiPermissions(this, mPermissionGrant);
 
@@ -150,7 +173,46 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
 //            }
 //        });
     }
+    void onRunSchedulerExampleButtonClicked() {
+        disposables.add(sampleObservable().
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribeWith(new DisposableObserver<String>(){
 
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.annotations.NonNull String o) {
+                        Log.d("TAG", "main: "+Thread.currentThread().getName()+"-----"+o);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+                    }
+                }));
+
+    }
+
+    static io.reactivex.Observable<String> sampleObservable(){
+        return io.reactivex.Observable.defer(new Callable<ObservableSource<? extends String>>() {
+            @Override
+            public ObservableSource<? extends String> call() throws Exception {
+                SystemClock.sleep(5000);
+                Log.d("TAG", "call: "+Thread.currentThread().getName());
+                return io.reactivex.Observable.just("itme");
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
@@ -341,6 +403,8 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
                 @Override
                 public void UiStrat() {
                     Log.d("TAG", "UiStrat: ");
+
+                    speed.setText("下载中");
                 }
 
                 @Override
@@ -357,6 +421,7 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
                 public void UiFinish(Task task) {
                     Log.d("TAG", "UiFinish: ");
                     mButton3.setText("安装");
+                    speed.setText("下载完成");
 
                 }
             });
@@ -374,15 +439,13 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
                     }
                 }
             });
-            if (taskId.getState().equals(Task.STATUS_START)){
-                speed.setText("下载中");
-            }else if (taskId.getState().equals(Task.STATUS_COMPLETE)){
-                speed.setText("下载完成");
-            }else if (taskId.getState().equals(Task.STATUS_IDLE)) {
-                speed.setText("等待中");
-            }
 
             return convertView;
         }
     }
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        disposables.clear();
+    }
+
 }

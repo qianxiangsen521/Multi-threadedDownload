@@ -160,15 +160,20 @@
             android:text="暂停"
             android:visibility="gone" />
     </LinearLayout>
-    <Button
+    <TextView
         android:id="@+id/down_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#FFFF40F2"
         android:text="下载完成"/>
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         ></ListView>
 
 
