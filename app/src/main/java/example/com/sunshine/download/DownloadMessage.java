@@ -16,7 +16,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-
+import java.util.concurrent.Executors;
 
 
 /**
@@ -187,7 +187,7 @@ public class DownloadMessage {
                 databaseHelper.openDatabase(openHelper);
             }
             if (service == null) {
-                service = new HttpExecutorService();
+                service = Executors.newFixedThreadPool(2);
             }
             if (listener == null){
                 listener = new DownloadManagerListenerModerator(this);

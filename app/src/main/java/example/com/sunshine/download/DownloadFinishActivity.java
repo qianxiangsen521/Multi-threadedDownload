@@ -30,6 +30,7 @@ public class DownloadFinishActivity extends AppCompatActivity{
         DownloadFinishAdapter downloadFinishAdapter = new DownloadFinishAdapter(this,downlaod.getmArrayFinish());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(downloadFinishAdapter);
+        getSupportActionBar().setTitle("下载完成");
 
     }
 

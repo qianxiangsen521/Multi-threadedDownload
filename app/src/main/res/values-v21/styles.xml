@@ -1,13 +1,13 @@
 <resources>
 
-    <style name="AppTheme.Home">
+    <style name="AppTheme.Home" >
 
         <!--<item name="android:windowExitTransition">
             @transition/grid_exit
         </item>-->
-    <item name="android:windowReenterTransition">
+ <!--   <item name="android:windowReenterTransition">
             @android:transition/slide_top
-        </item>
+        </item>-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

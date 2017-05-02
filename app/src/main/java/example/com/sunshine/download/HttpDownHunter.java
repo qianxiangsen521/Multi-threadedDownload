@@ -51,6 +51,7 @@ class HttpDownHunter implements Runnable  {
 
     }
     public int doDownload(Task request) {
+
         // 不能设置成全局变量，会导致写文件出错
         HttpURLConnection conn = null;
         InputStream inStream = null;

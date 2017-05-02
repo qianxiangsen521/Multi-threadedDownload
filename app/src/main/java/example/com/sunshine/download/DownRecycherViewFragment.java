@@ -1,7 +1,6 @@
 package example.com.sunshine.download;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import example.com.sunshine.HTTP.Utils;
@@ -30,20 +28,19 @@ import example.com.sunshine.R;
  * Created by qianxiangsen on 2017/4/28.
  */
 
-public class DownFragment extends Fragment {
+public class DownRecycherViewFragment extends Fragment {
     private DownloadMessage downlaod;
     private List<Task> taskList;
-    private ListView list;
+    private RecyclerView recyclerView;
     private View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view =  inflater.inflate(R.layout.fragment_download,null);
+        view =  inflater.inflate(R.layout.fragment_recycher_download,null);
 
         downlaod = DownloadMessage.init(getActivity());
 
         taskList = DataSource.getInstance().getData();
-
 
         return view;
     }
@@ -51,11 +48,12 @@ public class DownFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        list = (ListView) view.findViewById(R.id.listview);
-        list.setAdapter(new ADAPTER(getActivity(),downlaod,taskList));
+        recyclerView = (RecyclerView) view.findViewById(R.id.listview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new ADAPTER(getActivity(),downlaod,taskList));
     }
 
-    private static class ADAPTER extends BaseAdapter{
+    private static class ADAPTER extends RecyclerView.Adapter<ADAPTER.DownViewHolder>{
 
         Context context;
         DownloadMessage downlaod;
@@ -69,79 +67,62 @@ public class DownFragment extends Fragment {
         }
 
         @Override
-        public int getCount() {
-            return taskList.size();
+        public int getItemCount() {
+            return taskList != null ? taskList.size() : null;
         }
 
         @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return taskList.get(position);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_download,null,false);
-            final  ImageView Image = (ImageView) convertView.findViewById(R.id.ivIcon);
-            final ProgressBar p = (ProgressBar) convertView.findViewById(R.id.progressBar);
-            final  TextView  mButton3 = (TextView) convertView.findViewById(R.id.btnDownload);
-            final  TextView speed = (TextView) convertView.findViewById(R.id.tvName);
-            final TextView  text = (TextView) convertView.findViewById(R.id.tvStatus);
-            final  TextView  size = (TextView) convertView.findViewById(R.id.textView_size1);
+        public void onBindViewHolder(final DownViewHolder holder, int position) {
 
             final Task tas = taskList.get(position);
 
-            Picasso.with(context).load(tas.getIamgeUrl()).into(Image);
+            Picasso.with(context).load(tas.getIamgeUrl()).into(holder.Image);
             final Task taskId = downlaod.addTask(taskList.get(position), new DownloadUiListener() {
                 @Override
                 public void UiStrat() {
                     Log.d("TAG", "UiStrat: ");
-                    speed.setText("下载中");
+                    holder. speed.setText("下载中");
                 }
 
                 @Override
                 public void UiProgress(Task task,long TotalSize ,int downloadSize) {
                     Log.d("TAG", "UiProgress: "+Utlis.formatSize(TotalSize));
                     Log.d("TAG", "UiProgress: "+Utlis.formatSize(downloadSize));
-                    size.setText(Utlis.formatSize(downloadSize)+"/"+Utlis.formatSize(TotalSize));
+                    holder.size.setText(Utlis.formatSize(downloadSize)+"/"+Utlis.formatSize(TotalSize));
 
-                    text.setText(Utlis.formatPercent(downloadSize,TotalSize));
-                    p.setMax((int) TotalSize);
-                    p.setProgress(downloadSize);
+                    holder. text.setText(Utlis.formatPercent(downloadSize,TotalSize));
+                    holder. p.setMax((int) TotalSize);
+                    holder.p.setProgress(downloadSize);
 
                 }
 
                 @Override
                 public void UiFinish(Task task) {
                     Log.d("TAG", "UiFinish: ");
-                    mButton3.setText("安装");
-                    speed.setText("下载完成");
+                    holder.down.setText("安装");
+                    holder.speed.setText("下载完成");
 
                 }
             });
             if (taskId.getState().equals(Task.STATUS_START)){
                 downlaod.startDownload(taskId);
-                mButton3.setText("暂停");
+                holder.down.setText("暂停");
             }else if (taskId.getState() .equals(Task.STATUS_COMPLETE)) {
-                mButton3.setText("安裝");
-                speed.setText(taskId.getName());
-                p.setMax((int) taskId.getSize());
-                p.setProgress(taskId.getDownloadSize());
-                size.setText(Utlis.formatSize(taskId.getDownloadSize())+"/"+Utlis.formatSize(taskId.getSize()));
-                text.setText(Utlis.formatPercent(taskId.getDownloadSize(),taskId.getSize()));
+                holder.down.setText("安裝");
+                holder.speed.setText(taskId.getName());
+                holder.p.setMax((int) taskId.getSize());
+                holder.p.setProgress(taskId.getDownloadSize());
+                holder.size.setText(Utlis.formatSize(taskId.getDownloadSize())+"/"+Utlis.formatSize(taskId.getSize()));
+                holder.text.setText(Utlis.formatPercent(taskId.getDownloadSize(),taskId.getSize()));
             }else{
-                speed.setText(taskId.getName());
-                p.setMax((int) taskId.getSize());
-                p.setProgress(taskId.getDownloadSize());
-                size.setText(Utlis.formatSize(taskId.getDownloadSize())+"/"+Utlis.formatSize(taskId.getSize()));
-                text.setText(Utlis.formatPercent(taskId.getDownloadSize(),taskId.getSize()));
+                holder.speed.setText(taskId.getName());
+                holder. p.setMax((int) taskId.getSize());
+                holder.p.setProgress(taskId.getDownloadSize());
+                holder.size.setText(Utlis.formatSize(taskId.getDownloadSize())+"/"+Utlis.formatSize(taskId.getSize()));
+                holder.text.setText(Utlis.formatPercent(taskId.getDownloadSize(),taskId.getSize()));
             }
 
-            mButton3.setOnClickListener(new View.OnClickListener() {
+            holder.down.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -149,17 +130,39 @@ public class DownFragment extends Fragment {
                         Utils.installApp(context, new File(taskId.getSave_address()));
                     } else if (taskId.getState().equals(Task.STATUS_START) ){
                         downlaod.pauseDownload(taskId);
-                        mButton3.setText("继续");
+                        holder. down.setText("继续");
                     }else {
                         downlaod.startDownload(taskId);
-                        mButton3.setText("暂停");
+                        holder.down.setText("暂停");
                     }
                 }
             });
-
-            return convertView;
         }
 
+        @Override
+        public DownViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new DownViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_download,null,false));
+        }
+
+        static class DownViewHolder extends RecyclerView.ViewHolder{
+
+            ImageView Image;
+            ProgressBar p;
+            TextView  down;
+            TextView speed;
+            TextView  text;
+            TextView  size;
+            public DownViewHolder(View convertView){
+                super(convertView);
+                Image = (ImageView) convertView.findViewById(R.id.ivIcon);
+                 p = (ProgressBar) convertView.findViewById(R.id.progressBar);
+                down = (TextView) convertView.findViewById(R.id.btnDownload);
+                speed = (TextView) convertView.findViewById(R.id.tvName);
+                text = (TextView) convertView.findViewById(R.id.tvStatus);
+                size = (TextView) convertView.findViewById(R.id.textView_size1);
+
+            }
+        }
 
     }
 

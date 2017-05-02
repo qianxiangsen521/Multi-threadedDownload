@@ -1,100 +1,84 @@
 package example.com.sunshine.download;
 
-    import android.app.Activity;/*Skip to content
-    This repository
-    Search
-    Pull requests
-    Issues
-    Gist
-     @qianxiangsen521
-     Sign out
-     Watch 969
-      Star 12,084
-      Fork 2,105 ReactiveX/RxAndroid
-     Code  Issues 5  Pull requests 1  Projects 0  Wiki  Pulse  Graphs
-    Branch: 2.x Find file Copy pathRxAndroid/sample-app/src/main/java/io/reactivex/android/samples/MainActivity.java
-    a08e6ef  on 25 Aug 2016
-    @JakeWharton JakeWharton Update sample to compile with latest RxJava 2.0 APIs.
-    1 contributor
-    RawBlameHistory
-    80 lines (70 sloc)  2.84 KB*/
-/*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import android.app.Activity;
+
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-    import example.com.sunshine.R;
-    import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
-import java.util.concurrent.Callable;
+import example.com.sunshine.R;
 
-public class MainActivity extends Activity {
-    private static final String TAG = "RxAndroidSamples";
 
-    private final CompositeDisposable disposables = new CompositeDisposable();
+public class MainActivity extends Activity implements View.OnClickListener{
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        findViewById(R.id.button_run_scheduler).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                onRunSchedulerExampleButtonClicked();
+        if (Build.VERSION.SDK_INT >= 21) {
+            PermissionUtils.requestMultiPermissions(this, mPermissionGrant);
+        }
+        findViewById(R.id.btnListView).setOnClickListener(this);
+        findViewById(R.id.btnRecyclerView).setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, DownloadActivity.class);
+        switch (v.getId()) {
+            case R.id.btnListView:
+                intent.putExtra("EXTRA_TYPE", DownloadActivity.TYPE.TYPE_LISTVIEW);
+                break;
+            case R.id.btnRecyclerView:
+                intent.putExtra("EXTRA_TYPE", DownloadActivity.TYPE.TYPE_RECYCLERVIEW);
+                break;
+            default:
+                return;
+        }
+        startActivity(intent);
+    }
+    private PermissionUtils.PermissionGrant mPermissionGrant = new PermissionUtils.PermissionGrant() {
+        @Override
+        public void onPermissionGranted(int requestCode) {
+            switch (requestCode) {
+                case PermissionUtils.CODE_RECORD_AUDIO:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_RECORD_AUDIO", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_GET_ACCOUNTS:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_GET_ACCOUNTS", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_READ_PHONE_STATE:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_READ_PHONE_STATE", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_CALL_PHONE:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_CALL_PHONE", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_CAMERA:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_CAMERA", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_ACCESS_FINE_LOCATION:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_ACCESS_FINE_LOCATION", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_ACCESS_COARSE_LOCATION:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_ACCESS_COARSE_LOCATION", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_READ_EXTERNAL_STORAGE:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_READ_EXTERNAL_STORAGE", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_WRITE_EXTERNAL_STORAGE", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_READ_SMS:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_READ_SMS", Toast.LENGTH_SHORT).show();
+                    break;
+                case PermissionUtils.CODE_BATTERY_STATS:
+                    Toast.makeText(MainActivity.this, "Result Permission Grant CODE_BATTERY_STATS", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
             }
-        });
-    }
-
-    @Override protected void onDestroy() {
-        super.onDestroy();
-        disposables.clear();
-    }
-
-    void onRunSchedulerExampleButtonClicked() {
-        disposables.add(sampleObservable()
-            // Run on a background thread
-            .subscribeOn(Schedulers.io())
-            // Be notified on the main thread
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new DisposableObserver<String>() {
-                @Override public void onComplete() {
-                    Log.d(TAG, "onComplete()");
-                }
-
-                @Override public void onError(Throwable e) {
-                    Log.e(TAG, "onError()", e);
-                }
-
-                @Override public void onNext(String string) {
-                    Log.d(TAG, "onNext(" + string + ")");
-                }
-            }));
-    }
-
-    static Observable<String> sampleObservable() {
-        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
-          @Override public ObservableSource<? extends String> call() throws Exception {
-                // Do some long running operation
-                SystemClock.sleep(5000);
-                return Observable.just("one", "two", "three", "four", "five");
-            }
-        });
-    }
+        }
+    };
 }

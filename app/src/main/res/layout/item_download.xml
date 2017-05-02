@@ -32,7 +32,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/btnDownload"
                 android:ellipsize="end"
-                android:text="App"
                 android:textAppearance="?android:textAppearanceMedium" />
 
 
@@ -73,7 +72,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="已暂停"
                 android:textAppearance="?android:textAppearanceSmall" />
 
             <ProgressBar
