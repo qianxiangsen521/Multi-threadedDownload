@@ -4,7 +4,7 @@
 
 效果图
 
-![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/down.gif)  
+![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/download.gif)  
 
 用法
 	
