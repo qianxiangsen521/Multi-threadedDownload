@@ -65,7 +65,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar" >
-        <activity android:name="example.com.sunshine.download.DownloadActivity">
+        <activity android:name="example.com.sunshine.download.DownloadActivity"
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

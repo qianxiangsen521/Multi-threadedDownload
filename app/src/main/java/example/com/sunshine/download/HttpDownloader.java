@@ -1,244 +1,178 @@
 package example.com.sunshine.download;
 
-import android.util.Log;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.RandomAccessFile;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import example.com.sunshine.R;
+
+import static android.content.Context.CONNECTIVITY_SERVICE;
+import static android.content.Intent.ACTION_AIRPLANE_MODE_CHANGED;
+import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
 /**
  * Created by qianxiangsen on 2017/4/20.
  */
 
 class HttpDownloader {
-    private static final String TEMP_SUFFIX = ".tmp";
+
+    static final int NETWORK_STATE_CHANGE = 9;
+
+    static final int AIRPLANE_MODE_CHANGE = 10;
+
+    private static final int AIRPLANE_MODE_ON = 1;
+
+    private static final int AIRPLANE_MODE_OFF = 0;
+
+    private static final String DISPATCHER_THREAD_NAME = "Dispatcher";
+
+    final Context context;
 
     final DatabaseHelper databaseHelper;
+
     final ExecutorService mThreadPool;
-    /** 下载的速度 */
-    private int downloadSpeed = 0;
-    /** 下载用的时间 */
-    private int usedTime = 0;
-    /** 开始时间 */
-    private long startTime;
-    /** 当前时间 */
-    private long curTime;
-    /**
-     * 临时下载量
-     */
+
+
+    final ExecutorService mThreadPool1 = Executors.newFixedThreadPool(2);
+
+//    final Handler handler;
+//
+//    final NetworkBroadcastReceiver receiver;
+//
+//    final boolean scansNetworkChanges;
+//
+//    final DispatcherThread dispatcherThread;
+
+    final Map<String, HttpDownHunter> hunterMap;
 
     final DownloadManagerListenerModerator downloadManagerListenerModerator;
 
-    HttpDownloader(DatabaseHelper databaseHelper,ExecutorService mThreadPool,DownloadManagerListenerModerator downloadManagerListenerModerator){
+    HttpDownloader(Context context,DatabaseHelper databaseHelper,ExecutorService mThreadPool,DownloadManagerListenerModerator downloadManagerListenerModerator){
+//        this.dispatcherThread = new DispatcherThread();
+//        this.dispatcherThread.start();
+//        this.handler = new DispatcherHandler(dispatcherThread.getLooper(), this);
+        this.context = context;
         this.downloadManagerListenerModerator = downloadManagerListenerModerator;
         this.databaseHelper = databaseHelper;
         this.mThreadPool = mThreadPool;
+        this.hunterMap = new LinkedHashMap<>();
+//        this.scansNetworkChanges = Utlis.hasPermission(context, Manifest.permission.ACCESS_NETWORK_STATE);
+//        this.receiver = new NetworkBroadcastReceiver(this);
+//        receiver.register();
+
 
     }
     void enqueue(Task request) {
 
-        mThreadPool.submit(new Downloadrequest(request));
+        mThreadPool1.submit(new HttpDownHunter(request,databaseHelper,downloadManagerListenerModerator));
     }
-
-    class Downloadrequest implements Runnable {
-
-        private Task request;
-
-
-        Downloadrequest(Task request) {
-            this.request = request;
-        }
-
-        @Override
-        public void run() {
-                            int statusCode = -1;
-            if (request.getState().equals(
-                    request.STATUS_IDLE)) {
-               statusCode = doDownload(request);
-
-           }
-
-        }
-        public int doDownload(Task request) {
-            // 不能设置成全局变量，会导致写文件出错
-            HttpURLConnection conn = null;
-            InputStream inStream = null;
-            RandomAccessFile os = null;
-            File destFile = null;
-            int statusCode = 0;
-            try {
-                URL url = new URL(request.getUrl());
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(5 * 1000);
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty(
-                        "Accept",
-                        "image/gif, image/jpeg, image/pjpeg, image/pjpeg, application/x-shockwave-flash, application/xaml+xml, application/vnd.ms-xpsdocument, application/x-ms-xbap, application/x-ms-application, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*");
-                conn.setRequestProperty("Accept-Language", "zh-CN");
-                conn.setRequestProperty("Referer", request.getUrl());
-                conn.setRequestProperty("Charset", "UTF-8");
-                // 在conn.connect();之前new os 不然会导致暂停后无法重新下载
-                destFile = FileUtils.setupFile(request.getSave_address() + TEMP_SUFFIX);
-                // 如果下载文件存在
-                if (destFile.exists()) {
-
-                } else {
-                    request.setDownloadSize(0);
-                }
-                if (destFile.length() > 0) {
-                    conn.setRequestProperty(
-                            "Range",
-                            "bytes=" + request.getDownloadSize() + "-"
-                                    + request.getSize());
-                    Log.d("TAG", "request.getDownloadSize() -- "+request.getDownloadSize());
-                    os = new RandomAccessFile(destFile,"rw");
-                    os.seek(request.getDownloadSize());
+//    static class DispatcherThread extends HandlerThread {
+//        DispatcherThread() {
+//            super(Utlis.THREAD_PREFIX + DISPATCHER_THREAD_NAME, THREAD_PRIORITY_BACKGROUND);
+//        }
+//    }
 
 
-                } else {
-                    os = new RandomAccessFile(destFile,"rw");
-
-                }
-                conn.setRequestProperty(
-                        "User-Agent",
-                        "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("content-type", "text/html");
-                conn.connect();
-                if (conn.getResponseCode() == 200 || conn.getResponseCode() == 206) {
-
-                    try {
-                        inStream = conn.getInputStream();
-
-                        long filesize = conn.getContentLength();
-                        if (request.getDownloadSize() == 0) {
-                            request.setSize(filesize);
-                        }
-                        byte buffer[] = new byte[800096];
-                        int length = 0;
-                        //开始下载
-                        notifyStart(request);
-
-                        startTime = System.currentTimeMillis();
-                        while (request.getState().equals(
-                                request.STATUS_START)
-                                && (length = inStream
-                                .read(buffer, 0, buffer.length)) != -1) {
-                            os.write(buffer, 0, length);
-                            int downloadSize =(int) request.getDownloadSize();
-                            downloadSize += length;
-                            Log.d("TAG", "downloadSize -- "+downloadSize);
-                            request.setDownloadSize(downloadSize);
-
-                            int mdownloadsize = (int) request.getMtemdownsize();// 获取临时下载数量
-                            mdownloadsize += length;
-                            request.setMtemdownsize(mdownloadsize);
-
-                            Log.d("TAG", "mdownloadsize -- "+mdownloadsize);
-
-                            curTime = System.currentTimeMillis();
-
-                            usedTime = (int) ((curTime - startTime) / 1000);
-                            if (usedTime == 0)
-                                usedTime = 1;
-                            downloadSpeed = (int) ((mdownloadsize / usedTime) / 1024);
-                            Log.d("TAG", "downloadSpeed -- "+downloadSpeed);
-                            // 获取到停止状态跳出循环
-                            request.setSpeed(downloadSpeed);
-                            notifyProgress(request);
-                            if (request.getState().equals(
-                                    request.STATUS_PAUSE)) {
-                                break;
-                            }
-                        }
-                        if (request.getSize() == request.getDownloadSize()
-                                && !(request.getState()
-                                .equals(request.STATUS_COMPLETE))) {
-                            destFile.renameTo(new File(request.getSave_address()));
-                            request.setMtemdownsize(0);
-                            request.setState(request.STATUS_COMPLETE);
-                            notifyComplete(request);
-                            os.close();
-                        } else {
-                            notifyProgress(request);
-                        }
-                        os.close();
-                    } catch (IOException e) {
-                        os.close();
-                        request.setState(request.STATUS_PAUSE);
-                        notifyProgress(request);
-                    }
-
-                } else {
-                    request.setMtemdownsize(0);
-                    request.setState(request.STATUS_ERROR);
-                    notifyError(request);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.setMtemdownsize(0);
-                request.setState(request.STATUS_ERROR);
-                notifyError(request);
-
-            }
-
-            finally {
-                try {
-                    inStream.close();
-                    conn.disconnect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            return statusCode;
-        }
-    }
-
-
-    synchronized private void notifyStart(Task request) {
-        //开始状态
-        request.setState(request.STATUS_START);
-        //更新数据库
-        databaseHelper.update(request);
-        //刷新UI
-        downloadManagerListenerModerator.OnDownloadRebuildStart(request);
-    }
-
-    synchronized private void notifyComplete(Task request) {
-        request.setState(request.STATUS_COMPLETE);
-        //更新数据库
-        databaseHelper.update(request);
-
-        downloadManagerListenerModerator.OnDownloadFinished(request);
-    }
-
-    synchronized public void notifyProgress(Task request) {
-
-        //更新数据库
-        databaseHelper.update(request);
-
-        downloadManagerListenerModerator.onDownloadProcess(request);
-    }
-
-    synchronized private void notifyError(Task request) {
-        request.setState(request.STATUS_ERROR);
-        //更新数据库
-        databaseHelper.update(request);
-        downloadManagerListenerModerator.OnDownloadErrered(request);
-    }
-
-
-
+//
+//    static class NetworkBroadcastReceiver extends BroadcastReceiver {
+//        static final String EXTRA_AIRPLANE_STATE = "state";
+//
+//        private final HttpDownloader mHttpDownloader;
+//
+//        NetworkBroadcastReceiver(HttpDownloader mHttpDownloader) {
+//            this.mHttpDownloader = mHttpDownloader;
+//        }
+//
+//        void register() {
+//            IntentFilter filter = new IntentFilter();
+//            filter.addAction(ACTION_AIRPLANE_MODE_CHANGED);
+//            if (mHttpDownloader.scansNetworkChanges) {
+//                filter.addAction(CONNECTIVITY_ACTION);
+//            }
+//            mHttpDownloader.context.registerReceiver(this, filter);
+//        }
+//
+//        void unregister() {
+//            mHttpDownloader.context.unregisterReceiver(this);
+//        }
+//
+//        @Override public void onReceive(Context context, Intent intent) {
+//            // On some versions of Android this may be called with a null Intent,
+//            // also without extras (getExtras() == null), in such case we use defaults.
+//            if (intent == null) {
+//                return;
+//            }
+//            final String action = intent.getAction();
+//            if (ACTION_AIRPLANE_MODE_CHANGED.equals(action)) {
+//                if (!intent.hasExtra(EXTRA_AIRPLANE_STATE)) {
+//                    return; // No airplane state, ignore it. Should we query Utils.isAirplaneModeOn?
+//                }
+//                mHttpDownloader.dispatchAirplaneModeChange(intent.getBooleanExtra(EXTRA_AIRPLANE_STATE, false));
+//            } else if (CONNECTIVITY_ACTION.equals(action)) {
+//                ConnectivityManager connectivityManager = Utlis.getService(context, CONNECTIVITY_SERVICE);
+//                mHttpDownloader.dispatchNetworkStateChange(connectivityManager.getActiveNetworkInfo());
+//            }
+//        }
+//    }
+//    void dispatchNetworkStateChange(NetworkInfo info) {
+//        handler.sendMessage(handler.obtainMessage(NETWORK_STATE_CHANGE, info));
+//    }
+//
+//    void dispatchAirplaneModeChange(boolean airplaneMode) {
+//        handler.sendMessage(handler.obtainMessage(AIRPLANE_MODE_CHANGE,
+//                airplaneMode ? AIRPLANE_MODE_ON : AIRPLANE_MODE_OFF, 0));
+//    }
+//    private static class DispatcherHandler extends Handler {
+//        private final HttpDownloader dispatcher;
+//
+//        public DispatcherHandler(Looper looper, HttpDownloader dispatcher) {
+//            super(looper);
+//            this.dispatcher = dispatcher;
+//        }
+//
+//        @Override
+//        public void handleMessage(final Message msg) {
+//            switch (msg.what) {
+//
+//                case NETWORK_STATE_CHANGE: {
+//                    NetworkInfo info = (NetworkInfo) msg.obj;
+//                    dispatcher.performNetworkStateChange(info);
+//                    break;
+//                }
+//                default:
+//                break;
+//            }
+//        }
+//    }
+//    void performNetworkStateChange(NetworkInfo info) {
+//        if (mThreadPool instanceof HttpExecutorService) {
+//            ((HttpExecutorService) mThreadPool).adjustThreadCount(info);
+//        }
+//    }
+//
+//    void shutdown() {
+//        // Shutdown the thread pool only if it is the one created by Picasso.
+//        if (mThreadPool instanceof HttpExecutorService) {
+//            mThreadPool.shutdown();
+//        }
+//        dispatcherThread.quit();
+//        // Unregister network broadcast receiver on the main thread.
+//        DownloadMessage.sHandler.post(new Runnable() {
+//            @Override public void run() {
+//                receiver.unregister();
+//            }
+//        });
+//    }
 }

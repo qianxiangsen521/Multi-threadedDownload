@@ -1,6 +1,11 @@
 package example.com.sunshine.download;
 
+import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,11 +13,10 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 
 /**
@@ -30,15 +34,18 @@ public class DownloadMessage {
     private final static int MSG_WHAT_ON_PROJRESS = MSG_WHAT_BASE + 5;
 
     private List<Task> mArrayFinish = new ArrayList<>();
+
+
     static volatile DownloadMessage singleton = null;
     final Context context;
 
     private HttpDownloader httpDownloader;
 
+    boolean shutdown;
+
     static final InternalHandler sHandler = new InternalHandler();
 
-
-    final static class InternalHandler extends Handler {
+    static final class InternalHandler extends Handler {
 
         private InternalHandler() {
             super(Looper.getMainLooper());
@@ -52,48 +59,48 @@ public class DownloadMessage {
             Task taskInfo;
             if (msg.obj instanceof Task) {
                 taskInfo = (Task) msg.obj;
-            try {
-                switch (msg.what) {
-                    case MSG_WHAT_ON_WAITING: {
+                try {
+                    switch (msg.what) {
+                        case MSG_WHAT_ON_WAITING: {
 
-                        break;
-                    }
-                    case MSG_WHAT_ON_START: {
-                        if (taskInfo.getDownloadUiListener() != null){
+                            break;
+                        }
+                        case MSG_WHAT_ON_START: {
+                            if (taskInfo.getDownloadUiListener() != null){
 
-                            taskInfo.getDownloadUiListener().UiStrat();
+                                taskInfo.getDownloadUiListener().UiStrat();
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    case MSG_WHAT_ON_PROJRESS: {
-                        Log.d("TAG", "handleMessage: "+taskInfo.getDownloadSize());
-                        if (taskInfo.getDownloadUiListener() != null){
-                            taskInfo.getDownloadUiListener().UiProgress(taskInfo,taskInfo.getSize(),taskInfo.getDownloadSize());
+                        case MSG_WHAT_ON_PROJRESS: {
+                            Log.d("TAG", "handleMessage: "+taskInfo.getDownloadSize());
+                            if (taskInfo.getDownloadUiListener() != null){
+                                taskInfo.getDownloadUiListener().UiProgress(taskInfo,taskInfo.getSize(),taskInfo.getDownloadSize());
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    case MSG_WHAT_ON_ERROR: {
-                        break;
-                    }
-                    case MSG_WHAT_ON_COMPLETE: {
+                        case MSG_WHAT_ON_ERROR: {
+                            break;
+                        }
+                        case MSG_WHAT_ON_COMPLETE: {
 
                             taskInfo.getDownloadUiListener().UiFinish(taskInfo);
                             if (taskInfo.getDownloadUiListener() != null){
+                            }
+                            break;
                         }
-                        break;
-                    }
 
-                    default: {
-                        break;
+                        default: {
+                            break;
+                        }
                     }
+                } catch (Throwable ex) {
+                    taskInfo.setState(taskInfo.STATUS_ERROR);
+
                 }
-            } catch (Throwable ex) {
-                taskInfo.setState(taskInfo.STATUS_ERROR);
-
             }
         }
     }
-     }
 
 
     DownloadMessage(Context context,HttpDownloader httpDownloader){
@@ -119,14 +126,54 @@ public class DownloadMessage {
         private final Context context;
         private MyOpenHelper openHelper;
         private DatabaseHelper databaseHelper;
-        private ExecutorService mThreadPool;
-        private DownloadManagerListenerModerator downloadManagerListenerModerator;
+        private ExecutorService service;
+        private DownloadManagerListenerModerator listener;
 
         public Builder(@NonNull Context context) {
             if (context == null) {
                 throw new IllegalArgumentException("Context must not be null.");
             }
             this.context = context.getApplicationContext();
+        }
+        public Builder baseHelper(@NonNull DatabaseHelper databaseHelper){
+            if (databaseHelper == null) {
+                throw new IllegalArgumentException("databaseHelper must not be null.");
+            }
+            if (this.databaseHelper != null) {
+                throw new IllegalStateException("databaseHelper already set.");
+            }
+            this.databaseHelper = databaseHelper;
+            return this;
+        }
+        public Builder openHelper(@NonNull MyOpenHelper openHelper){
+            if (openHelper == null) {
+                throw new IllegalArgumentException("openHelper must not be null.");
+            }
+            if (this.service != null) {
+                throw new IllegalStateException("openHelper already set.");
+            }
+            this.openHelper = openHelper;
+            return this;
+        }
+        public Builder executor(@NonNull ExecutorService executorService) {
+            if (executorService == null) {
+                throw new IllegalArgumentException("Executor service must not be null.");
+            }
+            if (this.service != null) {
+                throw new IllegalStateException("Executor service already set.");
+            }
+            this.service = executorService;
+            return this;
+        }
+        public Builder listener(@NonNull DownloadManagerListenerModerator listener) {
+            if (listener == null) {
+                throw new IllegalArgumentException("Listener must not be null.");
+            }
+            if (this.listener != null) {
+                throw new IllegalStateException("Listener already set.");
+            }
+            this.listener = listener;
+            return this;
         }
 
         public DownloadMessage build() {
@@ -139,14 +186,14 @@ public class DownloadMessage {
                 databaseHelper = new DatabaseHelper();
                 databaseHelper.openDatabase(openHelper);
             }
-            if (mThreadPool == null) {
-                mThreadPool = Executors.newFixedThreadPool(2);
+            if (service == null) {
+                service = new HttpExecutorService();
             }
-            if (downloadManagerListenerModerator == null){
-                downloadManagerListenerModerator = new DownloadManagerListenerModerator(this);
+            if (listener == null){
+                listener = new DownloadManagerListenerModerator(this);
             }
 
-            HttpDownloader httpDownloader = new HttpDownloader(databaseHelper,mThreadPool,downloadManagerListenerModerator);
+            HttpDownloader httpDownloader = new HttpDownloader(context,databaseHelper,service,listener);
 
             return new DownloadMessage(context,httpDownloader);
         }
@@ -180,6 +227,12 @@ public class DownloadMessage {
 
 
     public  Task addTask(Task task,DownloadUiListener downloadUiListener){
+        Task t = httpDownloader.databaseHelper.getTaskInfo(task);
+        if (t.getDownloadSize() != 0){
+            t.setDownloadUiListener(downloadUiListener);
+            return t;
+        }
+
         task.setDownloadSize(0);
         int index = task.getUrl().lastIndexOf("/");
         String destUri =FileUtils.getAlbumStorageDir(context)
@@ -188,17 +241,17 @@ public class DownloadMessage {
         task.setSave_address(destUri);
         task.setSpeed(System.currentTimeMillis());
         task.setDownloadUiListener(downloadUiListener);
+
         httpDownloader.databaseHelper.insertTask(task);
         return task;
     }
 
     public synchronized void startDownload(Task token){
-       Task task= httpDownloader.databaseHelper.getTaskInfo(token);
-
+        Task task= httpDownloader.databaseHelper.getTaskInfo(token);
         if (task != null && task.getState() != Task.STATUS_IDLE) {
+            task.setPriority(true);
             task.setState(Task.STATUS_IDLE);
             httpDownloader.enqueue(task);
-
             httpDownloader.databaseHelper.update(task);
         }
     }
@@ -212,16 +265,16 @@ public class DownloadMessage {
     }
     public boolean delete(Task task,boolean deleteTaskFile){
         task = httpDownloader.databaseHelper.getTaskInfo(task);
-            if (deleteTaskFile) {
-              FileUtils.deleteFile(task.getSave_address());
-            }
-            return httpDownloader.databaseHelper.delete(task.getId());
+        if (deleteTaskFile) {
+            FileUtils.deleteFile(task.getSave_address());
+        }
+        return httpDownloader.databaseHelper.delete(task.getId());
     }
 
 
 
     public List<Task> getmArrayFinish(){
-       List<Task> mTask= httpDownloader.databaseHelper.getUnnotifiedCompleted();
+        List<Task> mTask= httpDownloader.databaseHelper.getUnnotifiedCompleted();
         if (mTask != null){
             for(Task taskName : mTask){
                 if (Task.STATUS_COMPLETE.equals(taskName.getState())){
@@ -235,4 +288,15 @@ public class DownloadMessage {
         return mArrayFinish;
     }
 
+//    public void shutdown() {
+//        if (this == singleton) {
+//            throw new UnsupportedOperationException("Default singleton instance cannot be shutdown.");
+//        }
+//        if (shutdown) {
+//            return;
+//        }
+//        httpDownloader.shutdown();
+//
+//        shutdown = true;
+//    }
 }

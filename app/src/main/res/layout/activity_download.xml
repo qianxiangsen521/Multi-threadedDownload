@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
 
         android:id="@+id/ll"
@@ -90,7 +90,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <ImageView
             android:id="@+id/weixin"
@@ -169,12 +170,13 @@
         android:layout_marginBottom="10dp"
         android:textColor="#FFFF40F2"
         android:text="下载完成"/>
-    <ListView
-        android:id="@+id/listview"
+
+    <FrameLayout
+        android:id="@+id/framelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+       ></FrameLayout>
 
-        ></ListView>
 
 
 </LinearLayout>

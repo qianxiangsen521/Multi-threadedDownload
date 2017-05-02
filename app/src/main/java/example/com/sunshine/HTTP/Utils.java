@@ -3,6 +3,8 @@ package example.com.sunshine.HTTP;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 
@@ -92,5 +94,10 @@ public class Utils {
         // of the OS since they are inlined at compile time. This is guaranteed behavior.
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
     }
-
+    public static void installApp(Context context, File file) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        context.startActivity(intent);
+    }
 }

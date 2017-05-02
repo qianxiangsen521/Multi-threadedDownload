@@ -71,7 +71,7 @@ public class Task {
         this.url        = null;
         this.percent    = 0;
         this.chunks     = 0;
-        this.notify     = true;
+        this.notify     = false;
         this.resumable  = true;
         this.save_address = null;
         this.muniquely_id  = null;
@@ -90,7 +90,7 @@ public class Task {
         this.url        = url;
         this.percent    = 0;
         this.chunks     = chunks;
-        this.notify     = true;
+        this.notify     = false;
         this.resumable  = true;
         this.save_address = sdCardFolderAddress;
         this.muniquely_id  = "";

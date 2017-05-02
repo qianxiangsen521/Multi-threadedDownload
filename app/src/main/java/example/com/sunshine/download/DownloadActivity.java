@@ -9,8 +9,11 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +48,9 @@ import io.reactivex.schedulers.Schedulers;
  * Created by qianxiangsen on 2017/4/20.
  */
 
-public class DownloadActivity extends AppCompatActivity implements /*DownloadUiListener,*/View.OnClickListener{
+public class DownloadActivity extends AppCompatActivity /*implements DownloadUiListener,View.OnClickListener*/{
 
-    private DownloadMessage downlaod;
+//    private DownloadMessage downlaod;
     int permsRequestCode = 200;
     private String[] perms = {"android.permission. WRITE_EXTERNAL_STORAGE"};
 
@@ -65,27 +68,25 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
     private Button mButton4,mButton6;
     private Task tas;
     private Task taskId;
-    private final CompositeDisposable disposables = new CompositeDisposable();
+    //    private final CompositeDisposable disposables = new CompositeDisposable();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        SomeType someType = new SomeType();
-        someType.setValue("name");
-        io.reactivex.Observable<String> observable = someType.justObservable();
-        observable.subscribe(new Consumer<String>(){
-            @Override
-            public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
-                Log.d("TAG", "accept: "+s+"----"+ Thread.currentThread().getName());
-            }
-        });
-        onRunSchedulerExampleButtonClicked();
+        getSupportFragmentManager().beginTransaction().add(R.id.framelayout,new DownFragment()).commit();
+        Log.d("DownloadActivity", "---------------------------------------onCreate: ");
+//        SomeType someType = new SomeType();
+//        someType.setValue("name");
+//        io.reactivex.Observable<String> observable = someType.justObservable();
+//        observable.subscribe(new Consumer<String>(){
+//            @Override
+//            public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
+//                Log.d("TAG", "accept: "+s+"----"+ Thread.currentThread().getName());
+//            }
+//        });
+//        onRunSchedulerExampleButtonClicked();
 
         PermissionUtils.requestMultiPermissions(this, mPermissionGrant);
-
-
-        downlaod = DownloadMessage.init(this);
-
         findViewById(R.id.down_finish).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,27 +96,25 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
         });
 
 
-        ProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        textView = (TextView) findViewById(R.id.textView);
-        ProgressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-        textView1 = (TextView) findViewById(R.id.textView1);
-        ListView list = (ListView) findViewById(R.id.listview);
-        list.setAdapter(new ADAPTER(this,downlaod));
 
-        mButton3= (TextView) findViewById(R.id.button3);
-        mButton5 = (TextView) findViewById(R.id.button5);
+//        ProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+//        textView = (TextView) findViewById(R.id.textView);
+//        ProgressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 
-        size= (TextView) findViewById(R.id.textView_size);
-        size1 = (TextView) findViewById(R.id.textView_size1);
-
-        mButton4 = (Button) findViewById(R.id.button4);
-        mButton6 = (Button) findViewById(R.id.button6);
-        speed= (TextView) findViewById(R.id.textView_speed);
-        speed1 = (TextView) findViewById(R.id.textView_speed1);
-        mButton3.setOnClickListener(this);
-        mButton4.setOnClickListener(this);
-        mButton5.setOnClickListener(this);
-        mButton6.setOnClickListener(this);
+//        mButton3= (TextView) findViewById(R.id.button3);
+//        mButton5 = (TextView) findViewById(R.id.button5);
+//
+//        size= (TextView) findViewById(R.id.textView_size);
+//        size1 = (TextView) findViewById(R.id.textView_size1);
+//
+//        mButton4 = (Button) findViewById(R.id.button4);
+//        mButton6 = (Button) findViewById(R.id.button6);
+//        speed= (TextView) findViewById(R.id.textView_speed);
+//        speed1 = (TextView) findViewById(R.id.textView_speed1);
+//        mButton3.setOnClickListener(this);
+//        mButton4.setOnClickListener(this);
+//        mButton5.setOnClickListener(this);
+//        mButton6.setOnClickListener(this);
 
 //
 //        final Task task = new Task();
@@ -173,83 +172,83 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
 //            }
 //        });
     }
-    void onRunSchedulerExampleButtonClicked() {
-        disposables.add(sampleObservable().
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).
-                subscribeWith(new DisposableObserver<String>(){
-
-                    @Override
-                    protected void onStart() {
-                        super.onStart();
-
-                    }
-
-                    @Override
-                    public void onNext(@io.reactivex.annotations.NonNull String o) {
-                        Log.d("TAG", "main: "+Thread.currentThread().getName()+"-----"+o);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-
-                    }
-                }));
-
-    }
-
-    static io.reactivex.Observable<String> sampleObservable(){
-        return io.reactivex.Observable.defer(new Callable<ObservableSource<? extends String>>() {
-            @Override
-            public ObservableSource<? extends String> call() throws Exception {
-                SystemClock.sleep(5000);
-                Log.d("TAG", "call: "+Thread.currentThread().getName());
-                return io.reactivex.Observable.just("itme");
-            }
-        });
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.button3:
-
-                if (tas.getState().equals(Task.STATUS_START) ){
-                    downlaod.pauseDownload(tas);
-                    mButton3.setText("继续");
-                }else{
-                    downlaod.startDownload(tas);
-                    mButton3.setText("暂停");
-
-                }
-
-                break;
-            case R.id.button5:
-                if (taskId.getState().equals(Task.STATUS_START)){
-                    downlaod.pauseDownload(taskId);
-                    mButton5.setText("继续");
-                }else{
-                    downlaod.startDownload(taskId);
-                    mButton5.setText("暂停");
-                }
-
-                break;
-            case R.id.button4:
-
-                break;
-            case R.id.button6:
-
-
-                break;
-
-        }
-
-    }
+//    void onRunSchedulerExampleButtonClicked() {
+//        disposables.add(sampleObservable().
+//                subscribeOn(Schedulers.io()).
+//                observeOn(AndroidSchedulers.mainThread()).
+//                subscribeWith(new DisposableObserver<String>(){
+//
+//                    @Override
+//                    protected void onStart() {
+//                        super.onStart();
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(@io.reactivex.annotations.NonNull String o) {
+//                        Log.d("TAG", "main: "+Thread.currentThread().getName()+"-----"+o);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+//
+//                    }
+//                }));
+//
+//    }
+//
+//    static io.reactivex.Observable<String> sampleObservable(){
+//        return io.reactivex.Observable.defer(new Callable<ObservableSource<? extends String>>() {
+//            @Override
+//            public ObservableSource<? extends String> call() throws Exception {
+//                SystemClock.sleep(5000);
+//                Log.d("TAG", "call: "+Thread.currentThread().getName());
+//                return io.reactivex.Observable.just("itme");
+//            }
+//        });
+//    }
+//
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()){
+//            case R.id.button3:
+//
+//                if (tas.getState().equals(Task.STATUS_START) ){
+//                    downlaod.pauseDownload(tas);
+//                    mButton3.setText("继续");
+//                }else{
+//                    downlaod.startDownload(tas);
+//                    mButton3.setText("暂停");
+//
+//                }
+//
+//                break;
+//            case R.id.button5:
+//                if (taskId.getState().equals(Task.STATUS_START)){
+//                    downlaod.pauseDownload(taskId);
+//                    mButton5.setText("继续");
+//                }else{
+//                    downlaod.startDownload(taskId);
+//                    mButton5.setText("暂停");
+//                }
+//
+//                break;
+//            case R.id.button4:
+//
+//                break;
+//            case R.id.button6:
+//
+//
+//                break;
+//
+//        }
+//
+//    }
 //    @Override
 //    public void UiFinish(Task task) {
 //        Log.d("TAG", "UiFinish: ");
@@ -328,124 +327,11 @@ public class DownloadActivity extends AppCompatActivity implements /*DownloadUiL
         }
     };
 
-    private static class ADAPTER extends BaseAdapter{
-        private  ArrayList<Task> taskList = new ArrayList<>();
-
-        Context context;
-        DownloadMessage downlaod;
-        public ADAPTER(Context context,DownloadMessage downlaod){
-            this.context = context;
-            this.downlaod = downlaod;
-            final Task task1 = new Task();
-            task1.setName("任务1");
-            task1.setIamgeUrl(Constants.IMG);
-            task1.setId(1);
-            task1.setmUniquely_id("102");
-            task1.setUrl(Constants.URL1);
-            taskList.add(task1);
-
-            final Task task2 = new Task();
-            task2.setName("任务2");
-            task2.setIamgeUrl(Constants.IMG1);
-            task2.setId(2);
-            task2.setmUniquely_id("112");
-            task2.setUrl(Constants.URL2);
-            taskList.add(task2);
-
-            final Task task3 = new Task();
-            task3.setName("任务3");
-            task3.setIamgeUrl(Constants.IMG2);
-            task3.setId(3);
-            task3.setmUniquely_id("111");
-            task3.setUrl(Constants.MP3);
-            taskList.add(task3);
-
-            final Task task4 = new Task();
-            task4.setId(4);
-            task4.setIamgeUrl(Constants.IMG3);
-            task4.setName("任务4");
-            task4.setmUniquely_id("113");
-            task4.setUrl(Constants.MP31);
-            taskList.add(task4);
-        }
-
-        @Override
-        public int getCount() {
-            return taskList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return taskList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            convertView =   View.inflate(context,R.layout.item_download,null);
-            ImageView Image = (ImageView) convertView.findViewById(R.id.weixin);
-
-
-            final ProgressBar p = (ProgressBar) convertView.findViewById(R.id.progressBar);
-            final TextView text = (TextView) convertView.findViewById(R.id.textView);
-            final TextView mButton3 = (TextView) convertView.findViewById(R.id.button3);
-            final TextView speed = (TextView) convertView.findViewById(R.id.textView_speed1);
-            final TextView size = (TextView) convertView.findViewById(R.id.textView_size1);
-            final Task tas = taskList.get(position);
-            Picasso.with(context).load(tas.getIamgeUrl()).into(Image);
-
-
-            final Task taskId = downlaod.addTask(taskList.get(position), new DownloadUiListener() {
-                @Override
-                public void UiStrat() {
-                    Log.d("TAG", "UiStrat: ");
-
-                    speed.setText("下载中");
-                }
-
-                @Override
-                public void UiProgress(Task task,long TotalSize ,int downloadSize) {
-                    size.setText(Utlis.formatSize(downloadSize)+"/"+Utlis.formatSize(TotalSize));
-//                    speed.setText(task.getSpeed()+
-//                            "Kb/s");
-                    text.setText(Utlis.formatPercent(downloadSize,TotalSize));
-                    p.setMax((int) TotalSize);
-                    p.setProgress(downloadSize);
-                }
-
-                @Override
-                public void UiFinish(Task task) {
-                    Log.d("TAG", "UiFinish: ");
-                    mButton3.setText("安装");
-                    speed.setText("下载完成");
-
-                }
-            });
-            mButton3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (taskId.getState().equals(Task.STATUS_START) ){
-                        downlaod.pauseDownload(taskId);
-                        mButton3.setText("继续");
-                    }else {
-                        downlaod.startDownload(taskId);
-                        mButton3.setText("暂停");
-
-                    }
-                }
-            });
-
-            return convertView;
-        }
-    }
     @Override protected void onDestroy() {
         super.onDestroy();
-        disposables.clear();
+        Log.d("DownloadActivity", "---------------------------------------onDestroy: ");
+//        disposables.clear();
+//        downlaod.shutdown();
     }
 
 }

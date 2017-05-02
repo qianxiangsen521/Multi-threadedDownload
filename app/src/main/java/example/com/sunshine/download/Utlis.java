@@ -1,15 +1,29 @@
 package example.com.sunshine.download;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Process;
+
+
+import java.io.File;
 import java.text.DecimalFormat;
+import java.util.concurrent.ThreadFactory;
+
+import example.com.sunshine.HTTP.Utils;
+
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
 /**
  * Created by qianxiangsen on 2017/4/21.
  */
 
-class Utlis {
+final class Utlis {
 
+    static final String THREAD_PREFIX = "Picasso-";
 
-    public static String formatPercent(long para1,long para2) {
+    static String formatPercent(long para1,long para2) {
         DecimalFormat df = new DecimalFormat("#.0%");
         String fileSizeString = "";
         if(para1>para2)
@@ -28,7 +42,7 @@ class Utlis {
         }
         return fileSizeString;
     }
-    public String format(long fileS) {
+    String format(long fileS) {
         DecimalFormat df = new DecimalFormat("#.00");
         String fileSizeString = "";
         if (fileS < 1024) {
@@ -48,7 +62,7 @@ class Utlis {
      * @param size long
      * @return String
      */
-    public static String formatSize(long size) {
+    static String formatSize(long size) {
         String hrSize;
         double b = size;
         double k = size / 1024.0;
@@ -69,5 +83,29 @@ class Utlis {
         }
         return hrSize;
     }
+    @SuppressWarnings("unchecked")
+    static <T> T getService(Context context, String service) {
+        return (T) context.getSystemService(service);
+    }
 
+    static boolean hasPermission(Context context, String permission) {
+        return context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
+    }
+    static class PicassoThreadFactory implements ThreadFactory {
+        @SuppressWarnings("NullableProblems")
+        public Thread newThread(Runnable r) {
+            return new PicassoThread(r);
+        }
+    }
+
+    private static class PicassoThread extends Thread {
+        public PicassoThread(Runnable r) {
+            super(r);
+        }
+
+        @Override public void run() {
+            Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND);
+            super.run();
+        }
+    }
 }
