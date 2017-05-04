@@ -68,7 +68,7 @@ public class DownRecycherViewFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return taskList != null ? taskList.size() : null;
+            return taskList.size() != 0 ? taskList.size() : 0;
         }
 
         @Override
@@ -77,6 +77,7 @@ public class DownRecycherViewFragment extends Fragment {
             final Task tas = taskList.get(position);
 
             Picasso.with(context).load(tas.getIamgeUrl()).into(holder.Image);
+
             final Task taskId = downlaod.addTask(taskList.get(position), new DownloadUiListener() {
                 @Override
                 public void UiStrat() {

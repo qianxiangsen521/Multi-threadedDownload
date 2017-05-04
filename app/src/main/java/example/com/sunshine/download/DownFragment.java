@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -23,29 +24,46 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import example.com.sunshine.HTTP.Utils;
 import example.com.sunshine.R;
+import example.com.sunshine.download.Fragment.BaseFragment;
 
 /**
  * Created by qianxiangsen on 2017/4/28.
  */
 
-public class DownFragment extends Fragment {
+public class DownFragment extends BaseFragment {
     private DownloadMessage downlaod;
     private List<Task> taskList;
     private ListView list;
     private View view;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view =  inflater.inflate(R.layout.fragment_download,null);
 
+    @Inject
+    public DownFragment() {
+    }
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_download;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState, View rootView) {
+        view = rootView;
         downlaod = DownloadMessage.init(getActivity());
 
         taskList = DataSource.getInstance().getData();
+    }
 
+    @Override
+    protected void initData() {
 
-        return view;
+    }
+
+    @Override
+    protected void OnClick(View v) {
+
     }
 
     @Override
@@ -179,5 +197,10 @@ public class DownFragment extends Fragment {
         super.onDestroy();
 
 //        downlaod.shutdown();
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 }

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/main_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/bg_color"
+    android:clipChildren="false"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom_bar_bg" />
+    <View android:id="@+id/bottom_bar_bg"
+        android:background="@color/white"
+        android:layout_width="fill_parent"
+        android:layout_height="50.0dip"
+        android:layout_alignParentBottom="true"
+        />
+    <View android:id="@+id/divider"
+        android:background="@drawable/bg_tab_gradient"
+        android:layout_width="fill_parent"
+        android:layout_height="3.0dip"
+        android:layout_marginBottom="50.0dip"
+        android:layout_alignParentBottom="true" />
+    <RadioGroup
+        android:id="@+id/fragment_title"
+        android:orientation="horizontal"
+        android:background="@color/transparent"
+        android:clipChildren="false"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <RadioButton
+            android:textColor="@color/bottom_tab_text_selector"
+            android:id="@+id/find"
+            android:layout_marginTop="@dimen/tab_icon_margin_top"
+            android:text="首页"
+            android:drawableTop="@drawable/tab1_selector"
+            android:drawablePadding="@dimen/tab_icon_drawable_padding"
+            style="@style/MainTabStyle"
+             />
+        <RadioButton android:textColor="@color/bottom_tab_text_selector"
+            android:id="@+id/custom"
+            android:layout_marginTop="@dimen/tab_icon_margin_top"
+            android:text="订阅"
+
+            android:drawableTop="@drawable/tab2_selector"
+            android:drawablePadding="@dimen/tab_icon_drawable_padding"
+            style="@style/MainTabStyle"
+             />
+        <RadioButton
+            android:id="@+id/play"
+            style="@style/MainTabStyle" />
+        <RadioButton
+            android:textColor="@color/bottom_tab_text_selector"
+            android:id="@+id/square"
+            android:layout_marginTop="@dimen/tab_icon_margin_top"
+            android:text="发现"
+            android:drawableTop="@drawable/tab3_selector"
+            android:drawablePadding="@dimen/tab_icon_drawable_padding"
+            style="@style/MainTabStyle"
+             />
+        <RadioButton
+            android:textColor="@color/bottom_tab_text_selector"
+            android:id="@+id/myspace"
+            android:layout_marginTop="@dimen/tab_icon_margin_top"
+            android:text="我的"
+            android:drawableTop="@drawable/tab4_selector"
+            android:drawablePadding="@dimen/tab_icon_drawable_padding"
+            style="@style/MainTabStyle"
+             />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/fragment_full"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    <FrameLayout
+        android:id="@+id/playbar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <FrameLayout
+            android:id="@+id/fragment_playbar"
+            android:background="@mipmap/play_icon_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/fragment_play"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    <FrameLayout
+        android:id="@+id/fra_terminate_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    <FrameLayout
+        android:id="@+id/lock_screen"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <FrameLayout
+        android:id="@+id/keyboard"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

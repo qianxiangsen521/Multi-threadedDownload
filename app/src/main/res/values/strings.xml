@@ -182,4 +182,7 @@ Varial deck switch 1080 bail betty cab flip. Transfer wall ride Guy Mariano bear
 
     <string name="Download">Download</string>
     <string name="offline_mode">In offline mode. Stored data is shown.</string>
+
+    <string name="title_bar_contentDescription">标题栏</string>
+    <string name="search">搜索</string>
 </resources>

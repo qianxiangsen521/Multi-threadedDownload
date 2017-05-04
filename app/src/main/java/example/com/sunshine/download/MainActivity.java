@@ -16,6 +16,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
         if (Build.VERSION.SDK_INT >= 21) {
             PermissionUtils.requestMultiPermissions(this, mPermissionGrant);
         }

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import example.com.sunshine.R;
 
@@ -34,6 +35,7 @@ public class DownloadActivity extends AppCompatActivity {
             }
         });
 
+
         Intent intent = getIntent();
         int type = intent.getIntExtra("EXTRA_TYPE", TYPE.TYPE_LISTVIEW);
 
@@ -46,6 +48,5 @@ public class DownloadActivity extends AppCompatActivity {
                     .commit();
         }
 
-        getSupportActionBar().setTitle(type == TYPE.TYPE_LISTVIEW ? "ListView Demo" : "RecyclerView Demo");
     }
 }

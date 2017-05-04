@@ -8,4 +8,9 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="thumbSize">160.0dip</dimen>
+    <dimen name="tab_icon_margin_top">7.0dip</dimen>
+    <dimen name="tab_icon_drawable_padding">1.5dip</dimen>
+    <dimen name="unread_message_num_text_size">10.0sp</dimen>
+    <dimen name="text_size_14">14.0sp</dimen>
+    <dimen name="size_80px">40.0dip</dimen>
 </resources>

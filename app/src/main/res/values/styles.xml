@@ -1,7 +1,7 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimary">@color/colorPrimaryDark</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
     </style>
@@ -11,7 +11,7 @@
         &lt;!&ndash; theme customizations &ndash;&gt;
     </style>-->
     <style name="AppThemeNoBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
@@ -29,5 +29,33 @@
 
     <style name="AppThemeNoBar.Grid" parent="AppThemeNoBar">
     </style>
+    <style name="MainTabStyle">
+        <item name="android:textSize">9.0sp</item>
+        <item name="android:textColor">@drawable/tab_main_text_selector</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingLeft">0.0dip</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4.0dip</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:drawablePadding">1.5dip</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
 
+ <!--  <style name="MyPagerSlidingTabStripStyle">
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:background">@color/bg_color_navi_gray</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/size_80px</item>
+        <item name="pstsIndicatorColor">@color/psts_indicator_color</item>
+        <item name="pstsUnderlineColor">@color/border</item>
+        <item name="pstsDividerColor">@color/transparent</item>
+        <item name="pstsIndicatorHeight">@dimen/psts_indicator_height</item>
+        <item name="pstsUnderlineHeight">0.0dip</item>
+        <item name="pstsTabBackground">@color/transparent</item>
+
+    </style>-->
 </resources>

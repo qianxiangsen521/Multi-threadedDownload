@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/rl_message"
+    android:paddingLeft="20.0dip"
+    android:paddingRight="20.0dip"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:layout_alignParentLeft="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:textSize="9.0sp"
+        android:textColor="@color/finding_titlebar_action_text_color"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTop="@mipmap/chat_ic_message"
+        android:text="消息" />
+
+    <TextView
+        android:textSize="14.0sp"
+        android:textColor="@color/searchbar_text_color"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:id="@+id/search"
+        android:background="@mipmap/bg_navi_search"
+        android:paddingLeft="8.0dip"
+        android:layout_weight="2"
+        android:paddingRight="5.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="13dp"
+        android:scaleType="center"
+        android:text="搜索声音、专辑、人"
+        android:maxLines="1"
+        android:drawableLeft="@mipmap/ic_search_small"
+        android:drawablePadding="8.0dip"
+        android:layout_toLeftOf="@+id/history_layout"
+        android:layout_toRightOf="@+id/rl_message"
+        android:layout_alignTop="@+id/download_layout"
+        android:contentDescription="@string/search"
+        />
+        <TextView
+            android:id="@+id/ib_download"
+            android:textSize="9.0sp"
+            android:textColor="@color/finding_titlebar_action_text_color"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="下载"
+            android:drawableTop="@mipmap/ic_finding_download"
+            />
+        <TextView
+            android:textSize="10.0sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginLeft="13dp"
+            android:id="@+id/tv_downloading"
+            android:background="@mipmap/badge_bg"
+            android:visibility="gone" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="5"
+            android:translationY="5.0dip"
+            />
+
+        <TextView
+            android:textSize="9.0sp"
+            android:textColor="@color/finding_titlebar_action_text_color"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="13dp"
+            android:drawableTop="@mipmap/ic_navi_history"
+            android:text="历史"
+            />
+
+
+</LinearLayout>

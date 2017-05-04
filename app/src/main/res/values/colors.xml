@@ -4,4 +4,29 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffffff</color>
+    <color name="bg_color">#fff3f4f5</color>
+    <color name="transparent">#00000000</color>
+    <color name="tab_text_color_pressed">#fff86442</color>
+    <color name="tab_text_color_unpress">#ff949494</color>
+    <color name="finding_titlebar_action_text_color">#ff949494</color>
+    <color name="searchbar_text_color">#ffcccccc</color>
+    <color name="cnr_main_color">#bf2e35</color>
+    <color name="psts_deactive_text_color">#ff666666</color>
+    <item type="drawable" name="notification_template_icon_bg">#3333b5e5</item>
+    <item type="drawable" name="album_btn_normal">#00ffffff</item>
+    <item type="drawable" name="album_btn_press">#4d000000</item>
+    <item type="drawable" name="finding_header_bg">#00000000</item>
+    <item type="drawable" name="finding_titlebar_bg">#ffffffff</item>
+    <item type="drawable" name="main_bottom_bar_bg">#ffffffff</item>
+    <item type="drawable" name="pulldown_listview_bg">#00000000</item>
+    <item type="drawable" name="recommend_top_bg">#ffffffff</item>
+    <item type="drawable" name="recommend_top_src">#00000000</item>
+    <item type="drawable" name="slide_bar_bg">#fff4f4f4</item>
+    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="psts_indicator_color">#fff86442</color>
+    <color name="bg_color_navi_gray">#fff4f4f4</color>
+    <color name="border">#ffe8e8e8</color>
+    <dimen name="psts_indicator_height">2.0dip</dimen>
+    <color name="psts_active_text_color">#fff86442</color>
+    <color name="psts_background_tab_pressed">#1AFFFFFF</color>
 </resources>
