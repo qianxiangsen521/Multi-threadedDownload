@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@color/white"
+<RelativeLayout
     android:descendantFocusability="blocksDescendants"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -44,6 +44,7 @@
                android:layout_marginLeft="10.0dip"
                android:layout_marginTop="15.0dip"
                android:src="@mipmap/default_album_73"
+
                android:scaleType="centerCrop"
                android:cropToPadding="true" />
 
@@ -155,4 +156,5 @@
         android:scaleType="center"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

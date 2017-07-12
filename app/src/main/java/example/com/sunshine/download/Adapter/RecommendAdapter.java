@@ -7,14 +7,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import example.com.sunshine.R;
-import example.com.sunshine.download.Task;
+import example.com.sunshine.download.Http.entity.RadioInfo;
+import example.com.sunshine.download.request.CategoryRadioInfo;
 
 /**
  * Created by qianxiangsen on 2017/3/27.
@@ -23,21 +26,30 @@ import example.com.sunshine.download.Task;
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.mViewHolder>{
 
 
-    @Inject
-    public RecommendAdapter(){
+    private ArrayList<RadioInfo> radioInfos;
+    private Context context;
+    public RecommendAdapter(Context context,ArrayList<RadioInfo> radioInfos){
+        this.radioInfos = radioInfos;
+        this.context = context;
 
     }
     public static class mViewHolder extends RecyclerView.ViewHolder{
 
+        ImageView play_flag;
+        TextView tv_title;
+        TextView tv_subtitle;
         public mViewHolder(View view){
             super(view);
+            play_flag =(ImageView) view.findViewById(R.id.iv_cover);
+            tv_title =(TextView) view.findViewById(R.id.tv_title);
+            tv_subtitle =(TextView) view.findViewById(R.id.tv_subtitle);
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return radioInfos.size();
     }
 
     @Override
@@ -47,6 +59,10 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.mVie
 
     @Override
     public void onBindViewHolder(final mViewHolder holder, final int position) {
+       RadioInfo radioInfo =  radioInfos.get(position);
+        holder.tv_title.setText(radioInfo.getName());
+        holder.tv_subtitle.setText(radioInfo.getCurrentPlay());
+        Picasso.with(context).load(radioInfo.getImgUrl()).into(holder.play_flag);
 
 
     }

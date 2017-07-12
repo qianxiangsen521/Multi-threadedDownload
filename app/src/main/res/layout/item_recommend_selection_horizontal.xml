@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" 
+    android:id="@+id/selection_layout"
+    android:background="@android:color/white"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <include 
+        android:id="@+id/layout_section_header"
+        layout="@layout/view_section_header_grid" />
+    <include 
+        layout="@layout/item_recommend_selection_horizontal_child" />
+    <View 
+        android:id="@+id/border_bottom" 
+        android:background="@color/bg_color"
+        android:layout_width="fill_parent"
+        android:layout_height="10.0dip" />
+</LinearLayout>

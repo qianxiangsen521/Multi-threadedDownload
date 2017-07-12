@@ -28,5 +28,22 @@
     <color name="border">#ffe8e8e8</color>
     <dimen name="psts_indicator_height">2.0dip</dimen>
     <color name="psts_active_text_color">#fff86442</color>
+    <color name="find_text_dark">#ff333333</color>
+    <color name="border_gray">#ffd9dfe5</color>
     <color name="psts_background_tab_pressed">#1AFFFFFF</color>
+    <color name="selection_title">#ff666666</color>
+    <color name="orange">#fff86442</color>
+    <color name="otherspace_light_gray">#ff999999</color>
+    <color name="item_border_color">#ffe8e8e8</color>
+    <color name="text_light">#ff999999</color>
+    <!-- 颜色背景 蓝色 -->
+    <color name="default_bg_1">#ffe8e8e8</color>
+
+    <color name="permission_granted">#2DF2A4</color>
+    <color name="permission_denied">#F22D24</color>
+    <color name="permission_unknown">#F2AD24</color>
+    <color name="common_grey_bg">#f3f3f3</color>
+    <color name="home_title_text_color">#4f4e4e</color>
+    <color name="more_text_color">#fa8652</color>
+    <color name="albums_list_intro_color">#747572</color>
 </resources>

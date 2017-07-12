@@ -88,23 +88,35 @@
             android:background="@mipmap/play_icon_default"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            >
+            <ImageView
+                android:id="@+id/common_playing_player"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+        </FrameLayout>
+
     </FrameLayout>
     <FrameLayout
         android:id="@+id/fragment_play"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-    <FrameLayout
-        android:id="@+id/fra_terminate_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+
     <FrameLayout
         android:id="@+id/lock_screen"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" >
+
+        <FrameLayout
+            android:id="@+id/fra_terminate_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
     <FrameLayout
         android:id="@+id/keyboard"
         android:layout_width="fill_parent"

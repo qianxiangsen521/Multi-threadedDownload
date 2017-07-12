@@ -11,11 +11,17 @@
         &lt;!&ndash; theme customizations &ndash;&gt;
     </style>-->
     <style name="AppThemeNoBar" parent="Theme.AppCompat.Light.NoActionBar">
+
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
+    <style name="PlayerTheme" parent="android:Theme.Holo">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
     <style name="WhiteHeading">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">24sp</item>

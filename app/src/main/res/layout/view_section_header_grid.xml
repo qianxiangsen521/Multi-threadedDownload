@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@+id/view_section_header" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="49.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:skin="http://schemas.android.com/android/skin">
+    <RelativeLayout android:gravity="center_vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_weight="1.0">
+        <TextView android:textSize="14.0sp" android:textColor="@color/selection_title" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/guess_your_favorite" android:maxLines="1" android:includeFontPadding="false" android:drawableLeft="@mipmap/ic_section_header" android:drawablePadding="5.0dip" />
+        <ImageView android:id="@+id/iv_tags_new" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:src="@mipmap/tags_new" android:layout_toRightOf="@+id/tv_title" />
+    </RelativeLayout>
+    <TextView android:textSize="12.0sp" android:textColor="@drawable/color_more" android:gravity="right" android:id="@+id/tv_more" android:paddingLeft="4.0dip" android:paddingTop="8.0dip" android:paddingRight="4.0dip" android:paddingBottom="8.0dip" android:layout_width="60.0dip" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:text="@string/more" android:drawableRight="@drawable/ic_more" android:drawablePadding="5.0dip" />
+</LinearLayout>

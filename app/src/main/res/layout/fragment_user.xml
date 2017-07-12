@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         >
-        <include layout="@layout/chat_message_center_entrance"/>
+        <include layout="@layout/main_fra_myspace_header"/>
 
         </android.support.design.widget.AppBarLayout>
 

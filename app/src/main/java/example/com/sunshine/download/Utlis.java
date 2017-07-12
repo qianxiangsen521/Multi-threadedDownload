@@ -8,6 +8,9 @@ import android.os.Process;
 
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadFactory;
 
@@ -19,7 +22,7 @@ import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
  * Created by qianxiangsen on 2017/4/21.
  */
 
-final class Utlis {
+public final class Utlis {
 
     static final String THREAD_PREFIX = "Picasso-";
 
@@ -108,4 +111,5 @@ final class Utlis {
             super.run();
         }
     }
+
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/mContainer_layot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/home_header_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="180dip"
+            android:layout_alignParentTop="true"
+            android:fadingEdge="none"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:soundEffectsEnabled="false" />
+
+        <LinearLayout
+            android:id="@+id/dot_linearlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/home_header_pager"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal" />
+
+        <RelativeLayout
+            android:id="@+id/rl_center"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/home_header_pager"
+            android:background="@mipmap/home_center_index_bg"
+            android:layout_marginBottom="0dip" >
+
+            <example.com.sunshine.view.ScrollListenerHorizontalScrollView
+                android:id="@+id/hor_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/home_center_scroll_img"
+                android:overScrollMode="never"
+                android:scrollbars="none" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
+                    android:orientation="horizontal" >
+
+                    <GridView
+                        android:id="@+id/home_center_gridview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:cacheColorHint="#00000000"
+                        android:fadingEdge="none"
+                        android:listSelector="@mipmap/transparent" >
+                    </GridView>
+                </LinearLayout>
+            </example.com.sunshine.view.ScrollListenerHorizontalScrollView>
+
+            <ImageView
+                android:id="@+id/home_center_scroll_img"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/home_centerscroll_img"
+                android:overScrollMode="never" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="3dip"
+            android:layout_below="@id/rl_center"
+            android:background="@color/common_grey_bg" />
+    </RelativeLayout>
+
+</LinearLayout>

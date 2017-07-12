@@ -1,7 +1,7 @@
 package example.com.sunshine.download.Rxjava;
 
 
-import io.reactivex.Observable;
+import rx.Observable;
 
 /**
  * Created by qianxiangsen on 2017/4/27.

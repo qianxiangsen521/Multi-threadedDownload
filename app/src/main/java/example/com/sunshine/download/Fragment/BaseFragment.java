@@ -16,17 +16,18 @@ import android.view.animation.AnimationUtils;
 import java.lang.ref.WeakReference;
 
 import example.com.sunshine.R;
-import example.com.sunshine.download.Application.TLiveApplication;
-import example.com.sunshine.download.Home.Main1Activity;
+import example.com.sunshine.download.Http.HttpCallback;
+import example.com.sunshine.download.Http.HttpMessages;
+import example.com.sunshine.download.Http.entity.BaseResponse;
+import example.com.sunshine.download.Utils.NetWorkUtil;
 import example.com.sunshine.download.Utils.ToastUtil;
-import example.com.sunshine.download.injection.component.ActivityComponent;
-import example.com.sunshine.download.injection.component.DaggerActivityComponent;
-import example.com.sunshine.download.injection.module.ActivityModule;
 import example.com.sunshine.download.loading.BaseView;
 import example.com.sunshine.download.loading.VaryViewHelperController;
+import example.com.sunshine.download.request.ErrorStatus;
+import example.com.sunshine.download.request.HttpDataListener;
 
 
-public abstract class BaseFragment extends Fragment implements View.OnClickListener,BaseView {
+public abstract class BaseFragment extends Fragment implements View.OnClickListener,BaseView ,HttpCallback, HttpDataListener {
 
 
     protected VaryViewHelperController mVaryViewHelperController;
@@ -44,6 +45,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     private View view;
 
     protected long lastClick = 0;
+
+    public HttpMessages httpMessages;
 
     /**
      * View点击
@@ -80,8 +83,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         if (fragment != null) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     /*.setCustomAnimations(
-                    R.anim.slide_out_bottom,
-                    R.anim.slide_in_bottom)*/
+                    R.anim.slide_laft_bottom,
+                    R.anim.slide_botton_bottom)*/
                     .replace(fragment_full, fragment, fragment.getClass().getSimpleName())
                     .addToBackStack(fragment.getClass().getSimpleName())
                     .commitAllowingStateLoss();
@@ -282,9 +285,36 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (enter){
-            return AnimationUtils.loadAnimation(mContext,R.anim.slide_out_bottom);
+            return AnimationUtils.loadAnimation(mContext,R.anim.slide_laft_bottom);
         }else{
-            return  AnimationUtils.loadAnimation(mContext,R.anim.slide_in_bottom);
+            return  AnimationUtils.loadAnimation(mContext,R.anim.slide_top_bottom);
+        }
+    }
+
+    @Override
+    public void UiStart(BaseResponse baseResponse) {
+
+    }
+
+    @Override
+    public void UiEnd() {
+
+    }
+
+    @Override
+    public void UiError() {
+
+    }
+
+    @Override
+    public void onDataReady(BaseResponse response) {
+
+    }
+
+    @Override
+    public void onError(ErrorStatus respStatus) {
+        if (!NetWorkUtil.isNetworkConnected()) {
+            showNetError();
         }
     }
 }

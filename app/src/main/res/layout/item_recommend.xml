@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:paddingBottom="18.0dip" android:layout_width="wrap_content" android:layout_height="100.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@+id/tiv_cover"
+        android:background="@drawable/bg_cover_border"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true" />
+    <ImageView
+        android:id="@+id/iv_album_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/image_pay"
+        android:layout_alignLeft="@+id/tiv_cover"
+        android:layout_alignTop="@+id/tiv_cover" />
+    <View
+        android:id="@+id/view_border"
+        android:background="@color/border_gray"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_below="@+id/tiv_cover" />
+    <TextView
+        android:textSize="13.0sp"
+        android:textColor="@color/find_text_dark"
+        android:ellipsize="end"
+        android:id="@+id/tv_name"
+        android:paddingBottom="5.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dip"
+        android:maxLines="1"
+        android:includeFontPadding="false"
+        android:layout_below="@+id/view_border" />
+    <TextView
+        android:textSize="12.0sp"
+        android:textColor="#ff999999"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:id="@+id/tv_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="16.0dip"
+        android:maxLines="2"
+        android:drawablePadding="3.0dip"
+        android:layout_below="@+id/tv_name" />
+</RelativeLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="111.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:background="@mipmap/bg_recommend_anchor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="fill_parent"
+            android:layout_height="95.0dip"
+            android:layout_marginLeft="8.0dip"
+            android:layout_marginTop="8.0dip"
+            android:layout_marginRight="8.0dip"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true" />
+        <View
+            android:id="@+id/cover_shadow"
+            android:background="@mipmap/bg_anchor_shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/cover"
+            android:layout_alignTop="@+id/cover"
+            android:layout_alignRight="@+id/cover"
+            android:layout_alignBottom="@+id/cover" />
+        <TextView
+            android:textSize="13.0sp"
+            android:textColor="#ffbea884"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:id="@+id/name"
+            android:padding="4.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8.0dip"
+            android:maxLines="1"
+            android:layout_below="@+id/cover"
+            android:layout_alignLeft="@+id/cover"
+            android:layout_alignRight="@+id/cover"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    <TextView
+        android:textSize="12.0sp"
+        android:textColor="#ff999999"
+        android:ellipsize="end"
+        android:id="@+id/tv_description"
+        android:paddingLeft="7.0dip"
+        android:paddingRight="7.0dip"
+        android:paddingBottom="8.0dip"
+        android:layout_width="111.0dip"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:lineSpacingExtra="4.0dip" />
+</LinearLayout>

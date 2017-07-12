@@ -1,0 +1,12 @@
+<example.com.sunshine.download.Utils.MyGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_categroy_gridview"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_grey_bg"
+    android:fadingEdge="none"
+    android:listSelector="@mipmap/transparent"
+    android:numColumns="3"
+    android:paddingLeft="5dip"
+    android:paddingTop="10dip" >
+
+</example.com.sunshine.download.Utils.MyGridView>
