@@ -6,14 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import example.com.sunshine.HTTP.Utils;
 import example.com.sunshine.R;
 import example.com.sunshine.dagger.DaggerFragmentComponent;
 import example.com.sunshine.dagger.FragmentMobule;
@@ -21,13 +19,8 @@ import example.com.sunshine.download.Adapter.RecommendAdapter;
 import example.com.sunshine.download.Http.Configuration;
 import example.com.sunshine.download.Http.SystemUtils;
 import example.com.sunshine.download.Http.entity.BaseResponse;
-import example.com.sunshine.download.Http.entity.RadioInfo;
-import example.com.sunshine.download.Presenter.RecommendPresenter;
-import example.com.sunshine.download.Presenter.RecommendPresenterImpl;
 import example.com.sunshine.download.View.LoginView;
-import example.com.sunshine.download.request.ErrorStatus;
 import example.com.sunshine.download.request.HomeBottomResponse;
-import example.com.sunshine.download.request.HomeTopResponse;
 import example.com.sunshine.download.request.HttpManger;
 import example.com.sunshine.download.request.StringTool;
 
@@ -35,15 +28,11 @@ import example.com.sunshine.download.request.StringTool;
  * Created by qianxiangsen on 2017/5/3.
  */
 
-public class  RecommendFragment extends BaseFragment implements LoginView{
+public class RecommendFragment extends BaseFragment implements LoginView {
 
     @Bind(R.id.recyclerview)
     RecyclerView recyclerView;
-
-
     RecommendAdapter recommendAdapter;
-
-
 
     @Inject
     public RecommendFragment() {
@@ -60,11 +49,7 @@ public class  RecommendFragment extends BaseFragment implements LoginView{
                 fragmentMobule(new
                         FragmentMobule(this)).build().inject(this);
 
-        ButterKnife.bind(this,rootView);
-
-
-
-
+        ButterKnife.bind(this, rootView);
     }
 
     @Override
@@ -82,7 +67,6 @@ public class  RecommendFragment extends BaseFragment implements LoginView{
     }
 
 
-
     @Override
     public void onDataReady(BaseResponse response) {
 
@@ -92,7 +76,7 @@ public class  RecommendFragment extends BaseFragment implements LoginView{
             if (!StringTool.isListValidate(bottomResponse.getCategoryRadioInfos().get(0).getRadioInfos())) {
                 showEmptyView("没数据");
             }
-            recommendAdapter = new RecommendAdapter(getActivity(),bottomResponse.getCategoryRadioInfos().get(0).getRadioInfos());
+            recommendAdapter = new RecommendAdapter(getActivity(), bottomResponse.getCategoryRadioInfos().get(0).getRadioInfos());
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerView.setAdapter(recommendAdapter);
             return;

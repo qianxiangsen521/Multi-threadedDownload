@@ -10,18 +10,19 @@
     <color name="tab_text_color_unpress">#ff949494</color>
     <color name="finding_titlebar_action_text_color">#ff949494</color>
     <color name="searchbar_text_color">#ffcccccc</color>
+    <color name="recycler_divider_line_color_gray">#ececec</color>
     <color name="cnr_main_color">#bf2e35</color>
     <color name="psts_deactive_text_color">#ff666666</color>
-    <item type="drawable" name="notification_template_icon_bg">#3333b5e5</item>
-    <item type="drawable" name="album_btn_normal">#00ffffff</item>
-    <item type="drawable" name="album_btn_press">#4d000000</item>
-    <item type="drawable" name="finding_header_bg">#00000000</item>
-    <item type="drawable" name="finding_titlebar_bg">#ffffffff</item>
-    <item type="drawable" name="main_bottom_bar_bg">#ffffffff</item>
-    <item type="drawable" name="pulldown_listview_bg">#00000000</item>
-    <item type="drawable" name="recommend_top_bg">#ffffffff</item>
-    <item type="drawable" name="recommend_top_src">#00000000</item>
-    <item type="drawable" name="slide_bar_bg">#fff4f4f4</item>
+    <item name="notification_template_icon_bg" type="drawable">#3333b5e5</item>
+    <item name="album_btn_normal" type="drawable">#00ffffff</item>
+    <item name="album_btn_press" type="drawable">#4d000000</item>
+    <item name="finding_header_bg" type="drawable">#00000000</item>
+    <item name="finding_titlebar_bg" type="drawable">#ffffffff</item>
+    <item name="main_bottom_bar_bg" type="drawable">#ffffffff</item>
+    <item name="pulldown_listview_bg" type="drawable">#00000000</item>
+    <item name="recommend_top_bg" type="drawable">#ffffffff</item>
+    <item name="recommend_top_src" type="drawable">#00000000</item>
+    <item name="slide_bar_bg" type="drawable">#fff4f4f4</item>
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="psts_indicator_color">#fff86442</color>
     <color name="bg_color_navi_gray">#fff4f4f4</color>
