@@ -184,7 +184,6 @@ public class DownFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("TAG", "onPause: ");
         for (Task task : taskList) {
             if (task.isPriority() == true) {
                 task.setPriority(false);

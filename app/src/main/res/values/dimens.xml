@@ -19,4 +19,7 @@
     <dimen name="home_category_title_size">14dip</dimen>
     <dimen name="home_category_more_size">14dip</dimen>
     <dimen name="home_category_gv_item_size">13dip</dimen>
+    <dimen name="bubble_size">25dp</dimen>
+    <dimen name="wave_height">60dp</dimen>
+    <dimen name="footer_height">170dp</dimen>
 </resources>

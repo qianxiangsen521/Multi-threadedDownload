@@ -1,17 +1,12 @@
 package example.com.sunshine.Exo;
 
-import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
@@ -54,8 +49,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 import example.com.sunshine.Exo.E.MessageEvent;
@@ -81,9 +74,9 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
-    public static final int DEFAULT_FAST_FORWARD_MS = 15000;
-    public static final int DEFAULT_REWIND_MS = 5000;
-    public static final int DEFAULT_SHOW_TIMEOUT_MS = 5000;
+//    public static final int DEFAULT_FAST_FORWARD_MS = 15000;
+//    public static final int DEFAULT_REWIND_MS = 5000;
+//    public static final int DEFAULT_SHOW_TIMEOUT_MS = 5000;
 
     private static final long MAX_POSITION_FOR_SEEK_TO_PREVIOUS = 3000;
 
@@ -107,9 +100,9 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     private Timeline.Window currentWindow;
 
-    private int rewindMs;
-    private int fastForwardMs;
-    private int showTimeoutMs;
+//    private int rewindMs;
+//    private int fastForwardMs;
+//    private int showTimeoutMs;
 
     @Nullable
     @Override
@@ -121,9 +114,9 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
     public void onCreate() {
         super.onCreate();
         shouldAutoPlay = true;
-        rewindMs = DEFAULT_REWIND_MS;
-        fastForwardMs = DEFAULT_FAST_FORWARD_MS;
-        showTimeoutMs = DEFAULT_SHOW_TIMEOUT_MS;
+//        rewindMs = DEFAULT_REWIND_MS;
+//        fastForwardMs = DEFAULT_FAST_FORWARD_MS;
+//        showTimeoutMs = DEFAULT_SHOW_TIMEOUT_MS;
         clearResumePosition();
         mediaDataSourceFactory = buildDataSourceFactory(true);
         mainHandler = new Handler();
@@ -174,6 +167,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         } else if (currentTimeline.getWindow(currentWindowIndex, currentWindow, false).isDynamic) {
            seekTo(currentWindowIndex, C.TIME_UNSET);
         }
+
     }
 
     public void initializePlayer(Intent paramIntent){
@@ -255,10 +249,14 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
             player.setPlayWhenReady(shouldAutoPlay);
             playerNeedsSource = true;
         }
+        setplayerUrl(paramIntent);
+
+    }
+    private void setplayerUrl(Intent paramIntent){
         if (playerNeedsSource) {
             Uri[] uris;
             String[] extensions;
-            if (ExoConstants.ACTION_PLAY.equals(str1)) {
+            if (ExoConstants.ACTION_PLAY.equals(paramIntent.getAction())) {
                 String uri = paramIntent.getStringExtra(ExoConstants.PLAY_URL);
                 uris = new Uri[]{Uri.parse(uri),Uri.parse(ExoConstants.PLAY_URL_NAME)};
                 extensions = new String[]{uri,ExoConstants.PLAY_URL_NAME};
@@ -273,7 +271,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
                     extensions = new String[uriStrings.length];
                 }
             }*/ else {
-                showToast(getString(R.string.unexpected_intent_action, str1));
+                showToast(getString(R.string.unexpected_intent_action, paramIntent.getAction()));
                 return;
             }
             MediaSource[] mediaSources = new MediaSource[uris.length];

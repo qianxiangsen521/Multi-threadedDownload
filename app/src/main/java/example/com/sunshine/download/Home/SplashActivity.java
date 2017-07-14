@@ -12,15 +12,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
+import com.karumi.dexter.listener.multi.CompositeMultiplePermissionsListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
 import com.karumi.dexter.listener.single.CompositePermissionListener;
 import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
 import com.karumi.dexter.listener.single.PermissionListener;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,53 +41,42 @@ public class SplashActivity extends BaseActivity {
     @Bind(android.R.id.content)
     ViewGroup rootView;
 
-    private PermissionListener audioPermissionListener;
+    private MultiplePermissionsListener allPermissionsListener;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
 
         ButterKnife.bind(this);
 
-
-        PermissionListener feedbackViewPermissionListener = new PermissionListener() {
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(
-                    PermissionRequest permission, PermissionToken token) {
-                showPermissionRationale(token);
-
-            }
-
-            @Override
-            public void onPermissionGranted(PermissionGrantedResponse response) {
-                new Handler().postDelayed(new Runnable() {
+        allPermissionsListener =
+                new CompositeMultiplePermissionsListener(new MultiplePermissionsListener() {
                     @Override
-                    public void run() {
-                        startActivity(Main111Activity.class);
-                        finish();
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(Main111Activity.class);
+                                finish();
+                            }
+                        },2000);
                     }
-                },2000);
-            }
 
-            @Override
-            public void onPermissionDenied(PermissionDeniedResponse response) {
-
-            }
-        };
-        PermissionListener dialogOnDeniedPermissionListener =
-                DialogOnDeniedPermissionListener.Builder.withContext(this)
-                        .withTitle(R.string.audio_permission_denied_dialog_title)
-                        .withMessage(R.string.audio_permission_denied_dialog_feedback)
-                        .withButtonText(android.R.string.ok)
-                        .withIcon(R.mipmap.ic_launcher)
-                        .build();
-        audioPermissionListener = new CompositePermissionListener(feedbackViewPermissionListener,
-                dialogOnDeniedPermissionListener);
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        SnackbarOnAnyDeniedMultiplePermissionsListener.Builder.with(rootView,
+                                R.string.all_permissions_denied_feedback)
+                                .withOpenSettingsButton(R.string.permission_rationale_settings_button_text)
+                                .build();
+                    }
+                });
 
 
         Dexter.withActivity(this)
-                .withPermission(Manifest.permission.READ_PHONE_STATE)
-                .withListener(audioPermissionListener).check();
+                .withPermissions(Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA
+                 ,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.MODIFY_AUDIO_SETTINGS
+                ,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)
+                .withListener(allPermissionsListener).check();
     }
 
 

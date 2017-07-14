@@ -37,7 +37,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.okio:okio:1.12.0'
     testCompile 'junit:junit:4.12'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     apt 'com.google.dagger:dagger-compiler:2.8'
@@ -59,6 +58,8 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
+    compile 'com.cleveroad:audiovisualization:1.0.0'
+
 }
 
 

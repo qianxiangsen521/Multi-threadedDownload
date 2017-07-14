@@ -3,6 +3,7 @@ package example.com.sunshine.download.request;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -47,7 +48,8 @@ public class HttpManger implements Response.Listener<BaseResponse>, Response.Err
             String json = "";
 
             try {
-                json = StringTool.replaceEscapeSeq(new String(VolleySingleton.getInstance(context).getHttpDiskCache().get(url).data));
+                    json = StringTool.replaceEscapeSeq(new String(VolleySingleton.getInstance(context).getHttpDiskCache().get(url).data));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -56,6 +58,7 @@ public class HttpManger implements Response.Listener<BaseResponse>, Response.Err
             if (!TextUtils.isEmpty(json)) {
                 BaseResponse response = CnrRequest.getReponse(json, url);
                 if (response != null) {
+
                     listener.onDataReady(response);
                 }
             }

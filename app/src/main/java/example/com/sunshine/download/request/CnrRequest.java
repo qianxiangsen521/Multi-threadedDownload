@@ -19,13 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import example.com.sunshine.download.Application.TLiveApplication;
 import example.com.sunshine.download.Http.Configuration;
 import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.Http.entity.RadioInfo;
 
-/**
- * Created by xingzhiqiao on 16/2/26.
- */
+
 public class CnrRequest<T> extends JsonRequest<BaseResponse<T>> {
 
 
@@ -37,22 +36,14 @@ public class CnrRequest<T> extends JsonRequest<BaseResponse<T>> {
 
     public CnrRequest(int method, String url, Map<String, String> parameters, Response.Listener<BaseResponse<T>> listener, Response.ErrorListener errorListener) {
         super(method, url, buildRequestBody(parameters), listener, errorListener);
-        CnrLog.d("params", url);
-        CnrLog.d("params", buildRequestBody(parameters));
     }
 
 
     @Override
     protected Response parseNetworkResponse(NetworkResponse networkResponse) {
-        //显示网络请求时间
-        CnrLog.d("Http", "name--->>" + getUrl());
-        CnrLog.d("Http", "code--->>" + networkResponse.statusCode);
-        CnrLog.d("Http", "time--->>" + networkResponse.networkTimeMs + "ms");
-        //默认的用UTF_8,需要去掉json串里面的空字符比如\r\n等
         String json = "";
         try {
             json = StringTool.replaceEscapeSeq(new String(networkResponse.data, Constants.DEFAULT_CONTENT_CHARSET));
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,7 +67,6 @@ public class CnrRequest<T> extends JsonRequest<BaseResponse<T>> {
 
 
         if (url.startsWith(Configuration.HOME_COMMON_MORE)) {//首页更多
-            Log.d("TAG","----getUrl()--"+url+ "---parseNetworkResponse: "+json);
             ArrayList<CommonHomeMoreAndCategoryInfo> commonListInfo = JsonDataFactory.getHomeCommonList(json);
             HomeMoreResponse moreResponse = new HomeMoreResponse();
             moreResponse.setCommonListInfo(commonListInfo);
@@ -84,21 +74,18 @@ public class CnrRequest<T> extends JsonRequest<BaseResponse<T>> {
         }
 
         if (url.equals(Configuration.HOME_HEADER_RUL)) {//首页banner图
-            Log.d("TAG","----getUrl()--"+url+ "---parseNetworkResponse: "+json);
             List<RadioInfo> notes = JsonDataFactory.getRadioInfoList(json);
             HomeTopResponse topResponse = new HomeTopResponse();
             topResponse.setRadioInfos(notes);
             return topResponse;
         }
         if (url.equals(Configuration.HOME_BOTTOM_URL)) {
-            Log.d("TAG","----getUrl()--"+url+ "---parseNetworkResponse: "+json);
             List<CategoryRadioInfo> categoryRadioInfos = JsonDataFactory.getHomeCategoryList(json);
             HomeBottomResponse bottomResponse = new HomeBottomResponse();
             bottomResponse.setCategoryRadioInfos(categoryRadioInfos);
             return bottomResponse;
         }
         if (url.equals(Configuration.CATEGORY_INDEX)) {
-            Log.d("TAG","----getUrl()--"+url+ "---parseNetworkResponse: "+json);
             ArrayList<CategoryInfoList> categoryList = JsonDataFactory.parseCategoryIndex(json);
             CategoryResponse categoryResponse = new CategoryResponse();
             categoryResponse.setCategoryList(categoryList);

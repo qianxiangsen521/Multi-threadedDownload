@@ -46,7 +46,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     protected long lastClick = 0;
 
-    public HttpMessages httpMessages;
 
     /**
      * View点击
@@ -82,20 +81,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected void addFragment(int fragment_full,BaseFragment fragment) {
         if (fragment != null) {
             getActivity().getSupportFragmentManager().beginTransaction()
-                    /*.setCustomAnimations(
-                    R.anim.slide_laft_bottom,
-                    R.anim.slide_botton_bottom)*/
                     .replace(fragment_full, fragment, fragment.getClass().getSimpleName())
                     .addToBackStack(fragment.getClass().getSimpleName())
                     .commitAllowingStateLoss();
-        }
-    }
-    //移除fragment
-    protected void removeFragment() {
-        if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            getActivity().getSupportFragmentManager().popBackStack();
-        } else {
-            getActivity().finish();
         }
     }
 
@@ -287,7 +275,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         if (enter){
             return AnimationUtils.loadAnimation(mContext,R.anim.slide_laft_bottom);
         }else{
-            return  AnimationUtils.loadAnimation(mContext,R.anim.slide_top_bottom);
+            return  AnimationUtils.loadAnimation(mContext,R.anim.slide_right_bottom);
         }
     }
 

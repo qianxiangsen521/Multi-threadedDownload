@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.http.AndroidHttpClient;
 import android.os.Build;
+import android.util.Log;
 
 import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
@@ -96,7 +97,7 @@ public class VolleySingleton {
      * @param retry 重试策略
      */
     private <T> void addToRequestQueue(Request<T> req, RetryPolicy retry) {
-//        req.setShouldCache(true);
+        req.setShouldCache(true);
         req.setRetryPolicy(retry);
         getHttpRequestQueue().add(req);
     }

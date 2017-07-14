@@ -7,6 +7,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -27,6 +28,7 @@ import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.R;
+import example.com.sunshine.fragment.AudioVisualizationFragment;
 
 /**
  * Created by qianxiangsen on 2017/7/11.
@@ -36,7 +38,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int PROGRESS_BAR_MAX = 1000;
 
-    private String url = "http://dl.sunshinefm.cn/yinpin_web3/2017/07/10/fa36fdc3c9f082756e9b0f249857d6a0.3gp";
 
     // 播放进度展示
     private SeekBar playerSeekBar;
@@ -60,6 +61,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_activity);
+        Intent intent  = getIntent();
         formatBuilder = new StringBuilder();
         formatter = new Formatter(formatBuilder, Locale.getDefault());
         playInfo = new PlayInfo();
@@ -86,7 +88,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         }
         durationView = (TextView) findViewById(R.id.exo_duration);
         positionView = (TextView) findViewById(R.id.exo_position);
-        playInfo.setPlayUrl(url);
+
+        example.com.sunshine.util.Util.addFragment(getSupportFragmentManager(),R.id.container,
+                AudioVisualizationFragment.newInstance(),"AudioVisualizationFragment");
+        playInfo.setPlayUrl(intent.getStringExtra("url"));
         PlayManager.play(this,playInfo);
 
 
@@ -246,4 +251,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_bottom, R.anim.slide_top_bottom);
+    }
 }

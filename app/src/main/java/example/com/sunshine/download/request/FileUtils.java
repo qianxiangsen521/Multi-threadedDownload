@@ -63,7 +63,7 @@ public class FileUtils {
     /**
      * 应用根目录
      */
-    public static final String BASE_DIR = "Android/data/com.cnr.fm/volley";
+    public static final String BASE_DIR = "Android/data/example.com.sunshine/volley";
     /**
      * 系统照片存储路径
      */

@@ -31,6 +31,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import example.com.sunshine.Exo.ExoConstants;
 import example.com.sunshine.Exo.PlayActivity;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Adapter.HeaderPagerAdapter;
@@ -55,7 +56,10 @@ import example.com.sunshine.view.ScrollListenerHorizontalScrollView;
 
 public class PopularFragment extends BaseFragment{
 
+    private String url = "http://dl.sunshinefm.cn/yinpin_web3/2017/07/10/fa36fdc3c9f082756e9b0f249857d6a0.3gp";
+    private String url1 = "http://dl.sunshinefm.cn/yinpin_web3/2017/06/30/d5ebc8d78a5a927af9a122111d4e32cc.3gp";
 
+    private String[] strings = new String[]{url1,url, ExoConstants.PLAY_URL_NAME};
     private ArrayList<CategoryRadioInfo> categoryRadioInfos;
     @Bind(R.id.homepagev_listview)
     LinearLayout mContainer;
@@ -179,9 +183,9 @@ public class PopularFragment extends BaseFragment{
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-            startActivity(new Intent(mContext, PlayActivity.class));
+            Intent intent = new Intent(mContext, PlayActivity.class);
+            intent.putExtra("url",strings[position]);
+            startActivity(intent);
 
             getActivity().overridePendingTransition(R.anim.slide_botton_bottom,R.anim.slide_bottom);
 

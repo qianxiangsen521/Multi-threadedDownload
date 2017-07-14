@@ -2,7 +2,6 @@ package example.com.sunshine.download.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
@@ -110,7 +109,8 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         openPlayer.getLayoutParams().width = topicWidth;
         openPlayer.getLayoutParams().height = topicWidth;
         Glide.with(this).load(ExoConstants.IMAGE_URL).
-                bitmapTransform(new CropCircleTransformation(this)).crossFade().into(openPlayer);
+                bitmapTransform(new CropCircleTransformation(this)).
+                crossFade().into(openPlayer);
 
         radioButton1.setOnClickListener(this);
         radioButton2.setOnClickListener(this);
@@ -189,7 +189,9 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
                 switchFragment(3, false);
                 break;
             case R.id.common_playing_player:
-                startActivity(new Intent(this, PlayActivity.class));
+                Intent intent = new Intent(this, PlayActivity.class);
+                intent.putExtra("url",ExoConstants.PLAY_URL_NAME);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_botton_bottom,R.anim.slide_bottom);
                 break;
         }
@@ -244,17 +246,25 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayEvent(PlayEvent event) {
-     boolean playing = event.isPlayWhenReady();
+
+        boolean playing = event.isPlayWhenReady();
         if (playing){
             startPlayAnimation();
         }else {
@@ -265,9 +275,22 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
+            if (getSupportFragmentManager().getBackStackEntryCount() >= 1) {
+                getSupportFragmentManager().popBackStack();
+            } else {
+                moveTaskToBack(true);
+            }
             return true;
+
         }
         return false;
+    }
+    @Override
+    protected void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
+        super.onDestroy();
+
     }
 }
