@@ -14,7 +14,7 @@
     <dimen name="text_size_14">14.0sp</dimen>
     <dimen name="size_80px">40.0dip</dimen>
     <dimen name="height_statusbar">24dp</dimen>
-    <dimen name="topic_item_margin">5.0dip</dimen>
+    <dimen name="topic_item_margin">4.0dip</dimen>
     <dimen name="topic_center_item_margin">8.0dip</dimen>
     <dimen name="home_category_title_size">14dip</dimen>
     <dimen name="home_category_more_size">14dip</dimen>

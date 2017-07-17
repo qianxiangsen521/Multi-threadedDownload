@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/shape_line_recycler_divider_dark" android:state_focused="true" />
+    <item android:drawable="@drawable/shape_line_recycler_divider_dark" android:state_pressed="true" />
+    <item android:drawable="@drawable/shape_line_recycler_divider" />
+
+</selector>

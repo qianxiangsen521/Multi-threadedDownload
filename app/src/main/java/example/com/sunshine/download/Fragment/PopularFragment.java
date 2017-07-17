@@ -54,7 +54,7 @@ import example.com.sunshine.view.ScrollListenerHorizontalScrollView;
  * Created by qianxiangsen on 2017/5/3.
  */
 
-public class PopularFragment extends BaseFragment{
+public class PopularFragment extends BaseFragment {
 
     private String url = "http://dl.sunshinefm.cn/yinpin_web3/2017/07/10/fa36fdc3c9f082756e9b0f249857d6a0.3gp";
     private String url1 = "http://dl.sunshinefm.cn/yinpin_web3/2017/06/30/d5ebc8d78a5a927af9a122111d4e32cc.3gp";
@@ -129,7 +129,7 @@ public class PopularFragment extends BaseFragment{
 
     @Override
     protected void initView(Bundle savedInstanceState, View rootView) {
-        ButterKnife.bind(this,rootView);
+        ButterKnife.bind(this, rootView);
         homeView = this.getView();
         topicView = LayoutInflater.from(this.getActivity()).inflate(
                 R.layout.home_top_part, null);
@@ -137,7 +137,7 @@ public class PopularFragment extends BaseFragment{
         headerViewPager = (ViewPager) topicView
                 .findViewById(R.id.home_header_pager);
 
-        dotLinearLayout = (LinearLayout)topicView
+        dotLinearLayout = (LinearLayout) topicView
                 .findViewById(R.id.dot_linearlayout);
 
         headerPagerAdapter = new HeaderPagerAdapter(this);
@@ -179,7 +179,8 @@ public class PopularFragment extends BaseFragment{
         homeGridView.setOnItemClickListener(new HomeBottomGvListener());
 
     }
-    class HomeBottomGvListener implements AdapterView.OnItemClickListener{
+
+    class HomeBottomGvListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -187,10 +188,11 @@ public class PopularFragment extends BaseFragment{
             intent.putExtra("url",strings[position]);
             startActivity(intent);
 
-            getActivity().overridePendingTransition(R.anim.slide_botton_bottom,R.anim.slide_bottom);
+            getActivity().overridePendingTransition(R.anim.slide_botton_bottom, R.anim.slide_bottom);
 
         }
     }
+
     // 焦点图点的处理
     class HeaderViewOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -229,6 +231,7 @@ public class PopularFragment extends BaseFragment{
             }
         }
     }
+
     private void addHeaderView(LinearLayout mContainer) {
         if (mContainer == null)
             return;
@@ -285,6 +288,7 @@ public class PopularFragment extends BaseFragment{
             return false;
         }
     }
+
     private Timer timer = null;
 
     private int currentImageItem = 0;
@@ -341,9 +345,9 @@ public class PopularFragment extends BaseFragment{
         map.put("sn", SystemUtils.getMd5UniqueID(this.getActivity()));
         HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.HOME_BOTTOM_URL, map, true);
     }
+
     @Override
     public void onDataReady(BaseResponse response) {
-
 
 
         if (response instanceof HomeTopResponse) {
@@ -353,16 +357,16 @@ public class PopularFragment extends BaseFragment{
             setTopView(headerRadioInfos);
             return;
         }
-        if (response instanceof HomeBottomResponse){
+        if (response instanceof HomeBottomResponse) {
             if (mContainer.getChildCount() != 1) {//如果不是1说明是缓存数据，先remove掉
                 mContainer.removeViews(1, mContainer.getChildCount() - 1);
             }
             HomeBottomResponse bottomResponse = (HomeBottomResponse) response;
             setBottomView(bottomResponse.getCategoryRadioInfos());
             refreshView();
-            return;
         }
     }
+
     private void setBottomView(List<CategoryRadioInfo> categoryInfos) {
         categoryRadioInfos = (ArrayList) categoryInfos;
 
@@ -431,6 +435,7 @@ public class PopularFragment extends BaseFragment{
             }
         }
     }
+
     private void setGridView(GridView gv, int length, int size) {
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -450,6 +455,7 @@ public class PopularFragment extends BaseFragment{
         gv.setNumColumns(size); // 设置列数量=列表集合数
 
     }
+
     private void setTopView(ArrayList<RadioInfo> radioInfos) {
         if (!isTimer) {
             timerOfHeader();

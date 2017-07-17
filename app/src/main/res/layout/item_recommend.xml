@@ -1,44 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:id="@+id/item_root_view"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_line_recycler_divider"
+    android:background="@drawable/selector_rv_item"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
     android:padding="5dp">
-
-    <ImageView
-        android:id="@+id/tiv_cover"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bg_cover_border"
-        android:scaleType="centerCrop"
-        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_album_complete"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_horizontal"
         android:scaleType="fitXY"
-        android:src="@mipmap/qxs" />
-
-    <View
-        android:id="@+id/view_border"
-        android:layout_width="fill_parent"
-        android:layout_height="1.0px"
-        android:layout_below="@+id/tiv_cover"
-        android:background="@color/border_gray"
-        android:visibility="gone" />
+        android:src="@mipmap/meinv" />
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="10.0dip"
-        android:layout_toRightOf="@+id/iv_album_complete"
         android:ellipsize="end"
+        android:gravity="center"
         android:includeFontPadding="false"
         android:maxLines="1"
         android:paddingBottom="5.0dip"
@@ -60,4 +47,5 @@
         android:textColor="#ff999999"
         android:textSize="12.0sp"
         android:visibility="gone" />
-</RelativeLayout>
+
+</LinearLayout>

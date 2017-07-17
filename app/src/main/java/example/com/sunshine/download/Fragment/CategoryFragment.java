@@ -6,6 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +27,10 @@ import example.com.sunshine.download.request.CategoryInfoList;
 import example.com.sunshine.download.request.CategoryResponse;
 import example.com.sunshine.download.request.HttpManger;
 import example.com.sunshine.download.request.StringTool;
+import example.com.sunshine.util.ToastyUtils;
 
 /**
- * Created by qianxiangsen on 2017/5/3.
+ * Created by Hywel on 2017/5/3.
  */
 
 public class CategoryFragment extends BaseFragment {
@@ -53,13 +57,20 @@ public class CategoryFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         cateoryAdapter = new CategoryAdapter(data);
 //        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity(), GridLayoutManager.HORIZONTAL));
-        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        cateoryAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         recyclerView.setAdapter(cateoryAdapter);
-
+        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastyUtils.getInstance(mContext).showSuccessToasty("pos: " + position);
+            }
+        });
     }
 
     @Override
     protected void initData() {
+        showLoading();
         loadCategoryData();
     }
 
@@ -89,7 +100,13 @@ public class CategoryFragment extends BaseFragment {
                 //绑定节目数据
                 cateoryAdapter.setNewData(data);
             }
+            refreshView();
         }
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return recyclerView;
     }
 
     @Override

@@ -3,18 +3,14 @@ package example.com.sunshine.Exo;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.util.Util;
 
 import org.greenrobot.eventbus.EventBus;
@@ -93,8 +89,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 AudioVisualizationFragment.newInstance(),"AudioVisualizationFragment");
         playInfo.setPlayUrl(intent.getStringExtra("url"));
         PlayManager.play(this,playInfo);
-
-
 
     }
 

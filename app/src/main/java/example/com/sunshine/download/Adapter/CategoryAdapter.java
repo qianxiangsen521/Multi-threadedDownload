@@ -12,7 +12,7 @@ import example.com.sunshine.download.Utils.ImageUtils;
 import example.com.sunshine.download.request.CategoryInfo;
 
 /**
- * Created by qianxiangsen on 2017/7/7.
+ * Created by Hywel on 2017/7/7.
  */
 
 public class CategoryAdapter extends BaseQuickAdapter<CategoryInfo, BaseViewHolder> {
