@@ -1,12 +1,22 @@
 package example.com.sunshine.Exo;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
@@ -74,10 +84,6 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
-//    public static final int DEFAULT_FAST_FORWARD_MS = 15000;
-//    public static final int DEFAULT_REWIND_MS = 5000;
-//    public static final int DEFAULT_SHOW_TIMEOUT_MS = 5000;
-
     private static final long MAX_POSITION_FOR_SEEK_TO_PREVIOUS = 3000;
 
     private SimpleExoPlayer player;
@@ -100,9 +106,6 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     private Timeline.Window currentWindow;
 
-//    private int rewindMs;
-//    private int fastForwardMs;
-//    private int showTimeoutMs;
 
     @Nullable
     @Override
@@ -114,13 +117,12 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
     public void onCreate() {
         super.onCreate();
         shouldAutoPlay = true;
-//        rewindMs = DEFAULT_REWIND_MS;
-//        fastForwardMs = DEFAULT_FAST_FORWARD_MS;
-//        showTimeoutMs = DEFAULT_SHOW_TIMEOUT_MS;
         clearResumePosition();
         mediaDataSourceFactory = buildDataSourceFactory(true);
         mainHandler = new Handler();
         currentWindow = new Timeline.Window();
+
+
     }
 
     @Override
@@ -136,8 +138,6 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
     private void seekTo(int windowIndex, long positionMs) {
         if (player != null) {
             player.seekTo(windowIndex,positionMs);
-            // The seek wasn't dispatched. If the progress bar was dragged by the user to perform the
-            // seek then it'll now be in the wrong position. Trigger a progress update to snap it back.
             updateProgress();
         }
     }
@@ -199,6 +199,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         }
         releasePlayer();
         if (player == null) {
+
             boolean preferExtensionDecoders = paramIntent.getBooleanExtra(ExoConstants.PREFER_EXTENSION_DECODERS, false);
             UUID drmSchemeUuid = paramIntent.hasExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)
                     ? UUID.fromString(paramIntent.getStringExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)) : null;
@@ -363,6 +364,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
                         position,
                         duration
                         ,bufferedPosition));
+
         int playbackState = player == null ? ExoPlayer.STATE_IDLE : player.getPlaybackState();
         if (playbackState != ExoPlayer.STATE_IDLE && playbackState != ExoPlayer.STATE_ENDED) {
             long delayMs;

@@ -1,20 +1,22 @@
 package example.com.sunshine.Exo;
 
 import android.annotation.TargetApi;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.util.Util;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +30,7 @@ import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.R;
+import example.com.sunshine.download.Home.Main111Activity;
 import example.com.sunshine.fragment.AudioVisualizationFragment;
 
 /**
@@ -35,6 +38,7 @@ import example.com.sunshine.fragment.AudioVisualizationFragment;
  */
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener,SeekBar.OnSeekBarChangeListener {
+
 
     private static final int PROGRESS_BAR_MAX = 1000;
 
@@ -57,6 +61,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton previousButton;
     private ImageButton playButton;
     private boolean playing;
+        private NotificationCompat.Builder mBuilder;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,10 +97,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         example.com.sunshine.util.Util.addFragment(getSupportFragmentManager(),R.id.container,
                 AudioVisualizationFragment.newInstance(),"AudioVisualizationFragment");
+
         playInfo.setPlayUrl(intent.getStringExtra("url"));
         PlayManager.play(this,playInfo);
-
-
 
     }
 
@@ -249,6 +254,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+
     }
 
     @Override

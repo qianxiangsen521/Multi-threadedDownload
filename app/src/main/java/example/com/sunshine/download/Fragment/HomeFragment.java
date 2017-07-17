@@ -74,6 +74,7 @@ public class HomeFragment extends BaseFragment{
         setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(5);
         tabLayout.post(new Runnable() {
             @Override
             public void run() {

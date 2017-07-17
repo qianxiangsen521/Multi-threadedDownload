@@ -13,7 +13,9 @@ import com.cleveroad.audiovisualization.GLAudioVisualizationView;
 
 import example.com.sunshine.R;
 
-
+/**
+ * Fragment with visualization of audio output.
+ */
 public class AudioVisualizationFragment extends Fragment {
 
 

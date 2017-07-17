@@ -48,6 +48,7 @@ import example.com.sunshine.download.request.CategoryRadioInfo;
 import example.com.sunshine.download.request.HomeBottomResponse;
 import example.com.sunshine.download.request.HomeTopResponse;
 import example.com.sunshine.download.request.HttpManger;
+import example.com.sunshine.util.Util;
 import example.com.sunshine.view.ScrollListenerHorizontalScrollView;
 
 /**
@@ -183,14 +184,11 @@ public class PopularFragment extends BaseFragment{
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(mContext, PlayActivity.class);
-            intent.putExtra("url",strings[position]);
-            startActivity(intent);
-
-            getActivity().overridePendingTransition(R.anim.slide_botton_bottom,R.anim.slide_bottom);
+            Util.setIntnetPlay(mContext);
 
         }
     }
+
     // 焦点图点的处理
     class HeaderViewOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -402,12 +400,12 @@ public class PopularFragment extends BaseFragment{
                         int recomm_position_id = cateRadioInfo
                                 .getRadioInfos().get(0)
                                 .getRecommend_pos_id();
-//                        homeCategoryLLMore
-//                                .setOnClickListener(new HomeMoreClickListener(
-//                                        moreUrl,
-//                                        isFee,
-//                                        cateRadioInfo.getTitle(),
-//                                        String.valueOf(recomm_position_id)));
+                        homeCategoryLLMore
+                                .setOnClickListener(new HomeMoreClickListener(
+                                        moreUrl,
+                                        isFee,
+                                        cateRadioInfo.getTitle(),
+                                        String.valueOf(recomm_position_id)));
                         if (cateRadioInfo.getRadioInfos().size() != 3) {// 说明是推荐，隐藏更多按钮
                             homeCategoryLLMore.setVisibility(View.GONE);
                         }
@@ -425,12 +423,51 @@ public class PopularFragment extends BaseFragment{
                     homeBottomGv.setAdapter(homeBottomGvAdapter);
                     mContainer.addView(homelin);
                     mContainer.addView(homeBottomGv);
-//                    homeBottomGv
-//                            .setOnItemClickListener(new HomeBottomGvListener());
+                    homeBottomGv
+                            .setOnItemClickListener(new HomeBottomGvListener());
                 }
             }
         }
     }
+
+     class HomeMoreClickListener implements View.OnClickListener {
+        private String url;
+
+        private int isFee;
+
+        private String titleName;
+
+        private String recommend_pos_id;
+
+        public HomeMoreClickListener(String url, int isFee, String titleName,
+                                     String recommend_pos_id) {
+            this.url = url;
+            this.isFee = isFee;
+            this.titleName = titleName;
+            this.recommend_pos_id = recommend_pos_id;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+//            if (isFee != Configuration.TYPE_FEE) {
+//                Intent intent = new Intent(HomeFragment.this.getActivity(),
+//                        CommonHomeMoreAndFirCategoryActivity.class);
+//                intent.putExtra("url", url);
+//                startActivity(intent);
+//            } else {
+//                Intent intent = new Intent(HomeFragment.this.getActivity(),
+//                        CategoryMoreActivity.class);
+//                intent.putExtra("url", url);
+//                intent.putExtra("title_name", titleName);
+//                intent.putExtra("is_fee", isFee);
+//                intent.putExtra("recommend_pos_id", recommend_pos_id);
+//                startActivity(intent);
+//            }
+        }
+
+    }
+
     private void setGridView(GridView gv, int length, int size) {
 
         DisplayMetrics dm = new DisplayMetrics();

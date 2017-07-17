@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -28,6 +30,7 @@ import example.com.sunshine.download.Http.entity.PlayUrlItem;
 import example.com.sunshine.download.Http.entity.RadioInfo;
 import example.com.sunshine.download.Utils.Helpers;
 import example.com.sunshine.download.Utils.ImageUtils;
+import example.com.sunshine.util.Util;
 
 
 public class HeaderPagerAdapter extends PagerAdapter {
@@ -124,7 +127,6 @@ public class HeaderPagerAdapter extends PagerAdapter {
 //
 //                    homeFragment.getActivity().startActivity(intent);
                 } else if(type.equals("10")){
-                    Log.d("TAG", "EventBus: ");
 //                    EventBus.getDefault().post(new YoudaoEvent("Youdao"));
                 } else {
                     if (type.equals("4") || type.equals("5")) {
@@ -135,6 +137,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
                             radioInfo.setAlbumId(Integer.parseInt(aid));
                         }
                     }
+                    Util.setIntnetPlay(homeFragment.getActivity());
 //                    DetailPlayerActivity.lanuchActivity(homeFragment.getActivity(), radioInfo);
                 }
             }
@@ -148,7 +151,6 @@ public class HeaderPagerAdapter extends PagerAdapter {
         } else {
             showPosition = (position % this.radioInfos.size()) + 1;
         }
-        Log.d("TAG", "instantiateItem: "+radioInfos.size());
         RadioInfo radioInfo = radioInfos.get(showPosition);
         view.setTag(radioInfo);
         loadImage(radioInfo.getImgUrl(), viewHolder.topicView);
@@ -164,7 +166,12 @@ public class HeaderPagerAdapter extends PagerAdapter {
 
     private void loadImage(String imgUrl, ImageView imageView) {
 
-        ImageUtils.loadImg(homeFragment.getActivity(), imgUrl, R.mipmap.home_recommed_index_live_bg, imageView);
+        if (!TextUtils.isEmpty(imgUrl)) {
+            Glide.with(homeFragment.getActivity())
+                    .load(imgUrl)
+                    .crossFade()
+                    .into(imageView);
+        }
     }
 
 
