@@ -11,6 +11,7 @@
     <color name="finding_titlebar_action_text_color">#ff949494</color>
     <color name="searchbar_text_color">#ffcccccc</color>
     <color name="recycler_divider_line_color_gray">#ececec</color>
+    <color name="recycler_divider_line_color_gray_dark">#d8d8d8</color>
     <color name="cnr_main_color">#bf2e35</color>
     <color name="psts_deactive_text_color">#ff666666</color>
     <item name="notification_template_icon_bg" type="drawable">#3333b5e5</item>
@@ -24,6 +25,7 @@
     <item name="recommend_top_src" type="drawable">#00000000</item>
     <item name="slide_bar_bg" type="drawable">#fff4f4f4</item>
     <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="toasty_success">#aa03E5</color>
     <color name="psts_indicator_color">#fff86442</color>
     <color name="bg_color_navi_gray">#fff4f4f4</color>
     <color name="border">#ffe8e8e8</color>

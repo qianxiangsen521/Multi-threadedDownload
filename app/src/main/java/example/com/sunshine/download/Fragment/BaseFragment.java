@@ -12,12 +12,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-
 import java.lang.ref.WeakReference;
 
 import example.com.sunshine.R;
 import example.com.sunshine.download.Http.HttpCallback;
-import example.com.sunshine.download.Http.HttpMessages;
 import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.Utils.NetWorkUtil;
 import example.com.sunshine.download.Utils.ToastUtil;
@@ -27,7 +25,7 @@ import example.com.sunshine.download.request.ErrorStatus;
 import example.com.sunshine.download.request.HttpDataListener;
 
 
-public abstract class BaseFragment extends Fragment implements View.OnClickListener,BaseView ,HttpCallback, HttpDataListener {
+public abstract class BaseFragment extends Fragment implements View.OnClickListener, BaseView, HttpCallback, HttpDataListener {
 
 
     protected VaryViewHelperController mVaryViewHelperController;
@@ -70,15 +68,21 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             if (null != getLoadingTargetView()) {
                 mVaryViewHelperController = new VaryViewHelperController(getLoadingTargetView());
             }
-            initData();
+//            initData();
             return view;
         }
 
         return null;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
+    }
+
     //添加fragment
-    protected void addFragment(int fragment_full,BaseFragment fragment) {
+    protected void addFragment(int fragment_full, BaseFragment fragment) {
         if (fragment != null) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(fragment_full, fragment, fragment.getClass().getSimpleName())
@@ -87,7 +91,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         }
     }
 
-            @Override
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -161,11 +165,12 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 //            startActivity(intent);
 //        }
 //    }
-            /**
-             * 跳转到指定的Activity
-             *
-             * @param targetActivity 要跳转的目标Activity
-             */
+
+    /**
+     * 跳转到指定的Activity
+     *
+     * @param targetActivity 要跳转的目标Activity
+     */
     protected final void startActivity(@NonNull Class<?> targetActivity) {
 
         Intent intent = new Intent(getActivity(), targetActivity);
@@ -272,37 +277,37 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (enter){
-            return AnimationUtils.loadAnimation(mContext,R.anim.slide_laft_bottom);
-        }else{
-            return  AnimationUtils.loadAnimation(mContext,R.anim.slide_right_bottom);
+        if (enter) {
+            return AnimationUtils.loadAnimation(mContext, R.anim.slide_laft_bottom);
+        } else {
+            return AnimationUtils.loadAnimation(mContext, R.anim.slide_right_bottom);
+            }
+        }
+
+        @Override
+        public void UiStart (BaseResponse baseResponse){
+
+        }
+
+        @Override
+        public void UiEnd () {
+
+        }
+
+        @Override
+        public void UiError () {
+
+        }
+
+        @Override
+        public void onDataReady (BaseResponse response){
+
+        }
+
+        @Override
+        public void onError (ErrorStatus respStatus){
+            if (!NetWorkUtil.isNetworkConnected()) {
+                showNetError();
+            }
         }
     }
-
-    @Override
-    public void UiStart(BaseResponse baseResponse) {
-
-    }
-
-    @Override
-    public void UiEnd() {
-
-    }
-
-    @Override
-    public void UiError() {
-
-    }
-
-    @Override
-    public void onDataReady(BaseResponse response) {
-
-    }
-
-    @Override
-    public void onError(ErrorStatus respStatus) {
-        if (!NetWorkUtil.isNetworkConnected()) {
-            showNetError();
-        }
-    }
-}

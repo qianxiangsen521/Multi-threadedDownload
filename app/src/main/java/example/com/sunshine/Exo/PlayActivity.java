@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RemoteViews;
@@ -61,7 +60,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton previousButton;
     private ImageButton playButton;
     private boolean playing;
-        private NotificationCompat.Builder mBuilder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

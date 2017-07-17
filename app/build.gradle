@@ -59,6 +59,7 @@ dependencies {
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile 'com.cleveroad:audiovisualization:1.0.0'
+    compile 'com.github.GrenderG:Toasty:1.2.5'
 
 }
 

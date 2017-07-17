@@ -3,7 +3,6 @@
     android:shape="rectangle">
     <stroke
         android:width="0.2dp"
-        android:color="@color/recycler_divider_line_color_gray" />
-    <!--<solid android:color="@color/colorPrimary" />-->
-
+        android:color="@color/recycler_divider_line_color_gray_dark" />
+    <solid android:color="@color/recycler_divider_line_color_gray" />
 </shape>

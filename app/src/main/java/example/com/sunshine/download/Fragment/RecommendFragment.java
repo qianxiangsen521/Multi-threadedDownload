@@ -79,7 +79,6 @@ public class RecommendFragment extends BaseFragment implements LoginView {
             recommendAdapter = new RecommendAdapter(getActivity(), bottomResponse.getCategoryRadioInfos().get(0).getRadioInfos());
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerView.setAdapter(recommendAdapter);
-            return;
         }
     }
 
