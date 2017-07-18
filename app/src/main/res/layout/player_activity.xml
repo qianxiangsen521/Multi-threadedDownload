@@ -10,10 +10,83 @@
       android:id="@+id/container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      ></FrameLayout>
+      android:layout_alignParentTop="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true">
+  </FrameLayout>
+
+  <LinearLayout
+      android:id="@+id/play_title"
+      android:layout_width="match_parent"
+      android:layout_height="45dp"
+      android:orientation="horizontal"
+      >
+    <ImageView
+        android:id="@+id/exit_play"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:background="@mipmap/exit"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:text="Playing"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16"
+       />
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@mipmap/music"/>
 
 
+  </LinearLayout>
 
+
+  <ImageView
+      android:id="@+id/needle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_below="@+id/play_title"
+      android:layout_marginRight="30dp"
+      android:layout_marginTop="30dp"
+      android:rotation="2"
+      android:src="@mipmap/play_needle"
+      android:transformPivotX="25.1dp"
+      android:transformPivotY="25.1dp" />
+  <ImageView
+      android:id="@+id/common_playing_player"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@mipmap/play_image"
+      android:layout_below="@+id/play_title"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="55dp"
+      ></ImageView>
+
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_above="@+id/progress"
+      android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Never Let You Go"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_20"/>
+
+  </LinearLayout>
   <LinearLayout
       android:id="@+id/progress"
       android:layout_width="match_parent"
@@ -22,13 +95,15 @@
       android:layout_alignParentBottom="true"
       android:orientation="vertical">
 
-    <SeekBar android:id="@id/exo_progress"
+    <SeekBar
+        android:id="@id/exo_progress"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="false"
-        style="?android:attr/progressBarStyleHorizontal"/>
+        android:focusable="false" />
 
     <RelativeLayout
+        android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -55,41 +130,75 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+
         android:orientation="horizontal"
+        android:paddingBottom="15dp"
+        android:layout_below="@+id/time"
+        android:paddingTop="15dp">
 
-        android:layout_below="@+id/progress"
-        android:paddingTop="4dp">
-
+      <ImageButton
+          android:id="@id/exo_rew"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@mipmap/loop"
+          />
       <ImageButton
           android:id="@id/exo_prev"
           style="@style/ExoMediaButton.Previous" />
 
-      <ImageButton
-          android:id="@id/exo_rew"
-          style="@style/ExoMediaButton.Rewind"
-          android:visibility="gone"/>
+
 
       <ImageButton
           android:id="@id/exo_play"
-          style="@style/ExoMediaButton.Play"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@mipmap/play"
           />
 
       <ImageButton
           android:id="@id/exo_pause"
-
-          style="@style/ExoMediaButton.Pause"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@mipmap/pause"
           />
-      <ImageButton
-          android:id="@id/exo_ffwd"
-          style="@style/ExoMediaButton.FastForward"
-          android:visibility="gone"/>
 
       <ImageButton
           android:id="@id/exo_next"
           style="@style/ExoMediaButton.Next" />
 
+      <ImageButton
+          android:id="@id/exo_ffwd"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@mipmap/random"
+          />
+
     </LinearLayout>
-  </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/sp_20"
+        android:layout_marginLeft="@dimen/sp_20"
+        android:layout_marginBottom="@dimen/sp_20">
+
+      <SeekBar
+          style="?android:attr/progressBarStyleHorizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:max="100"
+          android:layout_marginRight="@dimen/dp_10"
+          android:focusable="false" />
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@mipmap/volume"
+          />
+    </LinearLayout>
+    </LinearLayout>
+
 
 
 

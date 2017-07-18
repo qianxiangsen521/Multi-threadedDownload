@@ -154,11 +154,8 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:launchMode="singleTop"
             android:label="@string/app_name"
-            android:parentActivityName=".download.Home.Main111Activity"
             >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".download.Home.Main111Activity"/>
+
             <intent-filter>
                 <action android:name="com.google.android.exoplayer.demo.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

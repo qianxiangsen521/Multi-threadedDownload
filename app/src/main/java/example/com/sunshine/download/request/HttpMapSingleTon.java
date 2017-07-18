@@ -38,11 +38,11 @@ public class HttpMapSingleTon {
     private HttpMapSingleTon() {
 
         httpMap.put(RECOMMEND, RecommResponse.class);
-        httpMap.put(Configuration.SPLASH_ENERALIZE_URL, SplashResponse.class);
+//        httpMap.put(Configuration.SPLASH_ENERALIZE_URL, SplashResponse.class);
         httpMap.put(Configuration.HOME_HEADER_RUL, HomeTopResponse.class);
         httpMap.put(Configuration.HOME_BOTTOM_URL, HomeBottomResponse.class);
         httpMap.put(Configuration.CATEGORY_INDEX, CategoryResponse.class);
-        httpMap.put(Configuration.HOME_COMMON_MORE, HomeMoreResponse.class);
+//        httpMap.put(Configuration.HOME_COMMON_MORE, HomeMoreResponse.class);
         for (String key : httpMap.keySet()) {
             httpMapReverse.put(httpMap.get(key), key);
         }

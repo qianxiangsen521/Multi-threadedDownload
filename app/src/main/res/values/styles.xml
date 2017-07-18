@@ -12,11 +12,12 @@
     </style>-->
     <style name="AppThemeNoBar" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/psts_active_text_color</item>
-        <item name="colorPrimaryDark">@color/psts_active_text_color</item>
+        <item name="colorPrimary">@color/av_color_bg</item>
+        <item name="colorPrimaryDark">@color/av_color_bg</item>
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
+
 
     <style name="PlayerTheme" parent="android:Theme.Holo">
         <item name="android:windowNoTitle">true</item>
@@ -65,6 +66,35 @@
         <item name="pstsTabBackground">@color/transparent</item>
 
     </style>-->
+    <style name="Widget" />
 
+    <style name="Widget.SampleMessage">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
 
+    <style name="Widget.SampleMessageTile">
+        <item name="android:background">@mipmap/ic_launcher</item>
+        <item name="android:shadowColor">#7F000000</item>
+        <item name="android:shadowDy">-3.5</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="ExoMediaButton.Next">
+        <item name="android:src">@mipmap/next</item>
+        <item name="android:contentDescription">@string/exo_controls_next_description</item>
+    </style>
+    <style name="ExoMediaButton.Previous">
+        <item name="android:src">@mipmap/previous</item>
+        <item name="android:contentDescription">@string/exo_controls_previous_description</item>
+    </style>
+
+    <style name="ExoMediaButton.Pause1">
+        <item name="android:src">@mipmap/pause</item>
+        <item name="android:contentDescription">@string/exo_controls_pause_description</item>
+    </style>
+    <style name="ExoMediaButton.Play1">
+        <item name="android:src">@mipmap/play</item>
+        <item name="android:contentDescription">@string/exo_controls_play_description</item>
+    </style>
 </resources>

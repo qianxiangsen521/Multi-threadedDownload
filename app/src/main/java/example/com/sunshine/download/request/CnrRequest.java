@@ -66,12 +66,12 @@ public class CnrRequest<T> extends JsonRequest<BaseResponse<T>> {
         final Class<? extends BaseResponse> responseClass = HttpMapSingleTon.getInstance().getHttpResponseType(url);
 
 
-        if (url.startsWith(Configuration.HOME_COMMON_MORE)) {//首页更多
-            ArrayList<CommonHomeMoreAndCategoryInfo> commonListInfo = JsonDataFactory.getHomeCommonList(json);
-            HomeMoreResponse moreResponse = new HomeMoreResponse();
-            moreResponse.setCommonListInfo(commonListInfo);
-            return moreResponse;
-        }
+//        if (url.startsWith(Configuration.HOME_COMMON_MORE)) {//首页更多
+//            ArrayList<CommonHomeMoreAndCategoryInfo> commonListInfo = JsonDataFactory.getHomeCommonList(json);
+//            HomeMoreResponse moreResponse = new HomeMoreResponse();
+//            moreResponse.setCommonListInfo(commonListInfo);
+//            return moreResponse;
+//        }
 
         if (url.equals(Configuration.HOME_HEADER_RUL)) {//首页banner图
             List<RadioInfo> notes = JsonDataFactory.getRadioInfoList(json);

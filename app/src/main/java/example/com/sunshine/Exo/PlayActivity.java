@@ -1,16 +1,25 @@
 package example.com.sunshine.Exo;
 
 import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,6 +34,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Formatter;
 import java.util.Locale;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
@@ -61,10 +72,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton playButton;
     private boolean playing;
 
+    @Bind(R.id.common_playing_player)
+    ImageView openPlayer;
+    @Bind(R.id.exit_play)
+    ImageView mExitPlay;
+
+    private Animation operatingAnim;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_activity);
+        ButterKnife.bind(this);
         Intent intent  = getIntent();
         formatBuilder = new StringBuilder();
         formatter = new Formatter(formatBuilder, Locale.getDefault());
@@ -93,8 +112,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         durationView = (TextView) findViewById(R.id.exo_duration);
         positionView = (TextView) findViewById(R.id.exo_position);
 
+        if(mExitPlay != null){
+            mExitPlay.setOnClickListener(this);
+        }
         example.com.sunshine.util.Util.addFragment(getSupportFragmentManager(),R.id.container,
                 AudioVisualizationFragment.newInstance(),"AudioVisualizationFragment");
+
+        operatingAnim = AnimationUtils.loadAnimation(this, R.anim.anim_play);
+        LinearInterpolator lin = new LinearInterpolator();
+        operatingAnim.setInterpolator(lin);
 
         playInfo.setPlayUrl(intent.getStringExtra("url"));
         PlayManager.play(this,playInfo);
@@ -116,6 +142,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.exo_play:
                 PlayManager.restart(this,playInfo);
                 break;
+            case R.id.exit_play:
+                finish();
+                break;
         }
     }
 
@@ -133,6 +162,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (requestPlayPauseFocus) {
             requestPlayPauseFocus();
+        }
+        if (playing){
+            startPlayAnimation();
+        }else {
+            stopPlayAnimation();
         }
 
     }
@@ -189,6 +223,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         if (positionView != null && !dragging) {
             positionView.setText(stringForTime(event.getmCurrentPosition()));
         }
+
 
 
 
@@ -259,5 +294,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_bottom, R.anim.slide_top_bottom);
+    }
+    private void startPlayAnimation() {
+
+        openPlayer.startAnimation(operatingAnim);
+    }
+
+
+    private void stopPlayAnimation() {
+
+        openPlayer.clearAnimation();
     }
 }

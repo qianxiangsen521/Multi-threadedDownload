@@ -253,4 +253,11 @@ Varial deck switch 1080 bail betty cab flip. Transfer wall ride Guy Mariano bear
 
     <string name="sample_list_load_error">One or more sample lists failed to load</string>
 
+    <string name="add_a_notification">Add a notification</string>
+    <string name="active_notifications">Active Notifications: %1$d</string>
+    <string name="update_notification_count">Update count</string>
+    <string name="sample_notification_content">This is a sample notification.</string>
+    <string name="sample_notification_summary_content">There are %d ActiveNotifications.</string>
+    <string name="sample_show_log">Show Log</string>
+    <string name="sample_hide_log">Hide Log</string>
 </resources>
