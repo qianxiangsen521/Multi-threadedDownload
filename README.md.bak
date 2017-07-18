@@ -30,7 +30,7 @@
 	Task task = downlaod.addTask(Task task,DownloadUiListener)
 
 	Task task1 = new Task();
-	task1.setName("任务1");
+	task1.setName("下载1");
 	task1.setIamgeUrl(Constants.IMG);
 	task1.setId(1);
 	task1.setmUniquely_id("102");
