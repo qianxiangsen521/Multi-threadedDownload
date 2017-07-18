@@ -4,6 +4,7 @@
 
 效果图
 
+![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.mp4)
 ![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/down1.gif)  
 
 用法
