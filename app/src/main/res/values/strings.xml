@@ -6,7 +6,7 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
-
+    <string name="close">关闭</string>
     <string name="action_grid_element">Sgrid_element</string>
     <string name="capion_text">没有检测到网络，你确认是在地球上吗！ </string>
     <string name="action_sign_in_short">Sign in</string>
@@ -259,5 +259,11 @@ Varial deck switch 1080 bail betty cab flip. Transfer wall ride Guy Mariano bear
     <string name="sample_notification_content">This is a sample notification.</string>
     <string name="sample_notification_summary_content">There are %d ActiveNotifications.</string>
     <string name="sample_show_log">Show Log</string>
+    <string name="ximalaya_slogan">随时随地 听我想听</string>
     <string name="sample_hide_log">Hide Log</string>
+    <string name="ximalaya_activities">喜马拉雅精彩活动</string>
+    <string name="ximalaya">喜马拉雅</string>
+    <string name="pre_sound">上一首</string>
+    <string name="start_play">开始播放</string>
+    <string name="next_sound">下一首</string>
 </resources>

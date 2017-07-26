@@ -1,10 +1,16 @@
 package example.com.sunshine.Exo;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
@@ -66,6 +72,7 @@ import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Application.TLiveApplication;
+import example.com.sunshine.download.Home.Main111Activity;
 
 
 /**
@@ -106,6 +113,11 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     private Timeline.Window currentWindow;
 
+    private int requestCode;
+
+    private NotificationManager mNotificationManager;
+
+
 
     @Nullable
     @Override
@@ -121,8 +133,21 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         mediaDataSourceFactory = buildDataSourceFactory(true);
         mainHandler = new Handler();
         currentWindow = new Timeline.Window();
+        requestCode = (int) (Math.random() * 10000);
+
+        registerPlayControlReceiver();
+
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopForeground(true);
+
+        unregisterPlayControlReceiver();
     }
 
     @Override
@@ -181,76 +206,77 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         }
         if (str1.equals(ExoConstants.ACTION_PAUSE)){
             player.setPlayWhenReady(false);
-            return;
         }
         if (str1.equals(ExoConstants.ACTION_NEXT)){
                 next();
-                return;
         }
         if (str1.equals(ExoConstants.ACTION_PREVIONS)){
                 previous();
-                return;
         }
 
         if (str1.equals(ExoConstants.ACTIION_RESTART)){
             player.setPlayWhenReady(true);
-            return;
 
         }
-        releasePlayer();
-        if (player == null) {
+        if (str1.equals(ExoConstants.ACTION_PLAY)){
+            releasePlayer();
+            if (player == null) {
 
-            boolean preferExtensionDecoders = paramIntent.getBooleanExtra(ExoConstants.PREFER_EXTENSION_DECODERS, false);
-            UUID drmSchemeUuid = paramIntent.hasExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)
-                    ? UUID.fromString(paramIntent.getStringExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)) : null;
-            DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
-            if (drmSchemeUuid != null) {
-                String drmLicenseUrl = paramIntent.getStringExtra(ExoConstants.DRM_LICENSE_URL);
-                String[] keyRequestPropertiesArray = paramIntent.getStringArrayExtra(ExoConstants.DRM_KEY_REQUEST_PROPERTIES);
-                Map<String, String> keyRequestProperties;
-                if (keyRequestPropertiesArray == null || keyRequestPropertiesArray.length < 2) {
-                    keyRequestProperties = null;
-                } else {
-                    keyRequestProperties = new HashMap<>();
-                    for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
-                        keyRequestProperties.put(keyRequestPropertiesArray[i],
-                                keyRequestPropertiesArray[i + 1]);
+                boolean preferExtensionDecoders = paramIntent.getBooleanExtra(ExoConstants.PREFER_EXTENSION_DECODERS, false);
+                UUID drmSchemeUuid = paramIntent.hasExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)
+                        ? UUID.fromString(paramIntent.getStringExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)) : null;
+                DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
+                if (drmSchemeUuid != null) {
+                    String drmLicenseUrl = paramIntent.getStringExtra(ExoConstants.DRM_LICENSE_URL);
+                    String[] keyRequestPropertiesArray = paramIntent.getStringArrayExtra(ExoConstants.DRM_KEY_REQUEST_PROPERTIES);
+                    Map<String, String> keyRequestProperties;
+                    if (keyRequestPropertiesArray == null || keyRequestPropertiesArray.length < 2) {
+                        keyRequestProperties = null;
+                    } else {
+                        keyRequestProperties = new HashMap<>();
+                        for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
+                            keyRequestProperties.put(keyRequestPropertiesArray[i],
+                                    keyRequestPropertiesArray[i + 1]);
+                        }
+                    }
+                    try {
+                        drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl,
+                                keyRequestProperties);
+                    } catch (UnsupportedDrmException e) {
+                        int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported
+                                : (e.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME
+                                ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
+                        showToast(errorStringId);
+                        return;
                     }
                 }
-                try {
-                    drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl,
-                            keyRequestProperties);
-                } catch (UnsupportedDrmException e) {
-                    int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported
-                            : (e.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME
-                            ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
-                    showToast(errorStringId);
-                    return;
-                }
+
+                @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode =
+                        ((TLiveApplication) getApplication()).useExtensionRenderers()
+                                ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
+                                : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+                                : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
+                TrackSelection.Factory videoTrackSelectionFactory =
+                        new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
+                trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+                player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, new DefaultLoadControl(),
+                        drmSessionManager, extensionRendererMode);
+                player.addListener(this);
+
+                eventLogger = new EventLogger(trackSelector);
+                player.addListener(eventLogger);
+                player.setAudioDebugListener(eventLogger);
+                player.setVideoDebugListener(eventLogger);
+                player.setMetadataOutput(eventLogger);
+
+                player.setPlayWhenReady(shouldAutoPlay);
+                playerNeedsSource = true;
             }
-
-            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode =
-                    ((TLiveApplication) getApplication()).useExtensionRenderers()
-                            ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
-                            : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
-                            : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
-            TrackSelection.Factory videoTrackSelectionFactory =
-                    new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
-            trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-            player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, new DefaultLoadControl(),
-                    drmSessionManager, extensionRendererMode);
-            player.addListener(this);
-
-            eventLogger = new EventLogger(trackSelector);
-            player.addListener(eventLogger);
-            player.setAudioDebugListener(eventLogger);
-            player.setVideoDebugListener(eventLogger);
-            player.setMetadataOutput(eventLogger);
-
-            player.setPlayWhenReady(shouldAutoPlay);
-            playerNeedsSource = true;
+            setplayerUrl(paramIntent);
         }
-        setplayerUrl(paramIntent);
+
+
+        showNotifiction();
 
     }
     private void setplayerUrl(Intent paramIntent){
@@ -261,17 +287,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
                 String uri = paramIntent.getStringExtra(ExoConstants.PLAY_URL);
                 uris = new Uri[]{Uri.parse(uri),Uri.parse(ExoConstants.PLAY_URL_NAME)};
                 extensions = new String[]{uri,ExoConstants.PLAY_URL_NAME};
-            }/*else if (ExoConstants.ACTION_PLAY.equals(str1)){
-                String[] uriStrings = paramIntent.getStringArrayExtra(ExoConstants.URI_LIST_EXTRA);
-                uris = new Uri[uriStrings.length];
-                for (int i = 0; i < uriStrings.length; i++) {
-                    uris[i] = Uri.parse(uriStrings[i]);
-                }
-                extensions = paramIntent.getStringArrayExtra(ExoConstants.EXTENSION_LIST_EXTRA);
-                if (extensions == null) {
-                    extensions = new String[uriStrings.length];
-                }
-            }*/ else {
+            }else {
                 showToast(getString(R.string.unexpected_intent_action, paramIntent.getAction()));
                 return;
             }
@@ -482,4 +498,113 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
     }
 
 
+        private void showNotifiction(){
+
+            android.support.v4.app. NotificationCompat.Builder mBuilder = new android.support.v4.app.NotificationCompat.Builder(this);
+
+
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setComponent(new ComponentName("example.com.sunshine", "example.com.sunshine.download.Home.Main111Activity"));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notfication_activity);//RemoveViews所加载的布局文件
+            remoteViews.setTextViewText(R.id.txt_notifyMusicName, "这是一个Test");//设置文本内容
+            remoteViews.setTextColor(R.id.txt_notifyNickName, Color.parseColor("#abcdef"));//设置文本颜色
+            remoteViews.setImageViewResource(R.id.img_notifyClose, R.mipmap.notify_btn_close);//设置图片
+            boolean playing = player != null && player.getPlayWhenReady();
+            if (playing){
+                remoteViews.setImageViewResource(R.id.img_notifyPlayOrPause,R.drawable.notify_btn_light_pause2_normal_xml);
+            }else{
+                remoteViews.setImageViewResource(R.id.img_notifyPlayOrPause,R.drawable.notify_btn_dark_pause_normal_xml);
+            }
+            remoteViews.setOnClickPendingIntent(R.id.img_notifyNext,
+                    PendingIntent.getBroadcast(this, 0, new Intent(ACTION_NEXT_RADIO), 0));
+
+
+            remoteViews.setOnClickPendingIntent(R.id.img_notifyPlayOrPause,
+                    PendingIntent.getBroadcast(this, 0, new Intent(ACTION_PLAY_ONLINE), 0));
+
+
+            mBuilder.setContentTitle("WonderBuy")//设置通知栏标题
+                    .setContentText("床前明月光，疑是地上霜。举头望明月，低头思故乡。--李白")
+                    .setContentIntent(contentIntent)
+                    .setTicker("订单详情")
+                    .setWhen(System.currentTimeMillis())
+                    .setPriority(Notification.PRIORITY_DEFAULT)
+                    .setAutoCancel(true)
+                    .setOngoing(false)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.notify_btn_close))
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentInfo("订单详情").setContent(remoteViews);
+
+
+//            mNotificationManager.notify(requestCode, mBuilder.mNotification);
+            startForeground(requestCode, mBuilder.mNotification);
+        }
+
+    private void registerPlayControlReceiver() {
+        unregisterPlayControlReceiver();
+
+        mPlayControlReceiver = new HeadsetReceiver();
+        IntentFilter m_IntentFilter = new IntentFilter();
+        m_IntentFilter.addAction(ACTION_PLAY_ONLINE);
+        m_IntentFilter.addAction(ACTION_NEXT_RADIO);
+//        m_IntentFilter.addAction(ACTION_PREVIOUS_RADIO);
+//        m_IntentFilter.addAction(ACTION_COLLECT_RADIO);
+//        m_IntentFilter.addAction(CollectionManager.ACTION_COLLECTION_UPDATE);
+//        m_IntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+
+        registerReceiver(mPlayControlReceiver, m_IntentFilter);
+    }
+
+    private void unregisterPlayControlReceiver() {
+        if (mPlayControlReceiver != null) {
+            unregisterReceiver(mPlayControlReceiver);
+            mPlayControlReceiver = null;
+        }
+    }
+
+    private BroadcastReceiver mPlayControlReceiver = null;
+    public static final String ACTION_PLAY_ONLINE = "cn.cnr.fm.action.playonline";
+
+    public static final String ACTION_NEXT_RADIO = "cn.cnr.fm.action.next";
+
+//    public static final String ACTION_EXIT_RADIO = "cn.cnr.fm.action.exit";
+//    public static final String ACTION_UPDATEUI = "cn.cnr.fm.action.updateui";
+//    public static final String ACTION_PREVIOUS_RADIO = "cn.cnr.fm.action.previous";
+//    public static final String ACTION_COLLECT_RADIO = "cn.cnr.fm.action.collect";
+
+    private class HeadsetReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            boolean playing = player != null && player.getPlayWhenReady();
+            if (action.equals(ACTION_PLAY_ONLINE)) {
+
+                if (playing) {
+                   player.setPlayWhenReady(false);
+                } else {
+                    player.setPlayWhenReady(true);
+                }
+            } else if (action.equals(ACTION_NEXT_RADIO)) {
+                next();
+            }
+            showNotifiction();
+            /*else if (action.equals(ACTION_PREVIOUS_RADIO)) {
+                playPreviousData();
+            } else if (action.equals(ACTION_COLLECT_RADIO)) {
+                doCollect();
+            } else if (action.equals(CollectionManager.ACTION_COLLECTION_UPDATE)) {
+                try {
+                    showNotification();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }*/
+
+        }
+    }
 }

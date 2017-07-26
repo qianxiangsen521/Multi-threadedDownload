@@ -37,7 +37,6 @@ public class HeaderPagerAdapter extends PagerAdapter {
 
 
     public ArrayList<RadioInfo> radioInfos;
-    // Context context;
     private PopularFragment homeFragment;
     private RadioInfo radioInfo;
     private View imageview;
@@ -56,7 +55,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
 //                        DetailPlayerActivity.lanuchActivity(homeFragment.getActivity(), radioInfo);
                         // homeFragment.startAnimation(imageview);
                     } else {
-                        Toast.makeText(homeFragment.getActivity(), "请求播放地址错误", 0)
+                        Toast.makeText(homeFragment.getActivity(), "请求播放地址错误", Toast.LENGTH_LONG)
                                 .show();
                     }
                     break;
@@ -107,7 +106,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
                     Toast.makeText(
                             homeFragment.getActivity(),
                             homeFragment.getActivity().getResources()
-                                    .getString(R.string.network_error), 0)
+                                    .getString(R.string.network_error), Toast.LENGTH_LONG)
                             .show();
                     return;
                 }
@@ -137,7 +136,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
                             radioInfo.setAlbumId(Integer.parseInt(aid));
                         }
                     }
-                    Util.setIntnetPlay(homeFragment.getActivity());
+                    Util.setIntnetPlay(homeFragment.getActivity().getSupportFragmentManager(),R.id.fragment_play);
 //                    DetailPlayerActivity.lanuchActivity(homeFragment.getActivity(), radioInfo);
                 }
             }

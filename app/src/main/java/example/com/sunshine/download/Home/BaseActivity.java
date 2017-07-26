@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import example.com.sunshine.download.Fragment.BaseFragment;
 import example.com.sunshine.download.Http.HttpCallback;
 import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.Utils.ToastUtil;
@@ -246,5 +247,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     public void UiError() {
 
+    }
+
+    protected void addFragment(int fragment_full, BaseFragment fragment) {
+        if (fragment != null) {
+           getSupportFragmentManager().beginTransaction()
+                    .replace(fragment_full, fragment, fragment.getClass().getSimpleName())
+                    .addToBackStack(fragment.getClass().getSimpleName())
+                    .commitAllowingStateLoss();
+        }
     }
 }

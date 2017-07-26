@@ -28,6 +28,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>p
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
+    <uses-feature android:glEsVersion="0x00010000"/>
     <application
         android:name=".download.Application.TLiveApplication"
         android:allowBackup="true"
@@ -52,6 +53,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             >
+
+        </activity>
+        <activity android:name=".Exo.dataBinding.UserInfoActivity">
 
         </activity>
         <activity android:name=".download.DownloadActivity"

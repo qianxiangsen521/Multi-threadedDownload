@@ -1,7 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    android:id="@+id/content_notfication"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/img_notifyIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
+        android:paddingTop="3.0dip"
+        android:layout_toRightOf="@+id/control_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:id="@+id/control_bar"
+        android:paddingTop="3.0dip"
+        android:paddingBottom="8.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="50.0dip"
+        android:layout_marginTop="5.0dip"
+        >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:src="@drawable/notify_btn_dark_prev_normal_xml"
+            android:scaleType="fitCenter"
+            android:layout_toLeftOf="@+id/img_notifyPlayOrPause"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/pre_sound" >
+            <TextView
+                android:textAppearance="@style/NotificationTitle"
+                android:textSize="15.0sp"
+                android:ellipsize="end"
+                android:id="@+id/txt_notifyMusicName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:text="@string/ximalaya_slogan"
+                android:maxLines="1"
+
+                android:layout_alignParentTop="true" />
+            <TextView
+                android:textAppearance="@style/NotificationText"
+                android:textSize="12.0sp"
+                android:gravity="left"
+                android:id="@+id/txt_notifyNickName"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/ximalaya"
+                android:maxLines="1"
+                />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_notifyPlayOrPause"
+            android:layout_width="48.0dip"
+            android:layout_height="48.0dip"
+            android:src="@drawable/notify_btn_dark_pause_normal_xml"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/start_play" />
+        <ImageView
+            android:id="@+id/img_notifyNext"
+            android:layout_width="48.0dip"
+            android:layout_height="48.0dip"
+            android:src="@drawable/notify_btn_dark_next_normal_xml"
+            android:scaleType="fitCenter"
+            android:layout_toRightOf="@+id/img_notifyPlayOrPause"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/next_sound" />
+
+        <ImageView
+            android:id="@+id/img_notifyClose"
+            android:paddingRight="4.0dip"
+            android:layout_width="35.0dip"
+            android:layout_height="25.0dip"
+            android:layout_marginRight="0.0dip"
+            android:src="@mipmap/notify_btn_close"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/close" />
+    </LinearLayout>
 </LinearLayout>

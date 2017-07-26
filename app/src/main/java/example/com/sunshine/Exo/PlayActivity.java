@@ -1,26 +1,14 @@
 package example.com.sunshine.Exo;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.service.notification.StatusBarNotification;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -40,14 +28,14 @@ import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.R;
-import example.com.sunshine.download.Home.Main111Activity;
+import example.com.sunshine.download.Fragment.BaseFragment;
 import example.com.sunshine.fragment.AudioVisualizationFragment;
 
 /**
  * Created by qianxiangsen on 2017/7/11.
  */
 
-public class PlayActivity extends AppCompatActivity implements View.OnClickListener,SeekBar.OnSeekBarChangeListener {
+public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChangeListener {
 
 
     private static final int PROGRESS_BAR_MAX = 1000;
@@ -79,25 +67,28 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     private Animation operatingAnim;
 
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_activity);
-        ButterKnife.bind(this);
-        Intent intent  = getIntent();
+    protected int getLayoutId() {
+        return R.layout.player_activity;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState, View rootView) {
+        ButterKnife.bind(this,rootView);
         formatBuilder = new StringBuilder();
         formatter = new Formatter(formatBuilder, Locale.getDefault());
         playInfo = new PlayInfo();
-        playerSeekBar = (SeekBar) findViewById(R.id.exo_progress);
-        nextButton = (ImageButton) findViewById(R.id.exo_next);
+        playerSeekBar = (SeekBar) rootView.findViewById(R.id.exo_progress);
+        nextButton = (ImageButton) rootView.findViewById(R.id.exo_next);
         if (nextButton != null) {
             nextButton.setOnClickListener(this);
         }
-        pauseButton = (ImageButton) findViewById(R.id.exo_pause);
+        pauseButton = (ImageButton) rootView.findViewById(R.id.exo_pause);
         if (pauseButton != null) {
             pauseButton.setOnClickListener(this);
         }
-        previousButton = (ImageButton)findViewById(R.id.exo_prev);
+        previousButton = (ImageButton)rootView.findViewById(R.id.exo_prev);
         if (previousButton != null) {
             previousButton.setOnClickListener(this);
         }
@@ -105,45 +96,51 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             playerSeekBar.setOnSeekBarChangeListener(this);
             playerSeekBar.setMax(PROGRESS_BAR_MAX);
         }
-        playButton = (ImageButton) findViewById(R.id.exo_play);
+        playButton = (ImageButton) rootView.findViewById(R.id.exo_play);
         if (playButton != null) {
             playButton.setOnClickListener(this);
         }
-        durationView = (TextView) findViewById(R.id.exo_duration);
-        positionView = (TextView) findViewById(R.id.exo_position);
+        durationView = (TextView) rootView.findViewById(R.id.exo_duration);
+        positionView = (TextView) rootView.findViewById(R.id.exo_position);
 
         if(mExitPlay != null){
             mExitPlay.setOnClickListener(this);
         }
-        example.com.sunshine.util.Util.addFragment(getSupportFragmentManager(),R.id.container,
+        example.com.sunshine.util.Util.addFragment(getChildFragmentManager(),R.id.container,
                 AudioVisualizationFragment.newInstance(),"AudioVisualizationFragment");
 
-        operatingAnim = AnimationUtils.loadAnimation(this, R.anim.anim_play);
+        operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.anim_play);
         LinearInterpolator lin = new LinearInterpolator();
         operatingAnim.setInterpolator(lin);
 
-        playInfo.setPlayUrl(intent.getStringExtra("url"));
-        PlayManager.play(this,playInfo);
+        Bundle bundle = getArguments();
+        playInfo.setPlayUrl(bundle.getString("url"));
+        PlayManager.play(mContext,playInfo);
+    }
+
+
+    @Override
+    protected void initData() {
 
     }
 
     @Override
-    public void onClick(View v) {
+    public void OnClick(View v) {
         switch (v.getId()){
             case R.id.exo_pause:
-                PlayManager.pause(this,playInfo);
+                PlayManager.pause(mContext,playInfo);
                 break;
             case R.id.exo_next:
-                PlayManager.next(this,playInfo);
+                PlayManager.next(mContext,playInfo);
                 break;
             case R.id.exo_prev:
-                PlayManager.previous(this,playInfo);
+                PlayManager.previous(mContext,playInfo);
                 break;
             case R.id.exo_play:
-                PlayManager.restart(this,playInfo);
+                PlayManager.restart(mContext,playInfo);
                 break;
             case R.id.exit_play:
-                finish();
+//                finish();
                 break;
         }
     }
@@ -224,9 +221,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             positionView.setText(stringForTime(event.getmCurrentPosition()));
         }
 
-
-
-
     }
 
     @Override
@@ -243,7 +237,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             }
             if (!dragging) {
                 playInfo.setPosition(position);
-                PlayManager.seek(this,playInfo);
+                PlayManager.seek(mContext,playInfo);
             }
         }
     }
@@ -253,7 +247,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public void onStopTrackingTouch(SeekBar seekBar) {
         dragging = false;
         playInfo.setPosition(positionValue(playerSeekBar.getProgress()));
-        PlayManager.seek(this,playInfo);
+        PlayManager.seek(mContext,playInfo);
     }
 
     private int progressBarValue(long position) {
@@ -290,11 +284,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.slide_bottom, R.anim.slide_top_bottom);
-    }
     private void startPlayAnimation() {
 
         openPlayer.startAnimation(operatingAnim);
@@ -304,5 +293,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private void stopPlayAnimation() {
 
         openPlayer.clearAnimation();
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        if (enter) {
+            return AnimationUtils.loadAnimation(mContext, R.anim.slide_botton_bottom);
+        } else {
+            return AnimationUtils.loadAnimation(mContext, R.anim.slide_top_bottom);
+        }
     }
 }

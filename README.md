@@ -1,10 +1,14 @@
-# 多线程下载项目
+
+# 高仿喜马拉雅 && 多线程下载项目
+
+仿喜马拉野UI
+![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif)
 
 本项目是一个展示多线程下载的项目，使用线程池(Executors.newFixedThreadPool(2))对线程的管理，支持断点续传，第一个版本默认可以两个线程同时下载。
 
 效果图
 
-![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif)
+
 ![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/down1.gif)  
 
 用法

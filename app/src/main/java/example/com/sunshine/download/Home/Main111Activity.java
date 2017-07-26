@@ -1,9 +1,15 @@
 package example.com.sunshine.download.Home;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,6 +18,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
 
@@ -23,9 +30,13 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.Exo.ExoConstants;
+import example.com.sunshine.Exo.ExoService;
 import example.com.sunshine.Exo.PlayActivity;
+import example.com.sunshine.Exo.PlayInfo;
+import example.com.sunshine.Exo.PlayManager;
 import example.com.sunshine.R;
 import example.com.sunshine.dagger.ActivityMobule;
 import example.com.sunshine.dagger.DaggerActivityComponent;
@@ -34,6 +45,7 @@ import example.com.sunshine.download.Fragment.DiscoverFragment;
 import example.com.sunshine.download.Fragment.HomeFragment;
 import example.com.sunshine.download.Fragment.SubscriptionFragment;
 import example.com.sunshine.download.Fragment.UserFragment;
+import example.com.sunshine.util.Util;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
@@ -77,6 +89,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
 
     private Animation operatingAnim;
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.act_main;
@@ -117,6 +130,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         radioButton3.setOnClickListener(this);
         radioButton4.setOnClickListener(this);
         openPlayer.setOnClickListener(this);
+
     }
 
     @Override
@@ -189,10 +203,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
                 switchFragment(3, false);
                 break;
             case R.id.common_playing_player:
-                Intent intent = new Intent(this, PlayActivity.class);
-                intent.putExtra("url",ExoConstants.PLAY_URL_NAME);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_botton_bottom,R.anim.slide_bottom);
+                Util.setIntnetPlay(getSupportFragmentManager(),R.id.fragment_play);
                 break;
         }
     }
@@ -272,6 +283,9 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         }
     }
 
+
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -293,4 +307,5 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         super.onDestroy();
 
     }
+
 }

@@ -3,12 +3,16 @@ package example.com.sunshine.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+
+import com.google.android.exoplayer2.C;
 
 import example.com.sunshine.Exo.ExoConstants;
 import example.com.sunshine.Exo.PlayActivity;
 import example.com.sunshine.R;
+import example.com.sunshine.download.Fragment.BaseFragment;
 import example.com.sunshine.fragment.AudioVisualizationFragment;
 
 /**
@@ -36,10 +40,21 @@ public class Util {
             fragmentManager.beginTransaction().show(fragment).commit();
         }
     }
-    public static void setIntnetPlay(Context context){
-        Intent intent = new Intent(context, PlayActivity.class);
-        intent.putExtra("url", ExoConstants.PLAY_URL_NAME);
-        context.startActivity(intent);
-        ((Activity)context).overridePendingTransition(R.anim.slide_botton_bottom,R.anim.slide_bottom);
+    public static void setIntnetPlay(FragmentManager fragmentManager,int fragment_container){
+        PlayActivity fragment = new PlayActivity();
+        Bundle bundle = new Bundle();
+        bundle.putString("url",ExoConstants.PLAY_URL_NAME);
+        fragment.setArguments(bundle);
+        addFragment(fragment_container,fragment,fragmentManager);
     }
+
+    public static void addFragment(int fragment_full, BaseFragment fragment,FragmentManager fragmentManager) {
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(fragment_full, fragment, fragment.getClass().getSimpleName())
+                    .addToBackStack(fragment.getClass().getSimpleName())
+                    .commitAllowingStateLoss();
+        }
+    }
+
 }

@@ -185,7 +185,7 @@ public class PopularFragment extends BaseFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Util.setIntnetPlay(mContext);
+            Util.setIntnetPlay(getActivity().getSupportFragmentManager(),R.id.fragment_play);
 
         }
     }
