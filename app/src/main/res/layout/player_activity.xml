@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:layoutDirection="ltr"
-    android:background="#CC000000"
+    android:background="@color/av_color_bg"
     android:orientation="vertical">
 
   <FrameLayout
@@ -129,51 +129,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_below="@+id/time"
 
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="15dp"
-        android:layout_below="@+id/time"
         android:paddingTop="15dp">
 
       <ImageButton
-          android:id="@id/exo_rew"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@mipmap/loop"
-          />
+          android:background="@mipmap/loop" />
+
       <ImageButton
           android:id="@id/exo_prev"
           style="@style/ExoMediaButton.Previous" />
-
 
 
       <ImageButton
           android:id="@id/exo_play"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@mipmap/play"
-          />
+          android:background="@mipmap/play" />
 
       <ImageButton
           android:id="@id/exo_pause"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@mipmap/pause"
-          />
+          android:background="@mipmap/pause" />
 
       <ImageButton
           android:id="@id/exo_next"
           style="@style/ExoMediaButton.Next" />
 
       <ImageButton
-          android:id="@id/exo_ffwd"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@mipmap/random"
-          />
+          android:background="@mipmap/random" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

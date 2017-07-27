@@ -106,8 +106,8 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
         if(mExitPlay != null){
             mExitPlay.setOnClickListener(this);
         }
-        example.com.sunshine.util.Util.addFragment(getChildFragmentManager(),R.id.container,
-                AudioVisualizationFragment.newInstance(),"AudioVisualizationFragment");
+//        example.com.sunshine.util.Util.addFragment(getChildFragmentManager(),R.id.container,
+//                AudioVisualizationFragment.newInstance(),"AudioVisualizationFragment");
 
         operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.anim_play);
         LinearInterpolator lin = new LinearInterpolator();

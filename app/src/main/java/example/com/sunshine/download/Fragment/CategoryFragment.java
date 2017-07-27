@@ -89,6 +89,7 @@ public class CategoryFragment extends BaseFragment {
     @Override
     public void onDataReady(BaseResponse response) {
         if (response instanceof CategoryResponse) {
+            refreshView();
             CategoryResponse topResponse = (CategoryResponse) response;
             ArrayList<CategoryInfoList> categoryList = topResponse.getCategoryList();
             if (StringTool.isListValidate(categoryList)) {
@@ -100,7 +101,6 @@ public class CategoryFragment extends BaseFragment {
                 //绑定节目数据
                 cateoryAdapter.setNewData(data);
             }
-            refreshView();
         }
     }
 

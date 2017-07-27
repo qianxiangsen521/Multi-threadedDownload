@@ -497,7 +497,6 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
-
         private void showNotifiction(){
 
             android.support.v4.app. NotificationCompat.Builder mBuilder = new android.support.v4.app.NotificationCompat.Builder(this);
@@ -511,7 +510,6 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notfication_activity);//RemoveViews所加载的布局文件
             remoteViews.setTextViewText(R.id.txt_notifyMusicName, "这是一个Test");//设置文本内容
             remoteViews.setTextColor(R.id.txt_notifyNickName, Color.parseColor("#abcdef"));//设置文本颜色
-            remoteViews.setImageViewResource(R.id.img_notifyClose, R.mipmap.notify_btn_close);//设置图片
             boolean playing = player != null && player.getPlayWhenReady();
             if (playing){
                 remoteViews.setImageViewResource(R.id.img_notifyPlayOrPause,R.drawable.notify_btn_light_pause2_normal_xml);
@@ -525,6 +523,9 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
             remoteViews.setOnClickPendingIntent(R.id.img_notifyPlayOrPause,
                     PendingIntent.getBroadcast(this, 0, new Intent(ACTION_PLAY_ONLINE), 0));
 
+            remoteViews.setImageViewResource(R.id.exit, R.mipmap.notify_btn_close);
+            remoteViews.setOnClickPendingIntent(R.id.exit,
+                    PendingIntent.getBroadcast(this, 0, new Intent(ACTION_EXIT_RADIO), 0));
 
             mBuilder.setContentTitle("WonderBuy")//设置通知栏标题
                     .setContentText("床前明月光，疑是地上霜。举头望明月，低头思故乡。--李白")
@@ -551,10 +552,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         IntentFilter m_IntentFilter = new IntentFilter();
         m_IntentFilter.addAction(ACTION_PLAY_ONLINE);
         m_IntentFilter.addAction(ACTION_NEXT_RADIO);
-//        m_IntentFilter.addAction(ACTION_PREVIOUS_RADIO);
-//        m_IntentFilter.addAction(ACTION_COLLECT_RADIO);
-//        m_IntentFilter.addAction(CollectionManager.ACTION_COLLECTION_UPDATE);
-//        m_IntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+         m_IntentFilter.addAction(ACTION_EXIT_RADIO);
 
         registerReceiver(mPlayControlReceiver, m_IntentFilter);
     }
@@ -571,10 +569,8 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     public static final String ACTION_NEXT_RADIO = "cn.cnr.fm.action.next";
 
-//    public static final String ACTION_EXIT_RADIO = "cn.cnr.fm.action.exit";
-//    public static final String ACTION_UPDATEUI = "cn.cnr.fm.action.updateui";
-//    public static final String ACTION_PREVIOUS_RADIO = "cn.cnr.fm.action.previous";
-//    public static final String ACTION_COLLECT_RADIO = "cn.cnr.fm.action.collect";
+    public static final String ACTION_EXIT_RADIO = "cn.cnr.fm.action.exit";
+
 
     private class HeadsetReceiver extends BroadcastReceiver {
 
@@ -591,19 +587,11 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
                 }
             } else if (action.equals(ACTION_NEXT_RADIO)) {
                 next();
-            }
+            } else if (action.equals(ACTION_EXIT_RADIO)) {
+                 stopSelf();
+                System.exit(0);
+             }
             showNotifiction();
-            /*else if (action.equals(ACTION_PREVIOUS_RADIO)) {
-                playPreviousData();
-            } else if (action.equals(ACTION_COLLECT_RADIO)) {
-                doCollect();
-            } else if (action.equals(CollectionManager.ACTION_COLLECTION_UPDATE)) {
-                try {
-                    showNotification();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }*/
 
         }
     }

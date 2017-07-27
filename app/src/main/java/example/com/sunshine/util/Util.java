@@ -48,12 +48,24 @@ public class Util {
         addFragment(fragment_container,fragment,fragmentManager);
     }
 
-    public static void addFragment(int fragment_full, BaseFragment fragment,FragmentManager fragmentManager) {
-        if (fragment != null) {
-            fragmentManager.beginTransaction()
-                    .replace(fragment_full, fragment, fragment.getClass().getSimpleName())
-                    .addToBackStack(fragment.getClass().getSimpleName())
-                    .commitAllowingStateLoss();
+    public static void addFragment(int fragment_full, BaseFragment fragments,FragmentManager fragmentManager) {
+
+        Fragment fragmentNow = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName()
+        );
+        if (fragmentNow != null) {
+
+            fragmentManager.beginTransaction().hide(fragmentNow).commit();
+        }
+        Fragment fragment = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName());
+        if (fragment == null) {
+            fragment = fragments;
+            fragmentManager
+                    .beginTransaction()
+                    .add(fragment_full, fragment,
+                            fragments.getClass().getSimpleName()).addToBackStack(fragments.getClass().getSimpleName())
+                    .commit();
+        } else {
+            fragmentManager.beginTransaction().show(fragment).commit();
         }
     }
 

@@ -3,13 +3,13 @@
     android:layout_width="fill_parent"
     android:id="@+id/item_root_view"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_rv_item"
+
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:padding="5dp">
-
+    <!--android:background="@drawable/selector_rv_item"-->
     <ImageView
         android:id="@+id/iv_album_complete"
         android:layout_width="50dp"

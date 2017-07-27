@@ -81,7 +81,7 @@
             android:contentDescription="@string/next_sound" />
 
         <ImageView
-            android:id="@+id/img_notifyClose"
+            android:id="@+id/exit"
             android:paddingRight="4.0dip"
             android:layout_width="35.0dip"
             android:layout_height="25.0dip"

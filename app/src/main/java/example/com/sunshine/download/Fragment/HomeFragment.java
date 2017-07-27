@@ -1,5 +1,6 @@
 package example.com.sunshine.download.Fragment;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -122,7 +123,8 @@ public class HomeFragment extends BaseFragment{
 
         switch (v.getId()){
             case R.id.ib_download:
-                addFragment(R.id.fragment_full,downFragment);
+
+                addFragment(R.id.fragment_full,downFragment,getActivity().getSupportFragmentManager());
                 break;
         }
 

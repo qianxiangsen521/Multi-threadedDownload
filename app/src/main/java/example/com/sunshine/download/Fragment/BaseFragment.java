@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,13 +82,24 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         initData();
     }
 
-    //添加fragment
-    protected void addFragment(int fragment_full, BaseFragment fragment) {
-        if (fragment != null) {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(fragment_full, fragment, fragment.getClass().getSimpleName())
-                    .addToBackStack(fragment.getClass().getSimpleName())
-                    .commitAllowingStateLoss();
+    public static void addFragment(int fragment_full, BaseFragment fragments,FragmentManager fragmentManager) {
+
+        Fragment fragmentNow = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName()
+        );
+        if (fragmentNow != null) {
+
+            fragmentManager.beginTransaction().hide(fragmentNow).commit();
+        }
+        Fragment fragment = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName());
+        if (fragment == null) {
+            fragment = fragments;
+            fragmentManager
+                    .beginTransaction()
+                    .add(fragment_full, fragment,
+                            fragments.getClass().getSimpleName()).addToBackStack(fragments.getClass().getSimpleName())
+                    .commit();
+        } else {
+            fragmentManager.beginTransaction().show(fragment).commit();
         }
     }
 

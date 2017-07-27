@@ -19,5 +19,7 @@ public class Configuration {
     // 首页其他
     public static final String HOME_BOTTOM_URL = host + "recommend/";
 
+    public static final String HOME_XIMALAYAFM_URL ="http://180.153.255.6/mobile/discovery/v3/recommend/ts-1501140640088?appid=0&categoryId=-2&code=43_110000_1100&device=android&deviceId=00000000-2420-49f2-0000-0000003652ee&includeActivity=true&includeSpecial=true&inreview=false&network=wifi&operator=3&scale=1&version=6.3.9";
+
 
 }
