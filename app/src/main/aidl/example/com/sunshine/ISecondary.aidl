@@ -16,22 +16,21 @@
 
 package example.com.sunshine;
 
-import example.com.sunshine.IRemoteServiceCallback;
-
 /**
- * Example of defining an interface for calling on to a remote service
- * (running in another process).
+ * Example of a secondary interface associated with a service.  (Note that
+ * the interface itself doesn't impact, it is just a matter of how you
+ * retrieve it from the service.)
  */
-interface IRemoteService {
+interface ISecondary {
     /**
-     * Often you want to allow a service to call back to its clients.
-     * This shows how to do so, by registering a callback interface with
-     * the service.
+     * Request the PID of this service, to do evil things with it.
      */
-    void registerCallback(IRemoteServiceCallback cb);
+    int getPid();
     
     /**
-     * Remove a previously registered callback interface.
+     * This demonstrates the basic types that you can use as parameters
+     * and return values in AIDL.
      */
-    void unregisterCallback(IRemoteServiceCallback cb);
+    void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat,
+            double aDouble, String aString);
 }

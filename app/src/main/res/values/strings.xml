@@ -266,4 +266,5 @@ Varial deck switch 1080 bail betty cab flip. Transfer wall ride Guy Mariano bear
     <string name="pre_sound">上一首</string>
     <string name="start_play">开始播放</string>
     <string name="next_sound">下一首</string>
+    <string name="remote_service_started">Remote service has started</string>
 </resources>

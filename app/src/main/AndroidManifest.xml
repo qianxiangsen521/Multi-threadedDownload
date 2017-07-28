@@ -47,6 +47,7 @@
             </intent-filter>
         </activity>
         <service android:name=".Exo.ExoService"
+            android:process=":play"
             ></service>
 
         <activity android:name=".download.Home.Main111Activity"

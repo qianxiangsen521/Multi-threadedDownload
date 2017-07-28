@@ -3,6 +3,7 @@ package example.com.sunshine.download.Home;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -37,6 +39,7 @@ import example.com.sunshine.Exo.ExoService;
 import example.com.sunshine.Exo.PlayActivity;
 import example.com.sunshine.Exo.PlayInfo;
 import example.com.sunshine.Exo.PlayManager;
+import example.com.sunshine.IRemoteService;
 import example.com.sunshine.R;
 import example.com.sunshine.dagger.ActivityMobule;
 import example.com.sunshine.dagger.DaggerActivityComponent;
@@ -110,6 +113,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
             mFragCurrentIndex = savedInstanceState.getInt("curChoice", 0);
         }
 
+        PlayManager.getInstance().bindPlayService(this);
         //移除fragment覆盖部分
         getWindow().setBackgroundDrawable(null);
 
@@ -305,7 +309,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
-
+        PlayManager.getInstance().unBindPlayService(this);
     }
 
 }

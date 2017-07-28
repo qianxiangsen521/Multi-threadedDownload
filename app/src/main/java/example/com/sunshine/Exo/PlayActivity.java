@@ -2,7 +2,16 @@ package example.com.sunshine.Exo;
 
 import android.annotation.TargetApi;
 import android.app.NotificationManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.Util;
@@ -27,6 +37,9 @@ import butterknife.ButterKnife;
 import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
+import example.com.sunshine.IRemoteService;
+import example.com.sunshine.IRemoteServiceCallback;
+import example.com.sunshine.ISecondary;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Fragment.BaseFragment;
 import example.com.sunshine.fragment.AudioVisualizationFragment;
@@ -68,6 +81,66 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     private Animation operatingAnim;
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayEvent(PlayEvent event){
+        playing = event.isPlayWhenReady();
+        boolean requestPlayPauseFocus = false;
+        if (playButton != null) {
+            requestPlayPauseFocus |= playing && playButton.isFocused();
+            playButton.setVisibility(playing ? View.GONE : View.VISIBLE);
+        }
+        if (pauseButton != null) {
+            requestPlayPauseFocus |= !playing && pauseButton.isFocused();
+            pauseButton.setVisibility(!playing ? View.GONE : View.VISIBLE);
+        }
+        if (requestPlayPauseFocus) {
+            requestPlayPauseFocus();
+        }
+        if (playing){
+            startPlayAnimation();
+        }else {
+            stopPlayAnimation();
+        }
+
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNextEvent(NextEvent event){
+        setButtonEnabled(event.isEnablePrevious() , previousButton);
+        setButtonEnabled(event.isEnableNext(), nextButton);
+        if (playerSeekBar != null) {
+            playerSeekBar.setEnabled(event.isSeekable());
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event){
+        totalDuration = event.getmDuration();
+        if (playerSeekBar != null) {
+            if (!dragging) {
+                playerSeekBar.setProgress(progressBarValue(event.getmCurrentPosition()));
+            }
+            playerSeekBar.setSecondaryProgress(progressBarValue(event.getmBufferedPosition()));
+        }
+        if (durationView != null) {
+            durationView.setText(stringForTime(totalDuration));
+        }
+        if (positionView != null && !dragging) {
+            positionView.setText(stringForTime(event.getmCurrentPosition()));
+        }
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.player_activity;
@@ -76,6 +149,7 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     @Override
     protected void initView(Bundle savedInstanceState, View rootView) {
         ButterKnife.bind(this,rootView);
+
         formatBuilder = new StringBuilder();
         formatter = new Formatter(formatBuilder, Locale.getDefault());
         playInfo = new PlayInfo();
@@ -116,8 +190,9 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
         Bundle bundle = getArguments();
         playInfo.setPlayUrl(bundle.getString("url"));
         PlayManager.play(mContext,playInfo);
-    }
 
+
+    }
 
     @Override
     protected void initData() {
@@ -145,36 +220,6 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlayEvent(PlayEvent event){
-        playing = event.isPlayWhenReady();
-        boolean requestPlayPauseFocus = false;
-        if (playButton != null) {
-            requestPlayPauseFocus |= playing && playButton.isFocused();
-            playButton.setVisibility(playing ? View.GONE : View.VISIBLE);
-        }
-        if (pauseButton != null) {
-            requestPlayPauseFocus |= !playing && pauseButton.isFocused();
-            pauseButton.setVisibility(!playing ? View.GONE : View.VISIBLE);
-        }
-        if (requestPlayPauseFocus) {
-            requestPlayPauseFocus();
-        }
-        if (playing){
-            startPlayAnimation();
-        }else {
-            stopPlayAnimation();
-        }
-
-    }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNextEvent(NextEvent event){
-        setButtonEnabled(event.isEnablePrevious() , previousButton);
-        setButtonEnabled(event.isEnableNext(), nextButton);
-        if (playerSeekBar != null) {
-            playerSeekBar.setEnabled(event.isSeekable());
-        }
-    }
 
     private void setButtonEnabled(boolean enabled, View view) {
         if (view == null) {
@@ -204,24 +249,6 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     }
 
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event){
-        totalDuration = event.getmDuration();
-        if (playerSeekBar != null) {
-            if (!dragging) {
-                playerSeekBar.setProgress(progressBarValue(event.getmCurrentPosition()));
-            }
-            playerSeekBar.setSecondaryProgress(progressBarValue(event.getmBufferedPosition()));
-        }
-        if (durationView != null) {
-            durationView.setText(stringForTime(totalDuration));
-        }
-        if (positionView != null && !dragging) {
-            positionView.setText(stringForTime(event.getmCurrentPosition()));
-        }
-
-    }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
@@ -270,18 +297,6 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     }
     private long positionValue(int progress) {
         return totalDuration == C.TIME_UNSET ? 0 : ((totalDuration * progress) / PROGRESS_BAR_MAX);
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-
     }
 
     private void startPlayAnimation() {

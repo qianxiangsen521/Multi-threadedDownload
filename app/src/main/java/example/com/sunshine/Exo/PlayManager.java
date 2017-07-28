@@ -5,10 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
+
+import org.greenrobot.eventbus.EventBus;
+
+import example.com.sunshine.Exo.E.MessageEvent;
+import example.com.sunshine.Exo.E.NextEvent;
+import example.com.sunshine.Exo.E.PlayEvent;
+import example.com.sunshine.IRemoteService;
+import example.com.sunshine.IRemoteServiceCallback;
 
 /**
  * Created by qianxiangsen on 2017/7/11.
@@ -16,6 +25,61 @@ import com.google.android.exoplayer2.ExoPlayer;
 
 public class PlayManager  {
 
+
+    IRemoteService mService = null;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+            mService =   IRemoteService.Stub.asInterface(service);
+
+            try {
+                mService.registerCallback(mCallback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+
+    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub(){
+        @Override
+        public void NextEvent(boolean isSeekable, boolean enablePrevious, boolean enableNext) throws RemoteException {
+
+            EventBus.getDefault().post(new NextEvent(isSeekable,enablePrevious,enableNext));
+
+        }
+
+        @Override
+        public void MessageEvent(long mCurrentPosition, long mDuration, long mBufferedPosition) throws RemoteException {
+
+            EventBus.getDefault().post(new MessageEvent(mCurrentPosition,
+                    mDuration
+                    ,mBufferedPosition));
+
+        }
+
+        @Override
+        public void PlayEvent(boolean value) throws RemoteException {
+
+            EventBus.getDefault().post(new PlayEvent(value));
+        }
+    };
+
+    private static PlayManager gPlayManager;
+    public static PlayManager getInstance() {
+        if (gPlayManager == null) {
+            gPlayManager = new PlayManager();
+        }
+        return gPlayManager;
+    }
 
     public static void play(@NonNull Context context, PlayInfo playInfo){
         Intent i = new Intent(context, ExoService.class);
@@ -55,27 +119,16 @@ public class PlayManager  {
     }
 
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
-
-    private void bindPlayService(Context c) {
+    public void bindPlayService(Context c) {
         if (c != null) {
             Intent intent = new Intent(c, ExoService.class);
+            intent.setAction(IRemoteService.class.getName());
             c.startService(intent);
             c.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         }
     }
 
-    private void unBindPlayService(Context c) {
+    public void unBindPlayService(Context c) {
         if (c != null) {
             c.unbindService(mConnection);
             c.stopService(new Intent(c, ExoService.class));

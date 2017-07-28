@@ -16,22 +16,19 @@
 
 package example.com.sunshine;
 
-import example.com.sunshine.IRemoteServiceCallback;
-
 /**
- * Example of defining an interface for calling on to a remote service
- * (running in another process).
+ * Example of a callback interface used by IRemoteService to send
+ * synchronous notifications back to its clients.  Note that this is a
+ * one-way interface so the server does not block waiting for the client.
  */
-interface IRemoteService {
+oneway interface IRemoteServiceCallback {
     /**
-     * Often you want to allow a service to call back to its clients.
-     * This shows how to do so, by registering a callback interface with
-     * the service.
+     * Called when the service has a new value for you.
      */
-    void registerCallback(IRemoteServiceCallback cb);
-    
-    /**
-     * Remove a previously registered callback interface.
-     */
-    void unregisterCallback(IRemoteServiceCallback cb);
+    void PlayEvent(boolean value);
+
+    void MessageEvent(long mCurrentPosition,long mDuration,long mBufferedPosition);
+
+    void NextEvent(boolean isSeekable,boolean enablePrevious,boolean enableNext);
 }
+

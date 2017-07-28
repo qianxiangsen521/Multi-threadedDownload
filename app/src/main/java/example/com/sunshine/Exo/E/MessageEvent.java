@@ -19,6 +19,7 @@ public class MessageEvent {
 
     }
 
+
     public long getmBufferedPosition() {
         return mBufferedPosition;
     }
