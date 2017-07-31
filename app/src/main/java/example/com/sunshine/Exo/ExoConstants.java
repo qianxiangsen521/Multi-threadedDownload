@@ -8,6 +8,8 @@ public class ExoConstants {
 
     public static final String ACTION_SEEK = "seek";
     public static final String ACTION_PLAY = "play";
+
+    public static final String ACTION_VIEW_LIST = "playList";
     public static final String ACTION_PAUSE = "pause";
     public static final String ACTION_STOP = "stop";
     public static final String ACTION_NEXT = "next";
@@ -22,10 +24,14 @@ public class ExoConstants {
     public static final String DRM_KEY_REQUEST_PROPERTIES = "drm_key_request_properties";
     public static final String PREFER_EXTENSION_DECODERS = "prefer_extension_decoders";
 
+
+    public static final int ACTION_WIFI= 1;
+
+    public static final int ACTION_DOWN= 2;
     public static final String PLAY_URL = "playUrl";
 
     public static final String PLAY_POSTITION = "position";
 
     public static final String IMAGE_URL = "http://dl.sunshinefm.cn/mobileimg/application/cac/f49/5805ea42cd2dd.png";
-    public static final String PLAY_URL_NAME = "http://dl.sunshinefm.cn/yinpin_web3/2017/07/03/f89535a7f7005eff7a4e38f538696d1d.3gp";
+    public static final String PLAY_URL_NAME = "http://live.cc.52ytv.cn/jlzg_1/index.m3u8";
 }

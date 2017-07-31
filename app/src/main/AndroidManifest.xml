@@ -176,6 +176,13 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".Exo.ExitReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="cn.cnr.fm.action.exit" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

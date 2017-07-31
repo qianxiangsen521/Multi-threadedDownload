@@ -31,6 +31,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 
+import static android.os.Build.VERSION.SDK;
+
 /**
  * 启动页
  */
@@ -48,35 +50,47 @@ public class SplashActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        allPermissionsListener =
-                new CompositeMultiplePermissionsListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(Main111Activity.class);
-                                finish();
-                            }
-                        },2000);
-                    }
+//        if(Build.VERSION.SDK_INT > 23){
+            allPermissionsListener =
+                    new CompositeMultiplePermissionsListener(new MultiplePermissionsListener() {
+                        @Override
+                        public void onPermissionsChecked(MultiplePermissionsReport report) {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(Main111Activity.class);
+                                    finish();
+                                }
+                            },2000);
+                        }
 
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        SnackbarOnAnyDeniedMultiplePermissionsListener.Builder.with(rootView,
-                                R.string.all_permissions_denied_feedback)
-                                .withOpenSettingsButton(R.string.permission_rationale_settings_button_text)
-                                .build();
-                    }
-                });
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                            SnackbarOnAnyDeniedMultiplePermissionsListener.Builder.with(rootView,
+                                    R.string.all_permissions_denied_feedback)
+                                    .withOpenSettingsButton(R.string.permission_rationale_settings_button_text)
+                                    .build();
+                        }
+                    });
 
 
-        Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA
-                 ,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.MODIFY_AUDIO_SETTINGS
-                ,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)
-                .withListener(allPermissionsListener).check();
+            Dexter.withActivity(this)
+                    .withPermissions(Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA
+                            ,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO,
+                            Manifest.permission.MODIFY_AUDIO_SETTINGS
+                            ,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)
+                    .withListener(allPermissionsListener).check();
+       /* }else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(Main111Activity.class);
+                    finish();
+                }
+            },2000);
+        }*/
+
+
     }
 
 

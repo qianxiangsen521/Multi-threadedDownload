@@ -3,7 +3,7 @@
 
 
     <translate
-        android:duration="1000"
+        android:duration="@android:integer/config_longAnimTime"
 
         android:fromXDelta="100%p"
 

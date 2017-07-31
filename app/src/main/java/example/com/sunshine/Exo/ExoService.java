@@ -15,16 +15,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger;
-import android.os.Process;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -46,7 +40,6 @@ import com.google.android.exoplayer2.drm.UnsupportedDrmException;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
-import com.google.android.exoplayer2.metadata.emsg.EventMessage;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -65,8 +58,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -76,7 +67,6 @@ import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.IRemoteService;
 import example.com.sunshine.IRemoteServiceCallback;
-import example.com.sunshine.ISecondary;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Application.TLiveApplication;
 import example.com.sunshine.download.Home.Main111Activity;
@@ -212,6 +202,10 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        releasePlayer();
+
+        mainHandler.removeCallbacks(updateProgressAction);
         stopForeground(true);
 
         unregisterPlayControlReceiver();
@@ -219,6 +213,12 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
         mCallbacks.kill();
 
+        if (mHandler != null) {
+            mHandler.removeMessages(REPORT_PLAY);
+            mHandler.removeMessages(REPORT_MESSAGE);
+            mHandler.removeMessages(REPORT_NEXT);
+        }
+        mHandler = null;
     }
 
     @Override
@@ -290,93 +290,102 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
             player.setPlayWhenReady(true);
 
         }
-        if (str1.equals(ExoConstants.ACTION_PLAY)){
-            releasePlayer();
-            if (player == null) {
+        releasePlayer();
+        if (player == null) {
 
-                boolean preferExtensionDecoders = paramIntent.getBooleanExtra(ExoConstants.PREFER_EXTENSION_DECODERS, false);
-                UUID drmSchemeUuid = paramIntent.hasExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)
-                        ? UUID.fromString(paramIntent.getStringExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)) : null;
-                DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
-                if (drmSchemeUuid != null) {
-                    String drmLicenseUrl = paramIntent.getStringExtra(ExoConstants.DRM_LICENSE_URL);
-                    String[] keyRequestPropertiesArray = paramIntent.getStringArrayExtra(ExoConstants.DRM_KEY_REQUEST_PROPERTIES);
-                    Map<String, String> keyRequestProperties;
-                    if (keyRequestPropertiesArray == null || keyRequestPropertiesArray.length < 2) {
-                        keyRequestProperties = null;
-                    } else {
-                        keyRequestProperties = new HashMap<>();
-                        for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
-                            keyRequestProperties.put(keyRequestPropertiesArray[i],
-                                    keyRequestPropertiesArray[i + 1]);
-                        }
-                    }
-                    try {
-                        drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl,
-                                keyRequestProperties);
-                    } catch (UnsupportedDrmException e) {
-                        int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported
-                                : (e.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME
-                                ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
-                        showToast(errorStringId);
-                        return;
+            boolean preferExtensionDecoders = paramIntent.getBooleanExtra(ExoConstants.PREFER_EXTENSION_DECODERS, false);
+            UUID drmSchemeUuid = paramIntent.hasExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)
+                    ? UUID.fromString(paramIntent.getStringExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)) : null;
+            DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
+            if (drmSchemeUuid != null) {
+                String drmLicenseUrl = paramIntent.getStringExtra(ExoConstants.DRM_LICENSE_URL);
+                String[] keyRequestPropertiesArray = paramIntent.getStringArrayExtra(ExoConstants.DRM_KEY_REQUEST_PROPERTIES);
+                Map<String, String> keyRequestProperties;
+                if (keyRequestPropertiesArray == null || keyRequestPropertiesArray.length < 2) {
+                    keyRequestProperties = null;
+                } else {
+                    keyRequestProperties = new HashMap<>();
+                    for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
+                        keyRequestProperties.put(keyRequestPropertiesArray[i],
+                                keyRequestPropertiesArray[i + 1]);
                     }
                 }
-
-                @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode =
-                        ((TLiveApplication) getApplication()).useExtensionRenderers()
-                                ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
-                                : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
-                                : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
-                TrackSelection.Factory videoTrackSelectionFactory =
-                        new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
-                trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-                player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, new DefaultLoadControl(),
-                        drmSessionManager, extensionRendererMode);
-                player.addListener(this);
-
-                eventLogger = new EventLogger(trackSelector);
-                player.addListener(eventLogger);
-                player.setAudioDebugListener(eventLogger);
-                player.setVideoDebugListener(eventLogger);
-                player.setMetadataOutput(eventLogger);
-
-                player.setPlayWhenReady(shouldAutoPlay);
-                playerNeedsSource = true;
+                try {
+                    drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl,
+                            keyRequestProperties);
+                } catch (UnsupportedDrmException e) {
+                    int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported
+                            : (e.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME
+                            ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
+                    showToast(errorStringId);
+                    return;
+                }
             }
-            setplayerUrl(paramIntent);
+
+            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode =
+                    ((TLiveApplication) getApplication()).useExtensionRenderers()
+                            ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
+                            : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+                            : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
+            TrackSelection.Factory videoTrackSelectionFactory =
+                    new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
+            trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+            player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, new DefaultLoadControl(),
+                    drmSessionManager, extensionRendererMode);
+            player.addListener(this);
+
+            eventLogger = new EventLogger(trackSelector);
+            player.addListener(eventLogger);
+            player.setAudioDebugListener(eventLogger);
+            player.setVideoDebugListener(eventLogger);
+            player.setMetadataOutput(eventLogger);
+
+            player.setPlayWhenReady(shouldAutoPlay);
+            playerNeedsSource = true;
+            if (playerNeedsSource) {
+                Uri[] uris;
+                String[] extensions;
+                if (ExoConstants.ACTION_PLAY.equals(paramIntent.getAction())) {
+                    String uri = paramIntent.getStringExtra(ExoConstants.PLAY_URL);
+                    uris = new Uri[]{Uri.parse(uri),Uri.parse(ExoConstants.PLAY_URL_NAME)};
+                    extensions = new String[]{uri,ExoConstants.PLAY_URL_NAME};
+
+
+                } else if (ExoConstants.ACTION_VIEW_LIST.equals(paramIntent.getAction())) {
+                    String[] uriStrings = paramIntent.getStringArrayExtra(ExoConstants.URI_LIST_EXTRA);
+                    uris = new Uri[uriStrings.length];
+                    for (int i = 0; i < uriStrings.length; i++) {
+                        uris[i] = Uri.parse(uriStrings[i]);
+                    }
+                    extensions = paramIntent.getStringArrayExtra(ExoConstants.EXTENSION_LIST_EXTRA);
+                    if (extensions == null) {
+                        extensions = new String[uriStrings.length];
+                    }
+                }else {
+                    showToast(getString(R.string.unexpected_intent_action, paramIntent.getAction()));
+                    return;
+                }
+                MediaSource[] mediaSources = new MediaSource[uris.length];
+                for (int i = 0; i < uris.length; i++) {
+                    mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
+                }
+                MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0]
+                        : new ConcatenatingMediaSource(mediaSources);
+                boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
+                if (haveResumePosition) {
+                    player.seekTo(resumeWindow, resumePosition);
+                }
+                player.prepare(mediaSource, !haveResumePosition, false);
+                playerNeedsSource = false;
+            }
         }
 
 
         showNotifiction();
 
     }
-    private void setplayerUrl(Intent paramIntent){
-        if (playerNeedsSource) {
-            Uri[] uris;
-            String[] extensions;
-            if (ExoConstants.ACTION_PLAY.equals(paramIntent.getAction())) {
-                String uri = paramIntent.getStringExtra(ExoConstants.PLAY_URL);
-                uris = new Uri[]{Uri.parse(uri),Uri.parse(ExoConstants.PLAY_URL_NAME)};
-                extensions = new String[]{uri,ExoConstants.PLAY_URL_NAME};
-            }else {
-                showToast(getString(R.string.unexpected_intent_action, paramIntent.getAction()));
-                return;
-            }
-            MediaSource[] mediaSources = new MediaSource[uris.length];
-            for (int i = 0; i < uris.length; i++) {
-                mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
-            }
-            MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0]
-                    : new ConcatenatingMediaSource(mediaSources);
-            boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
-            if (haveResumePosition) {
-                player.seekTo(resumeWindow, resumePosition);
-            }
-            player.prepare(mediaSource, !haveResumePosition, false);
-            playerNeedsSource = false;
-        }
-    }
+
+
 
     private DrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManager(UUID uuid,
                                                                            String licenseUrl, Map<String, String> keyRequestProperties) throws UnsupportedDrmException {
@@ -510,12 +519,12 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     private static final int REPORT_NEXT= 3;
 
-    private final Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override public void handleMessage(Message msg) {
             switch (msg.what) {
                 case REPORT_PLAY:
 
-                   PlayEvent playEvent = (PlayEvent) msg.obj;
+                    PlayEvent playEvent = (PlayEvent) msg.obj;
                     playStateChangedisPlay(playEvent.isPlayWhenReady());
                     break;
                 case REPORT_MESSAGE:
@@ -646,13 +655,13 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         mBuilder.setContentTitle("WonderBuy")//设置通知栏标题
                 .setContentText("床前明月光，疑是地上霜。举头望明月，低头思故乡。--李白")
                 .setContentIntent(contentIntent)
-                .setTicker("订单详情")
-                .setWhen(System.currentTimeMillis())
-                .setPriority(Notification.PRIORITY_DEFAULT)
-                .setAutoCancel(true)
-                .setOngoing(false)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.notify_btn_close))
+//                .setTicker("订单详情")
+//                .setWhen(System.currentTimeMillis())
+//                .setPriority(Notification.PRIORITY_DEFAULT)
+//                .setAutoCancel(true)
+//                .setOngoing(false)
+//                .setDefaults(Notification.DEFAULT_ALL)
+//                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.notify_btn_close))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentInfo("订单详情").setContent(remoteViews);
 
@@ -703,12 +712,10 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
                 }
             } else if (action.equals(ACTION_NEXT_RADIO)) {
                 next();
-            } else if (action.equals(ACTION_EXIT_RADIO)) {
-                stopSelf();
-                System.exit(0);
             }
             showNotifiction();
 
         }
     }
+
 }

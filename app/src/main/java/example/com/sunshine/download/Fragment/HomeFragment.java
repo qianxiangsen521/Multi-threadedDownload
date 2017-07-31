@@ -24,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 import example.com.sunshine.download.DownFragment;
+import example.com.sunshine.util.Util;
 
 /**
  * Created by qianxiangsen on 2017/5/3.
@@ -124,7 +125,7 @@ public class HomeFragment extends BaseFragment{
         switch (v.getId()){
             case R.id.ib_download:
 
-                addFragment(R.id.fragment_full,downFragment,getActivity().getSupportFragmentManager());
+                Util.addFragment(R.id.fragment_full,downFragment,getActivity().getSupportFragmentManager());
                 break;
         }
 

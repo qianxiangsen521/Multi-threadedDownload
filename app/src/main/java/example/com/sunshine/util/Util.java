@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.google.android.exoplayer2.C;
 
@@ -21,52 +22,22 @@ import example.com.sunshine.fragment.AudioVisualizationFragment;
 
 public class Util {
 
-    public static void addFragment(FragmentManager fragmentManager,int fragment_container,Fragment fragments,String name){
-
-        Fragment fragmentNow = fragmentManager.findFragmentByTag(name
-                );
-        if (fragmentNow != null) {
-
-            fragmentManager.beginTransaction().hide(fragmentNow).commit();
-        }
-        Fragment fragment = fragmentManager.findFragmentByTag(name);
-        if (fragment == null) {
-            fragment = fragments;
-            fragmentManager
-                    .beginTransaction()
-                    .add(fragment_container, fragment,
-                            name).commit();
-        } else {
-            fragmentManager.beginTransaction().show(fragment).commit();
-        }
-    }
     public static void setIntnetPlay(FragmentManager fragmentManager,int fragment_container){
-        PlayActivity fragment = new PlayActivity();
-        Bundle bundle = new Bundle();
-        bundle.putString("url",ExoConstants.PLAY_URL_NAME);
-        fragment.setArguments(bundle);
+        Fragment fragment = PlayActivity.newInstance(ExoConstants.PLAY_URL_NAME);
         addFragment(fragment_container,fragment,fragmentManager);
     }
 
-    public static void addFragment(int fragment_full, BaseFragment fragments,FragmentManager fragmentManager) {
+    public static void addFragment(int fragment_full, Fragment fragments,FragmentManager fragmentManager) {
 
-        Fragment fragmentNow = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName()
-        );
-        if (fragmentNow != null) {
-
-            fragmentManager.beginTransaction().hide(fragmentNow).commit();
-        }
-        Fragment fragment = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName());
-        if (fragment == null) {
-            fragment = fragments;
-            fragmentManager
-                    .beginTransaction()
-                    .add(fragment_full, fragment,
-                            fragments.getClass().getSimpleName()).addToBackStack(fragments.getClass().getSimpleName())
-                    .commit();
-        } else {
-            fragmentManager.beginTransaction().show(fragment).commit();
-        }
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        ft.setCustomAnimations(R.animator.fragment_slide_left_enter,
+//                R.animator.fragment_slide_left_exit,
+//                R.animator.fragment_slide_right_enter,
+//                R.animator.fragment_slide_right_exit);
+        ft.replace(fragment_full, fragments);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
 }

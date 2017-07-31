@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import java.lang.ref.WeakReference;
 
 import example.com.sunshine.R;
-import example.com.sunshine.download.Http.HttpCallback;
 import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.Utils.NetWorkUtil;
 import example.com.sunshine.download.Utils.ToastUtil;
@@ -26,7 +26,7 @@ import example.com.sunshine.download.request.ErrorStatus;
 import example.com.sunshine.download.request.HttpDataListener;
 
 
-public abstract class BaseFragment extends Fragment implements View.OnClickListener, BaseView, HttpCallback, HttpDataListener {
+public abstract  class BaseFragment extends Fragment implements View.OnClickListener, BaseView, HttpDataListener {
 
 
     protected VaryViewHelperController mVaryViewHelperController;
@@ -38,7 +38,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     protected abstract void initData();
 
-    protected Context mContext;
+    protected static Context mContext;
     private WeakReference<Context> mWeakReference;
 
     private View view;
@@ -80,27 +80,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public void onStart() {
         super.onStart();
         initData();
-    }
-
-    public static void addFragment(int fragment_full, BaseFragment fragments,FragmentManager fragmentManager) {
-
-        Fragment fragmentNow = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName()
-        );
-        if (fragmentNow != null) {
-
-            fragmentManager.beginTransaction().hide(fragmentNow).commit();
-        }
-        Fragment fragment = fragmentManager.findFragmentByTag(fragments.getClass().getSimpleName());
-        if (fragment == null) {
-            fragment = fragments;
-            fragmentManager
-                    .beginTransaction()
-                    .add(fragment_full, fragment,
-                            fragments.getClass().getSimpleName()).addToBackStack(fragments.getClass().getSimpleName())
-                    .commit();
-        } else {
-            fragmentManager.beginTransaction().show(fragment).commit();
-        }
     }
 
     @Override
@@ -296,20 +275,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             }
         }
 
-        @Override
-        public void UiStart (BaseResponse baseResponse){
-
-        }
-
-        @Override
-        public void UiEnd () {
-
-        }
-
-        @Override
-        public void UiError () {
-
-        }
 
         @Override
         public void onDataReady (BaseResponse response){

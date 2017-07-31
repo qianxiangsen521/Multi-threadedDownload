@@ -1,11 +1,13 @@
 package example.com.sunshine.Exo;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 
 import com.google.android.exoplayer2.C;
@@ -18,6 +20,8 @@ import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.IRemoteService;
 import example.com.sunshine.IRemoteServiceCallback;
+import example.com.sunshine.download.Application.TLiveApplication;
+import example.com.sunshine.download.Home.Main111Activity;
 
 /**
  * Created by qianxiangsen on 2017/7/11.
@@ -119,7 +123,8 @@ public class PlayManager  {
     }
 
 
-    public void bindPlayService(Context c) {
+    public void bindPlayService() {
+        Context c = TLiveApplication.getInstance();
         if (c != null) {
             Intent intent = new Intent(c, ExoService.class);
             intent.setAction(IRemoteService.class.getName());
@@ -128,10 +133,53 @@ public class PlayManager  {
         }
     }
 
-    public void unBindPlayService(Context c) {
+    public void unBindPlayService() {
+        Context c = TLiveApplication.getInstance();
         if (c != null) {
             c.unbindService(mConnection);
             c.stopService(new Intent(c, ExoService.class));
         }
     }
+    public static void exitApp(Context context) {
+        Intent intent = new Intent(context, Main111Activity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Main111Activity.ParamExit, true);
+        context.startActivity(intent);
+    }
+
+
+    public static void destoryInstance() {
+        if (gPlayManager != null) {
+            gPlayManager.release();
+        }
+    }
+    private void release() {
+        // 退出程序，记住当前文件的播放位置
+
+        unBindPlayService();
+
+        gPlayManager = null;
+
+
+    }
+
+    public void stop() {
+        SRVstop(TLiveApplication.getInstance());
+    }
+
+    public static void SRVstop(Context context) {
+        Intent i = new Intent(context, ExoService.class);
+        i.setAction(ExoConstants.ACTION_PAUSE);
+        startPlayService(context, i);
+    }
+    public static void Exit(Activity activity) {
+
+        if (activity != null){
+            activity.finish();
+        }
+        PlayManager.destoryInstance();
+
+    }
+
 }

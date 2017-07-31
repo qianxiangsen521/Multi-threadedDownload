@@ -49,4 +49,6 @@
     <color name="home_title_text_color">#4f4e4e</color>
     <color name="more_text_color">#fa8652</color>
     <color name="albums_list_intro_color">#747572</color>
+    <color name="listTextColor">#ff333333</color>
+    <color name="listSubTextColor">#ff888888</color>
 </resources>

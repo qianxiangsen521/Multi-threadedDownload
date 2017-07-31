@@ -13,15 +13,16 @@
 	支持断点续传，第一个版本默认可以两个线程同时下载
 	
 
-		
+
 仿喜马拉雅 效果图
 
-![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif) ![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/ximalaya.jpg)
+	![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif) 
 
 
 多线程下载 效果图
 
-![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/down1.gif)  
+
+	![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/down1.gif)  
 
 用法
 	

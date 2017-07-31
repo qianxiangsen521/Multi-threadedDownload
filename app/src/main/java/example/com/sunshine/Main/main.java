@@ -20,6 +20,7 @@ public class main extends AppCompatActivity{
     private ScrollView mScrollView;
     boolean mDidAnimateEnter = false;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

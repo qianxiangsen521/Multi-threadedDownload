@@ -28,9 +28,8 @@ public class TLiveApplication  extends Application{
     public DisplayMetrics mDisplayMetrics;
 
     protected String userAgent;
-    /**
-     * 微信 API
-     */
+
+
 
     @Override
     public void onCreate() {
@@ -71,7 +70,6 @@ public class TLiveApplication  extends Application{
     public boolean useExtensionRenderers() {
         return BuildConfig.FLAVOR.equals("withExtensions");
     }
-
 
 
 }

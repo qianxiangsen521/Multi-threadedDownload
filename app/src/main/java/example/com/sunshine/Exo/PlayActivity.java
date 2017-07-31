@@ -80,6 +80,18 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
 
     private Animation operatingAnim;
 
+    public static PlayActivity newInstance(String url) {
+        PlayActivity f = new PlayActivity();
+
+        Bundle args = new Bundle();
+        args.putString("url",url);
+        args.putInt("type",1);
+        f.setArguments(args);
+
+        return f;
+    }
+
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayEvent(PlayEvent event){
@@ -141,6 +153,7 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
         EventBus.getDefault().unregister(this);
     }
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.player_activity;
@@ -188,8 +201,19 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
         operatingAnim.setInterpolator(lin);
 
         Bundle bundle = getArguments();
-        playInfo.setPlayUrl(bundle.getString("url"));
-        PlayManager.play(mContext,playInfo);
+        int type =bundle.getInt("type");
+        if (type == ExoConstants.ACTION_WIFI){
+            playInfo.setPlayUrl(bundle.getString("url"));
+            PlayManager.play(mContext,playInfo);
+        }else if (type == ExoConstants.ACTION_DOWN){
+            Intent i = new Intent(mContext, ExoService.class);
+            i.setAction(ExoConstants.ACTION_VIEW_LIST);
+            i.putExtra(ExoConstants.URI_LIST_EXTRA, bundle.getStringArray("uris"));
+            i.putExtra(ExoConstants.EXTENSION_LIST_EXTRA, bundle.getStringArray("extensions"));
+            mContext.startService(i);
+        }
+
+
 
 
     }

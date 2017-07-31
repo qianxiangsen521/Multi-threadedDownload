@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,64 +22,39 @@ import example.com.sunshine.download.Http.entity.RadioInfo;
  * Created by qianxiangsen on 2017/3/27.
  */
 
-public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.mViewHolder> {
+public class RecommendAdapter extends BaseQuickAdapter<RadioInfo,BaseViewHolder> {
 
 
-    private ArrayList<RadioInfo> radioInfos;
-    private Context context;
 
-    public RecommendAdapter(Context context, ArrayList<RadioInfo> radioInfos) {
-        this.radioInfos = radioInfos;
-        this.context = context;
-
-    }
-
-    public static class mViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView iv_del;
-        ImageView play_flag;
-        TextView tv_title;
-        TextView tv_subtitle;
-
-        public mViewHolder(View view) {
-            super(view);
-            iv_del = (ImageView) view.findViewById(R.id.iv_del);
-            play_flag = (ImageView) view.findViewById(R.id.iv_cover);
-            tv_title = (TextView) view.findViewById(R.id.tv_title);
-            tv_subtitle = (TextView) view.findViewById(R.id.tv_subtitle);
-        }
+    public RecommendAdapter( ArrayList<RadioInfo> radioInfos) {
+        super(R.layout.item_recommend_flow,radioInfos);
 
     }
 
     @Override
-    public int getItemCount() {
-        return radioInfos.size();
-    }
+    protected void convert(BaseViewHolder helper,final RadioInfo item) {
 
-    @Override
-    public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new mViewHolder(View.inflate(parent.getContext(), R.layout.item_recommend_flow, null));
-    }
+        helper.setText(R.id.tv_title,item.getName());
+        helper.setText(R.id.tv_subtitle,item.getCurrentPlay());
+        ImageView play_flag = helper.getView(R.id.iv_play_flag);
+        ImageView del = helper.getView(R.id.iv_del);
+        Glide.with(mContext)
+                .load(item.getImgUrl())
+                .crossFade()
+                .into(play_flag);
 
-    @Override
-    public void onBindViewHolder(final mViewHolder holder, final int position) {
-        final RadioInfo radioInfo = radioInfos.get(position);
-        holder.tv_title.setText(radioInfo.getName());
-        holder.tv_subtitle.setText(radioInfo.getCurrentPlay());
-        Picasso.with(context).load(radioInfo.getImgUrl()).into(holder.play_flag);
-
-        holder.iv_del.setOnClickListener(new View.OnClickListener() {
+        del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (radioInfos.size() > 1) {
-                    radioInfos.remove(radioInfo);
+                if (mData.size() > 1) {
+                    mData.remove(item);
                     RecommendAdapter.this.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(context, "只剩一条了，别 TM 删了！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "只剩一条了，别 TM 删了！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
+
 
 }

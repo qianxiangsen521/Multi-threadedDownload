@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -23,6 +25,7 @@ import example.com.sunshine.download.View.LoginView;
 import example.com.sunshine.download.request.HomeBottomResponse;
 import example.com.sunshine.download.request.HttpManger;
 import example.com.sunshine.download.request.StringTool;
+import example.com.sunshine.util.Util;
 
 /**
  * Created by qianxiangsen on 2017/5/3.
@@ -76,9 +79,15 @@ public class RecommendFragment extends BaseFragment implements LoginView {
             if (!StringTool.isListValidate(bottomResponse.getCategoryRadioInfos().get(0).getRadioInfos())) {
                 showEmptyView("没数据");
             }
-            recommendAdapter = new RecommendAdapter(getActivity(), bottomResponse.getCategoryRadioInfos().get(0).getRadioInfos());
+            recommendAdapter = new RecommendAdapter(bottomResponse.getCategoryRadioInfos().get(0).getRadioInfos());
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerView.setAdapter(recommendAdapter);
+            recommendAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    Util.setIntnetPlay(getActivity().getSupportFragmentManager(),R.id.fragment_play);
+                }
+            });
         }
     }
 

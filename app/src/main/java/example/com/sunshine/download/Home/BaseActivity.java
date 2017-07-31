@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 
 import example.com.sunshine.download.Fragment.BaseFragment;
-import example.com.sunshine.download.Http.HttpCallback;
 import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.Utils.ToastUtil;
 import example.com.sunshine.download.loading.BaseView;
@@ -21,7 +20,7 @@ import example.com.sunshine.download.loading.VaryViewHelperController;
  * Created by QianXiangSen on 2016/10/10.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener,BaseView,HttpCallback {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener,BaseView {
 
 
 
@@ -232,21 +231,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         if (mVaryViewHelperController != null) {
             mVaryViewHelperController.restore();
         }
-    }
-
-    @Override
-    public void UiStart(BaseResponse baseResponse) {
-
-    }
-
-    @Override
-    public void UiEnd() {
-
-    }
-
-    @Override
-    public void UiError() {
-
     }
 
     protected void addFragment(int fragment_full, BaseFragment fragment) {

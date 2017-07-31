@@ -92,6 +92,10 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
 
     private Animation operatingAnim;
 
+    public static final String ParamExit = "Exit";
+
+    private boolean playing;
+
 
     @Override
     protected int getLayoutId() {
@@ -113,7 +117,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
             mFragCurrentIndex = savedInstanceState.getInt("curChoice", 0);
         }
 
-        PlayManager.getInstance().bindPlayService(this);
+        PlayManager.getInstance().bindPlayService();
         //移除fragment覆盖部分
         getWindow().setBackgroundDrawable(null);
 
@@ -211,6 +215,14 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
                 break;
         }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        initIntent(intent);
+        super.onNewIntent(intent);
+
+    }
+
     // 把显示的Fragment隐藏
     private void setSelected(int pos, boolean isSelected) {
         if (pos == 0) {
@@ -227,6 +239,13 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mFragCurrentIndex);
+    }
+    private void initIntent(Intent intent) {
+        boolean exit = intent.getBooleanExtra(ParamExit,false);
+        if (exit) {
+            destoryInstance();
+            return;
+        }
     }
     /**
      * @param index
@@ -279,7 +298,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayEvent(PlayEvent event) {
 
-        boolean playing = event.isPlayWhenReady();
+        playing = event.isPlayWhenReady();
         if (playing){
             startPlayAnimation();
         }else {
@@ -309,7 +328,18 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
-        PlayManager.getInstance().unBindPlayService(this);
+
+        destoryInstance();
+
+
+    }
+    private void destoryInstance(){
+        if (playing){
+            PlayManager.getInstance().stop();
+        }
+        PlayManager.Exit(this);
+
+        System.exit(0);
     }
 
 }
