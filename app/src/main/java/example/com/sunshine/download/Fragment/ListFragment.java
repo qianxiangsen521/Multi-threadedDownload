@@ -86,23 +86,9 @@ public class ListFragment extends BaseFragment{
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                String[] uris = new String[adapter.getData().size()];
-                String[] extensions = new String[adapter.getData().size()];
-                for (int i = 0; i < adapter.getData().size(); i++) {
-                    MusicInfo info = (MusicInfo) adapter.getData().get(i);
-//                    uris[i] = MusicUtils.getAlbumArtUri(info.albumId) + "";
-//                    extensions[i] = MusicUtils.getAlbumArtUri(info.albumId) + "";
-                    uris[i] = info.data;
-                    extensions[i] = info.data;
-                }
-                Bundle b=new Bundle();
-                b.putStringArray("uris", uris);
-                b.putStringArray("extensions",extensions);
-                b.putInt("type",2);
-                PlayActivity activity = new PlayActivity();
-                activity.setArguments(b);
-                Util.addFragment(R.id.fragment_play,activity,getActivity().getSupportFragmentManager());
 
+                MusicInfo info = (MusicInfo) adapter.getData().get(position);
+                Util.setIntnetPlay(getActivity().getSupportFragmentManager(),R.id.fragment_play,info.data);
             }
         });
     }

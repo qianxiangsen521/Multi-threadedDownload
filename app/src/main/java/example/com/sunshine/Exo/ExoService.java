@@ -290,68 +290,70 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
             player.setPlayWhenReady(true);
 
         }
-        releasePlayer();
-        if (player == null) {
+        if (str1.equals(ExoConstants.ACTION_PLAY)){
+            releasePlayer();
+            if (player == null) {
 
-            boolean preferExtensionDecoders = paramIntent.getBooleanExtra(ExoConstants.PREFER_EXTENSION_DECODERS, false);
-            UUID drmSchemeUuid = paramIntent.hasExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)
-                    ? UUID.fromString(paramIntent.getStringExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)) : null;
-            DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
-            if (drmSchemeUuid != null) {
-                String drmLicenseUrl = paramIntent.getStringExtra(ExoConstants.DRM_LICENSE_URL);
-                String[] keyRequestPropertiesArray = paramIntent.getStringArrayExtra(ExoConstants.DRM_KEY_REQUEST_PROPERTIES);
-                Map<String, String> keyRequestProperties;
-                if (keyRequestPropertiesArray == null || keyRequestPropertiesArray.length < 2) {
-                    keyRequestProperties = null;
-                } else {
-                    keyRequestProperties = new HashMap<>();
-                    for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
-                        keyRequestProperties.put(keyRequestPropertiesArray[i],
-                                keyRequestPropertiesArray[i + 1]);
+                boolean preferExtensionDecoders = paramIntent.getBooleanExtra(ExoConstants.PREFER_EXTENSION_DECODERS, false);
+                UUID drmSchemeUuid = paramIntent.hasExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)
+                        ? UUID.fromString(paramIntent.getStringExtra(ExoConstants.DRM_SCHEME_UUID_EXTRA)) : null;
+                DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
+                if (drmSchemeUuid != null) {
+                    String drmLicenseUrl = paramIntent.getStringExtra(ExoConstants.DRM_LICENSE_URL);
+                    String[] keyRequestPropertiesArray = paramIntent.getStringArrayExtra(ExoConstants.DRM_KEY_REQUEST_PROPERTIES);
+                    Map<String, String> keyRequestProperties;
+                    if (keyRequestPropertiesArray == null || keyRequestPropertiesArray.length < 2) {
+                        keyRequestProperties = null;
+                    } else {
+                        keyRequestProperties = new HashMap<>();
+                        for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
+                            keyRequestProperties.put(keyRequestPropertiesArray[i],
+                                    keyRequestPropertiesArray[i + 1]);
+                        }
+                    }
+                    try {
+                        drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl,
+                                keyRequestProperties);
+                    } catch (UnsupportedDrmException e) {
+                        int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported
+                                : (e.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME
+                                ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
+                        showToast(errorStringId);
+                        return;
                     }
                 }
-                try {
-                    drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl,
-                            keyRequestProperties);
-                } catch (UnsupportedDrmException e) {
-                    int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported
-                            : (e.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME
-                            ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
-                    showToast(errorStringId);
-                    return;
-                }
+
+                @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode =
+                        ((TLiveApplication) getApplication()).useExtensionRenderers()
+                                ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
+                                : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+                                : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
+                TrackSelection.Factory videoTrackSelectionFactory =
+                        new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
+                trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+                player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, new DefaultLoadControl(),
+                        drmSessionManager, extensionRendererMode);
+                player.addListener(this);
+
+                eventLogger = new EventLogger(trackSelector);
+                player.addListener(eventLogger);
+                player.setAudioDebugListener(eventLogger);
+                player.setVideoDebugListener(eventLogger);
+                player.setMetadataOutput(eventLogger);
+
+                player.setPlayWhenReady(shouldAutoPlay);
+                playerNeedsSource = true;
             }
-
-            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode =
-                    ((TLiveApplication) getApplication()).useExtensionRenderers()
-                            ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
-                            : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
-                            : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
-            TrackSelection.Factory videoTrackSelectionFactory =
-                    new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
-            trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-            player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, new DefaultLoadControl(),
-                    drmSessionManager, extensionRendererMode);
-            player.addListener(this);
-
-            eventLogger = new EventLogger(trackSelector);
-            player.addListener(eventLogger);
-            player.setAudioDebugListener(eventLogger);
-            player.setVideoDebugListener(eventLogger);
-            player.setMetadataOutput(eventLogger);
-
-            player.setPlayWhenReady(shouldAutoPlay);
-            playerNeedsSource = true;
             if (playerNeedsSource) {
                 Uri[] uris;
                 String[] extensions;
                 if (ExoConstants.ACTION_PLAY.equals(paramIntent.getAction())) {
                     String uri = paramIntent.getStringExtra(ExoConstants.PLAY_URL);
-                    uris = new Uri[]{Uri.parse(uri),Uri.parse(ExoConstants.PLAY_URL_NAME)};
-                    extensions = new String[]{uri,ExoConstants.PLAY_URL_NAME};
+                    uris = new Uri[]{Uri.parse(uri)};
+                    extensions = new String[]{uri};
 
 
-                } else if (ExoConstants.ACTION_VIEW_LIST.equals(paramIntent.getAction())) {
+                }else if (ExoConstants.ACTION_VIEW_LIST.equals(paramIntent.getAction())) {
                     String[] uriStrings = paramIntent.getStringArrayExtra(ExoConstants.URI_LIST_EXTRA);
                     uris = new Uri[uriStrings.length];
                     for (int i = 0; i < uriStrings.length; i++) {
@@ -360,6 +362,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
                     extensions = paramIntent.getStringArrayExtra(ExoConstants.EXTENSION_LIST_EXTRA);
                     if (extensions == null) {
                         extensions = new String[uriStrings.length];
+
                     }
                 }else {
                     showToast(getString(R.string.unexpected_intent_action, paramIntent.getAction()));
@@ -384,7 +387,6 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         showNotifiction();
 
     }
-
 
 
     private DrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManager(UUID uuid,

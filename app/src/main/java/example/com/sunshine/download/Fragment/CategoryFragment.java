@@ -63,7 +63,7 @@ public class CategoryFragment extends BaseFragment {
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastyUtils.getInstance(mContext).showSuccessToasty("pos: " + position);
+//                ToastyUtils.getInstance(mContext).showSuccessToasty("pos: " + position);
             }
         });
     }

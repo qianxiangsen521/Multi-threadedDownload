@@ -22,6 +22,10 @@ import example.com.sunshine.fragment.AudioVisualizationFragment;
 
 public class Util {
 
+    public static void setIntnetPlay(FragmentManager fragmentManager,int fragment_container,String url){
+        Fragment fragment = PlayActivity.newInstance(url);
+        addFragment(fragment_container,fragment,fragmentManager);
+    }
     public static void setIntnetPlay(FragmentManager fragmentManager,int fragment_container){
         Fragment fragment = PlayActivity.newInstance(ExoConstants.PLAY_URL_NAME);
         addFragment(fragment_container,fragment,fragmentManager);

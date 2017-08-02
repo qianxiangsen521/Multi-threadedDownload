@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -201,17 +202,8 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
         operatingAnim.setInterpolator(lin);
 
         Bundle bundle = getArguments();
-        int type =bundle.getInt("type");
-        if (type == ExoConstants.ACTION_WIFI){
-            playInfo.setPlayUrl(bundle.getString("url"));
-            PlayManager.play(mContext,playInfo);
-        }else if (type == ExoConstants.ACTION_DOWN){
-            Intent i = new Intent(mContext, ExoService.class);
-            i.setAction(ExoConstants.ACTION_VIEW_LIST);
-            i.putExtra(ExoConstants.URI_LIST_EXTRA, bundle.getStringArray("uris"));
-            i.putExtra(ExoConstants.EXTENSION_LIST_EXTRA, bundle.getStringArray("extensions"));
-            mContext.startService(i);
-        }
+        playInfo.setPlayUrl(bundle.getString("url"));
+        PlayManager.play(mContext,playInfo);
 
 
 
@@ -342,4 +334,5 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
             return AnimationUtils.loadAnimation(mContext, R.anim.slide_top_bottom);
         }
     }
+
 }
