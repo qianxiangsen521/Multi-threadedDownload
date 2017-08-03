@@ -383,7 +383,6 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
             }
         }
 
-
         showNotifiction();
 
     }
