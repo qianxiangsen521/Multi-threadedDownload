@@ -9,7 +9,7 @@ import android.view.animation.Interpolator;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 import example.com.sunshine.R;
@@ -17,9 +17,9 @@ import example.com.sunshine.R;
 
 public class InterpolatorActivity extends AppCompatActivity {
 
-    @Bind(R.id.interpolator_spinner)Spinner interpolatorSpinner;
-    @Bind(R.id.duration_spinner)Spinner duratorSpinner;
-    @Bind(R.id.textView)TextView textView;
+    @BindView(R.id.interpolator_spinner)Spinner interpolatorSpinner;
+    @BindView(R.id.duration_spinner)Spinner duratorSpinner;
+    @BindView(R.id.textView)TextView textView;
 
     private static final String PACKAGE = "android.view.animation.";
     private static final String PACKAGE_V4 = "android.support.v4.view.animation.";

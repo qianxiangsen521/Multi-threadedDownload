@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 
@@ -21,7 +21,7 @@ import example.com.sunshine.R;
 
 public class SceneActivity extends AppCompatActivity{
 
-    @Bind(R.id.image_ib)
+    @BindView(R.id.image_ib)
     ImageButton mImageButton;
     ViewGroup viewGroup;
     @Override

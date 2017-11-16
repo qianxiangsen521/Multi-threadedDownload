@@ -15,7 +15,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Adapter.CategoryAdapter;
@@ -38,7 +38,7 @@ public class CategoryFragment extends BaseFragment {
     List<CategoryInfo> data = new ArrayList<>();
     private CategoryAdapter cateoryAdapter;
 
-    @Bind(R.id.category_recyclerview)
+    @BindView(R.id.category_recyclerview)
     RecyclerView recyclerView;
 
     @Inject

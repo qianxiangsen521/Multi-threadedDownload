@@ -29,7 +29,7 @@ import java.util.TimerTask;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Exo.ExoConstants;
 import example.com.sunshine.Exo.PlayActivity;
@@ -62,9 +62,9 @@ public class PopularFragment extends BaseFragment {
 
     private String[] strings = new String[]{url1,url, ExoConstants.PLAY_URL_NAME};
     private ArrayList<CategoryRadioInfo> categoryRadioInfos;
-    @Bind(R.id.homepagev_listview)
+    @BindView(R.id.homepagev_listview)
     LinearLayout mContainer;
-    @Bind(R.id.scrollview)
+    @BindView(R.id.scrollview)
     ScrollView scrollView;
 
     View homeView;

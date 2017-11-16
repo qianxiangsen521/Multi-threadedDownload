@@ -33,7 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Formatter;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.NextEvent;
@@ -74,9 +74,9 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     private ImageButton playButton;
     private boolean playing;
 
-    @Bind(R.id.common_playing_player)
+    @BindView(R.id.common_playing_player)
     ImageView openPlayer;
-    @Bind(R.id.exit_play)
+    @BindView(R.id.exit_play)
     ImageView mExitPlay;
 
     private Animation operatingAnim;

@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
@@ -63,19 +63,19 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     // 创建Fragment管理器
     private FragmentManager fragmentManager;
 
-    @Bind(R.id.fragment_title)
+    @BindView(R.id.fragment_title)
     RadioGroup radioGroup;
 
-    @Bind(R.id.find)
+    @BindView(R.id.find)
     RadioButton radioButton1;
 
-    @Bind(R.id.custom)
+    @BindView(R.id.custom)
     RadioButton radioButton2;
 
-    @Bind(R.id.square)
+    @BindView(R.id.square)
     RadioButton radioButton3;
 
-    @Bind(R.id.myspace)
+    @BindView(R.id.myspace)
     RadioButton radioButton4;
 
     @Inject
@@ -87,7 +87,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     @Inject
     UserFragment hotPlayFragment;
 
-    @Bind(R.id.common_playing_player)
+    @BindView(R.id.common_playing_player)
     ImageView openPlayer;
 
     private Animation operatingAnim;

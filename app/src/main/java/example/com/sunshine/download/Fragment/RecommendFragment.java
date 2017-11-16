@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 import example.com.sunshine.dagger.DaggerFragmentComponent;
@@ -33,7 +33,7 @@ import example.com.sunshine.util.Util;
 
 public class RecommendFragment extends BaseFragment implements LoginView {
 
-    @Bind(R.id.recyclerview)
+    @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     RecommendAdapter recommendAdapter;
 

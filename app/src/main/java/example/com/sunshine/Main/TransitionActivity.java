@@ -27,7 +27,7 @@ import android.widget.ImageView;
 
 import java.util.Arrays;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 
@@ -54,7 +54,7 @@ public class TransitionActivity extends AppCompatActivity{
     public final static int SECONDARY_TEXT = 6;
     public final static int DIVIDER        = 7;
 
-    @Bind(R.id.grid) protected GridView mGrid;
+    @BindView(R.id.grid) protected GridView mGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

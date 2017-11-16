@@ -27,7 +27,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 
@@ -38,9 +38,9 @@ import static android.os.Build.VERSION.SDK;
  */
 public class SplashActivity extends BaseActivity {
 
-    @Bind(R.id.splash_pic)
+    @BindView(R.id.splash_pic)
     ImageView mSplashPic;
-    @Bind(android.R.id.content)
+    @BindView(android.R.id.content)
     ViewGroup rootView;
 
     private MultiplePermissionsListener allPermissionsListener;

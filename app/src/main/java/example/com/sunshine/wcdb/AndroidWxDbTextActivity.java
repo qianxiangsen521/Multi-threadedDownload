@@ -12,7 +12,7 @@ import com.tencent.wcdb.database.SQLiteDatabase;
 import com.tencent.wcdb.database.SQLiteOpenHelper;
 import com.tencent.wcdb.repair.RepairKit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Exo.ExoService;
 import example.com.sunshine.R;
@@ -24,7 +24,7 @@ import example.com.sunshine.R;
 public class AndroidWxDbTextActivity extends AppCompatActivity {
 
 
-    @Bind(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView mReclerView;
     private SQLiteOpenHelper mDBHelper = new DBHelper(this);
 

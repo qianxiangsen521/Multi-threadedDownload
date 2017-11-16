@@ -12,7 +12,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Main.DynamicSurfacesActivity;
 import example.com.sunshine.Main.GridActivity;
@@ -30,21 +30,21 @@ import example.com.sunshine.R;
  */
 
 public class ExampleActivity extends AppCompatActivity implements View.OnClickListener{
-    @Bind(R.id.bt1)
+    @BindView(R.id.bt1)
     Button bt1;
-    @Bind(R.id.bt2)
+    @BindView(R.id.bt2)
     Button bt2;
-    @Bind(R.id.bt3)
+    @BindView(R.id.bt3)
     Button bt3;
-    @Bind(R.id.bt4)
+    @BindView(R.id.bt4)
     Button bt4;
-    @Bind(R.id.bt5)
+    @BindView(R.id.bt5)
     Button bt5;
-    @Bind(R.id.bt6)
+    @BindView(R.id.bt6)
     Button bt6;
-    @Bind(R.id.bt7)
+    @BindView(R.id.bt7)
     Button bt7;
-    @Bind(R.id.bt8)
+    @BindView(R.id.bt8)
     Button bt8;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

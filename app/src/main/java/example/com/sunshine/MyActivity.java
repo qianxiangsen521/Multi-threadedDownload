@@ -15,7 +15,7 @@ import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -24,10 +24,10 @@ import butterknife.ButterKnife;
 
 public class MyActivity extends AppCompatActivity implements View.OnClickListener{
 
-    @Bind(R.id.button2)
+    @BindView(R.id.button2)
     Button button;
 
-    @Bind(R.id.root_view)
+    @BindView(R.id.root_view)
     LinearLayout linear;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

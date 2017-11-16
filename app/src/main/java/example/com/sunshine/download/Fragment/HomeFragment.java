@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.R;
 import example.com.sunshine.download.DownFragment;
@@ -32,12 +32,12 @@ import example.com.sunshine.util.Util;
 
 public class HomeFragment extends BaseFragment{
 
-    @Bind(R.id.ib_download)
+    @BindView(R.id.ib_download)
     TextView ib_download;
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     TabLayout tabLayout;
     @Inject
     public HomeFragment() {
