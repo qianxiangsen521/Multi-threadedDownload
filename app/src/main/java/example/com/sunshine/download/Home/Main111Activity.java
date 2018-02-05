@@ -312,6 +312,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.d("TAG", "onKeyDown: "+getSupportFragmentManager().getBackStackEntryCount());
             if (getSupportFragmentManager().getBackStackEntryCount() >= 1) {
                 getSupportFragmentManager().popBackStack();
             } else {

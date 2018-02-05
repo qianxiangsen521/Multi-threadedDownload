@@ -50,7 +50,7 @@ public class SplashActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-//        if(Build.VERSION.SDK_INT > 23){
+        if(Build.VERSION.SDK_INT > 23){
             allPermissionsListener =
                     new CompositeMultiplePermissionsListener(new MultiplePermissionsListener() {
                         @Override
@@ -80,7 +80,7 @@ public class SplashActivity extends BaseActivity {
                             Manifest.permission.MODIFY_AUDIO_SETTINGS
                             ,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)
                     .withListener(allPermissionsListener).check();
-       /* }else{
+        }else{
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -88,7 +88,7 @@ public class SplashActivity extends BaseActivity {
                     finish();
                 }
             },2000);
-        }*/
+        }
 
 
     }

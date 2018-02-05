@@ -205,6 +205,16 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
         playInfo.setPlayUrl(bundle.getString("url"));
         PlayManager.play(mContext,playInfo);
 
+        openPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction("com.example.qianxiangsen.ffmpeg.MyService");
+                intent.setPackage("com.example.qianxiangsen.ffmpeg.MyService");
+                getActivity().startService(intent);
+
+            }
+        });
 
 
 

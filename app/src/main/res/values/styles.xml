@@ -1,13 +1,13 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <item name="colorPrimary">@color/colorPrimaryDark</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- your theme inherits from the material theme -->
- <!--   <style name="AppTheme" parent="android:Theme.Material">
+    <!--   <style name="AppTheme" parent="android:Theme.Material">
         &lt;!&ndash; theme customizations &ndash;&gt;
     </style>-->
     <style name="AppThemeNoBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -23,19 +23,22 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>
     </style>
+
     <style name="WhiteHeading">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">24sp</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppThemeNoBar.Grid" parent="AppThemeNoBar">
-    </style>
+    <style name="AppThemeNoBar.Grid" parent="AppThemeNoBar"></style>
 
     <style name="MainTabStyle">
         <item name="android:textSize">9.0sp</item>
@@ -53,7 +56,7 @@
         <item name="android:layout_weight">1.0</item>
     </style>
 
- <!--  <style name="MyPagerSlidingTabStripStyle">
+    <!--  <style name="MyPagerSlidingTabStripStyle">
         <item name="android:textSize">@dimen/text_size_14</item>
         <item name="android:background">@color/bg_color_navi_gray</item>
         <item name="android:layout_width">fill_parent</item>
@@ -84,6 +87,7 @@
         <item name="android:src">@mipmap/next</item>
         <item name="android:contentDescription">@string/exo_controls_next_description</item>
     </style>
+
     <style name="ExoMediaButton.Previous">
         <item name="android:src">@mipmap/previous</item>
         <item name="android:contentDescription">@string/exo_controls_previous_description</item>
@@ -93,14 +97,18 @@
         <item name="android:src">@mipmap/pause</item>
         <item name="android:contentDescription">@string/exo_controls_pause_description</item>
     </style>
+
     <style name="ExoMediaButton.Play1">
         <item name="android:src">@mipmap/play</item>
         <item name="android:contentDescription">@string/exo_controls_play_description</item>
     </style>
-    <style name="NotificationTitle"
-        parent="@android:style/TextAppearance.StatusBar.EventContent.Title" />
 
-    <style name="NotificationText"
-        parent="@android:style/TextAppearance.StatusBar.EventContent" />
+    <style name="NotificationTitle" parent="@android:style/TextAppearance.StatusBar.EventContent.Title" />
+
+    <style name="NotificationText" parent="@android:style/TextAppearance.StatusBar.EventContent" />
+
+    <style name="AppThemeNoBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppThemeNoBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

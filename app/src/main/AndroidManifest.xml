@@ -25,10 +25,13 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>p
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    p
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <uses-feature android:glEsVersion="0x00010000" />
 
-    <uses-feature android:glEsVersion="0x00010000"/>
     <application
         android:name=".download.Application.TLiveApplication"
         android:allowBackup="true"
@@ -36,8 +39,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeNoBar" >
-        <activity android:name=".download.Home.SplashActivity"
+        android:theme="@style/AppThemeNoBar">
+        <activity
+            android:name="example.com.sunshine.Exo.MainCnrActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -46,107 +50,98 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".Exo.ExoService"
-            android:process=":play"
-            ></service>
 
-        <activity android:name=".download.Home.Main111Activity"
+        <service
+            android:name=".Exo.ExoService"
+            android:process=":play" />
+
+        <activity
+            android:name=".download.Home.Main111Activity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".Exo.dataBinding.UserInfoActivity">
-
-        </activity>
-        <activity android:name=".download.DownloadActivity"
-            >
-
-        </activity>
+        <activity android:name=".Exo.dataBinding.UserInfoActivity"></activity>
+        <activity android:name=".download.DownloadActivity"></activity>
         <activity
             android:name=".Main.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppThemeNoBar" ></activity>
-
-        <activity android:name=".Main.AnimatorActivity"
-            android:theme="@style/AppThemeNoBar" ></activity>
-        <activity android:name=".Main.InterpolatorActivity"
-            android:theme="@style/AppThemeNoBar" ></activity>
-        <activity android:name=".Main.SlideActivity"
-            android:theme="@style/AppThemeNoBar" ></activity>
-        <activity android:name=".Main.TransitionDetailActivity"
-            android:theme="@style/AppThemeNoBar" ></activity>
-
-        <activity android:name=".Main.TransitionActivity"
-            android:theme="@style/AppTheme.Home"></activity>
-
-        <activity android:name="example.com.sunshine.download.DownloadFinishActivity"
-            ></activity>
-
-        <activity android:name=".Main.SceneActivity"
-            android:theme="@style/AppThemeNoBar" ></activity>
-        <activity android:name=".Main.main"
-            android:theme="@style/AppThemeNoBar" ></activity>
-        <activity android:name=".Main.DynamicSurfacesActivity"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.AnimatorActivity"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.InterpolatorActivity"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.SlideActivity"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.TransitionDetailActivity"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.TransitionActivity"
+            android:theme="@style/AppTheme.Home" />
+        <activity android:name=".download.DownloadFinishActivity" />
+        <activity
+            android:name=".Main.SceneActivity"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.main"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.DynamicSurfacesActivity"
             android:configChanges="orientation"
-            android:theme="@style/AppThemeNoBar" ></activity>
-
-        <activity android:name=".Main.GridActivity"
-            android:theme="@style/AppTheme.Home" ></activity>
-
-        <activity android:name=".Main.GridDetailAcitivty"
-            android:theme="@style/AppThemeNoBar"  ></activity>
-
-        <activity android:name=".single.ActivityStandard"
-            android:launchMode="standard"
-            >
-        </activity>
-
-        <activity android:name="example.com.sunshine.HTTP.HttpActivity"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".Main.GridActivity"
+            android:theme="@style/AppTheme.Home" />
+        <activity
+            android:name=".Main.GridDetailAcitivty"
+            android:theme="@style/AppThemeNoBar" />
+        <activity
+            android:name=".single.ActivityStandard"
+            android:launchMode="standard"></activity>
+        <activity
+            android:name=".HTTP.HttpActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
-            android:launchMode="standard"
-            >
-           <!-- <intent-filter>
+            android:launchMode="standard">
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
 
         </activity>
-        <activity android:name=".view.MyViewActivity"
+        <activity
+            android:name=".view.MyViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
-            android:launchMode="standard"
-            >
-
-        </activity>
-      <activity android:name=".Process.SecondActivity"
+            android:launchMode="standard"></activity>
+        <activity
+            android:name=".Process.SecondActivity"
             android:configChanges="screenLayout"
-            android:process=":remote"></activity>
-        <activity android:name=".Process.ThirdActivity"
+            android:process=":remote" />
+        <activity
+            android:name=".Process.ThirdActivity"
             android:configChanges="screenLayout"
-            android:process="example.com.sunshine.remote"></activity>
+            android:process="example.com.sunshine.remote" />
 
-        <service android:name=".service.TestService"
-            android:process="example.com.sunshine.remote">
+        <service
+            android:name=".service.TestService"
+            android:process="example.com.sunshine.remote"></service>
+        <service android:name=".service.Test1Service" />
 
-        </service>
+        <activity android:name=".MyActivity"></activity>
+        <activity android:name=".MyOtherActivity"></activity>
+        <activity android:name=".service.ActivityMessenger"></activity>
 
-        <service android:name=".service.Test1Service"></service>
+        <service android:name=".service.MessengerService"></service>
 
-        <activity android:name=".MyActivity">
-
-        </activity>
-        <activity android:name=".MyOtherActivity">
-
-        </activity>
-        <activity android:name=".service.ActivityMessenger">
-
-        </activity>
-        <service android:name=".service.MessengerService">
-
-        </service>
         <meta-data
             android:name="PROJECT_ID"
             android:value="\01" />
@@ -154,35 +149,37 @@
             android:name="APP_ID"
             android:value="\01" />
 
-
-        <activity android:name="example.com.sunshine.Exo.PlayActivity"
+        <activity
+            android:name=".Exo.PlayActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:launchMode="singleTop"
             android:label="@string/app_name"
-            >
-
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="com.google.android.exoplayer.demo.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:scheme="content"/>
-                <data android:scheme="asset"/>
-                <data android:scheme="file"/>
+                <action android:name="com.google.android.exoplayer.demo.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="content" />
+                <data android:scheme="asset" />
+                <data android:scheme="file" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.google.android.exoplayer.demo.action.VIEW_LIST"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.google.android.exoplayer.demo.action.VIEW_LIST" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <receiver
             android:name=".Exo.ExitReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.cnr.fm.action.exit" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

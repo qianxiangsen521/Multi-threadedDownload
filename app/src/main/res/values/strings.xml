@@ -1,4 +1,4 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" >
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Multi-threadedDownload</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -267,4 +267,10 @@ Varial deck switch 1080 bail betty cab flip. Transfer wall ride Guy Mariano bear
     <string name="start_play">开始播放</string>
     <string name="next_sound">下一首</string>
     <string name="remote_service_started">Remote service has started</string>
+    <string name="title_activity_main_conponents">MainConponentsActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
