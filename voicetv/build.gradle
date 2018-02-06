@@ -39,7 +39,7 @@ task makeJar(type: Copy) {
     from('build/intermediates/bundles/release/')//从该目录下加载要打包的文件
     into('build/libs/')//jar包的保存目录
     include('classes.jar')//设置过滤，只打包classes文件
-    rename('classes.jar', 'mylibrary.jar')//重命名，mylibrary.jar 根据自己的需求设置
+    rename('classes.jar', 'cnrlibrary.jar')//重命名，mylibrary.jar 根据自己的需求设置
 }
 makeJar.dependsOn(build)
 

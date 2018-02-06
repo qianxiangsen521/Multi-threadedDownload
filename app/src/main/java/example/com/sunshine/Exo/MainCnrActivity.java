@@ -8,6 +8,9 @@ import android.widget.Button;
 
 import com.cnr.voicetv.ServiceManage;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import example.com.sunshine.R;
 
 public class MainCnrActivity extends AppCompatActivity {
@@ -25,15 +28,16 @@ public class MainCnrActivity extends AppCompatActivity {
         mBtnAidl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                serviceManage.sendMessage("cnr");
+                  serviceManage.sendMessage("cnr");
+
                 }
         });
+
     }
 
-
     @Override
-    protected void onStop() {
-        super.onStop();
-        serviceManage.stopService();
+    protected void onDestroy() {
+        serviceManage.unbindService();
+        super.onDestroy();
     }
 }

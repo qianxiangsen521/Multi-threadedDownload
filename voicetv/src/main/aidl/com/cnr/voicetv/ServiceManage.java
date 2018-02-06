@@ -37,7 +37,7 @@ public class ServiceManage {
     };
 
     public ServiceManage(Context mContext) {
-        this.mContext = mContext;
+        this.mContext = mContext.getApplicationContext();
     }
     public static ServiceManage init(@NonNull Context context) {
         if (context == null) {
@@ -58,11 +58,11 @@ public class ServiceManage {
         ComponentName componentName = new ComponentName(
                 PACKAGE_GESTURE_DETECTOR_REMOTE_SERVICE ,
                 NAME_GESTURE_DETECTOR_REMOTE_SERVICE);
-        intent .setComponent (componentName );
+        intent .setComponent (componentName);
         mContext.bindService(intent, mServiceConnection, mContext.BIND_AUTO_CREATE);
     }
 
-    public void stopService(){
+    public void unbindService(){
         if(mBound){
             mContext.unbindService(mServiceConnection);
             mBound = false;
