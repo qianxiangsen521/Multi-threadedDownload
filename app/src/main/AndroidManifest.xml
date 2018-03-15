@@ -41,7 +41,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar">
         <activity
-            android:name="example.com.sunshine.Exo.MainCnrActivity"
+            android:name=".download.Home.Main111Activity"
             android:launchMode="standard"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -55,12 +55,12 @@
             android:name=".Exo.ExoService"
             android:process=":play" />
 
-        <activity
-            android:name=".download.Home.Main111Activity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+        <!--<activity-->
+            <!--android:name=".download.Home.Main111Activity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:screenOrientation="portrait">-->
 
-        </activity>
+        <!--</activity>-->
         <activity android:name=".Exo.dataBinding.UserInfoActivity"></activity>
         <activity android:name=".download.DownloadActivity"></activity>
         <activity

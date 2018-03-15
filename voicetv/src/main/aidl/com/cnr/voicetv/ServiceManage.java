@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 /**
  * Created by qianxiangsen on 18-2-5.
@@ -18,7 +17,7 @@ public class ServiceManage {
     public static final String PACKAGE_GESTURE_DETECTOR_REMOTE_SERVICE = "com.cnr.voicetv" ;
     private CnrAidlInterface mCnrAidlInterface;
     private boolean mBound;
-    private Context mContext;
+    private final Context context;
     static volatile ServiceManage singleton = null;
 
     ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -36,8 +35,11 @@ public class ServiceManage {
         }
     };
 
-    public ServiceManage(Context mContext) {
-        this.mContext = mContext.getApplicationContext();
+    public ServiceManage(@NonNull Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null.");
+        }
+        this.context = context.getApplicationContext();
     }
     public static ServiceManage init(@NonNull Context context) {
         if (context == null) {
@@ -59,21 +61,22 @@ public class ServiceManage {
                 PACKAGE_GESTURE_DETECTOR_REMOTE_SERVICE ,
                 NAME_GESTURE_DETECTOR_REMOTE_SERVICE);
         intent .setComponent (componentName);
-        mContext.bindService(intent, mServiceConnection, mContext.BIND_AUTO_CREATE);
+        context.bindService(intent, mServiceConnection, context.BIND_AUTO_CREATE);
     }
 
     public void unbindService(){
         if(mBound){
-            mContext.unbindService(mServiceConnection);
+            context.unbindService(mServiceConnection);
             mBound = false;
         }
     }
-    public void sendMessage(String message){
+    public void sendMessage(@NonNull String message){
+        if (message.trim().length() == 0) {
+            throw new IllegalArgumentException("message must not be empty.");
+        }
         if(mCnrAidlInterface != null){
             try {
-                if (!TextUtils.isEmpty(message)){
-                    mCnrAidlInterface.send(message);
-                }
+                 mCnrAidlInterface.send(message);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

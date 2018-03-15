@@ -1,5 +1,6 @@
 package example.com.sunshine.download.Home;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
@@ -27,6 +29,8 @@ import com.bumptech.glide.Glide;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -50,12 +54,14 @@ import example.com.sunshine.download.Fragment.SubscriptionFragment;
 import example.com.sunshine.download.Fragment.UserFragment;
 import example.com.sunshine.util.Util;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by qianxiangsen on 2017/5/3.
  */
 
-public class Main111Activity extends BaseActivity implements View.OnClickListener{
+public class Main111Activity extends BaseActivity implements View.OnClickListener , EasyPermissions.PermissionCallbacks {
 
     //当前tab位置
     public static int mFragCurrentIndex = 0;
@@ -96,6 +102,11 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
 
     private boolean playing;
 
+    String[] perms = {Manifest.permission.READ_PHONE_STATE};
+
+    private static final int RC_LOCATION_CONTACTS_PERM = 1001;
+
+    private boolean mIsFirstReqPermission = false;
 
     @Override
     protected int getLayoutId() {
@@ -104,7 +115,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        checkPermissions();
         if (this instanceof Main111Activity){
             DaggerActivityComponent.builder().
                     activityMobule(new ActivityMobule(this)).
@@ -155,6 +166,38 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     private void startPlayAnimation() {
 
         openPlayer.startAnimation(operatingAnim);
+    }
+
+    private void checkPermissions() {
+        if (EasyPermissions.hasPermissions(this, perms)) {
+
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_required),
+                    RC_LOCATION_CONTACTS_PERM, perms);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Log.d("BaseActivity", "onPermissionsGranted");
+        mIsFirstReqPermission = true;
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this)
+                    .setTitle("权限申请")
+                    .setRationale(R.string.permission_read_phone_hint)
+                    .setNegativeButton("取消").build().show();
+        }
     }
 
 

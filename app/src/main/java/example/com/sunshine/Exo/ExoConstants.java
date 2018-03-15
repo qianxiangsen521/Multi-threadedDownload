@@ -33,5 +33,5 @@ public class ExoConstants {
     public static final String PLAY_POSTITION = "position";
 
     public static final String IMAGE_URL = "http://dl.sunshinefm.cn/mobileimg/application/cac/f49/5805ea42cd2dd.png";
-    public static final String PLAY_URL_NAME = "http://live.cc.52ytv.cn/jlzg_1/index.m3u8";
+    public static final String PLAY_URL_NAME = "http://live.cc.52ytv.cn/fm/1/3809088646/54abb15f6ac53.m3u8";
 }

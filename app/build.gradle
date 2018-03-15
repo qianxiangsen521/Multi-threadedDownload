@@ -87,6 +87,7 @@ dependencies {
     testImplementation 'android.arch.persistence.room:testing:1.0.0'
     implementation project(':voicetv')
 //    implementation files('libs/cnrlibrary.jar')
+    implementation 'pub.devrel:easypermissions:0.4.0'
 }
 
 
