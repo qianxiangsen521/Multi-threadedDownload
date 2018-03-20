@@ -26,7 +26,6 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    p
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />

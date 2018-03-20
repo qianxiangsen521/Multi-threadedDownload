@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -37,7 +39,7 @@ import example.com.sunshine.download.Fragment.BaseFragment;
 public class DownFragment extends BaseFragment {
     private DownloadMessage downlaod;
     private List<Task> taskList;
-    private ListView list;
+    private RecyclerView list;
     private View view;
 
     @Inject
@@ -69,52 +71,32 @@ public class DownFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        list = (ListView) view.findViewById(R.id.listview);
+        list = (RecyclerView) view.findViewById(R.id.listview);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        list.setLayoutManager(linearLayoutManager);
         list.setAdapter(new ADAPTER(getActivity(),downlaod,taskList));
     }
 
-    private static class ADAPTER extends BaseAdapter{
+    private static class ADAPTER extends BaseQuickAdapter<Task,BaseViewHolder>{
 
         Context context;
         DownloadMessage downlaod;
-        LayoutInflater inflater;
-        List<Task> taskList;
         public ADAPTER(Context context,DownloadMessage downlaod,List<Task> taskList){
+            super(R.layout.item_download,taskList);
             this.context = context;
-            inflater = LayoutInflater.from(context);
             this.downlaod = downlaod;
-            this.taskList = taskList;
         }
-
         @Override
-        public int getCount() {
-            return taskList.size();
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return taskList.get(position);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_download,null,false);
-            final  ImageView Image = (ImageView) convertView.findViewById(R.id.ivIcon);
-            final ProgressBar p = (ProgressBar) convertView.findViewById(R.id.progressBar);
-            final  TextView  mButton3 = (TextView) convertView.findViewById(R.id.btnDownload);
-            final  TextView speed = (TextView) convertView.findViewById(R.id.tvName);
-            final TextView  text = (TextView) convertView.findViewById(R.id.tvStatus);
-            final  TextView  size = (TextView) convertView.findViewById(R.id.textView_size1);
-
-            final Task tas = taskList.get(position);
-
+        protected void convert(BaseViewHolder helper, Task tas) {
+            final  ImageView Image = (ImageView) helper.getView(R.id.ivIcon);
+            final ProgressBar p = (ProgressBar) helper.getView(R.id.progressBar);
+            final  TextView  mButton3 = (TextView) helper.getView(R.id.btnDownload);
+            final  TextView speed = (TextView) helper.getView(R.id.tvName);
+            final TextView  text = (TextView) helper.getView(R.id.tvStatus);
+            final  TextView  size = (TextView) helper.getView(R.id.textView_size1);
             Picasso.with(context).load(tas.getIamgeUrl()).into(Image);
-            final Task taskId = downlaod.addTask(taskList.get(position), new DownloadUiListener() {
+
+            final Task taskId = downlaod.addTask(tas, new DownloadUiListener() {
                 @Override
                 public void UiStrat() {
                     Log.d("TAG", "UiStrat: ");
@@ -174,11 +156,7 @@ public class DownFragment extends BaseFragment {
                     }
                 }
             });
-
-            return convertView;
         }
-
-
     }
 
     @Override
