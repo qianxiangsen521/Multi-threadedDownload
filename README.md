@@ -18,7 +18,8 @@
 
 多线程下载 效果图
 
-![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif)
+![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif)    ![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/image.png)
+
 
 
 
