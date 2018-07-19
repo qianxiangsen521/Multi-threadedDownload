@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Multi-threadedDownload.iml" filepath="$PROJECT_DIR$/Multi-threadedDownload.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/voicetv/voicetv.iml" filepath="$PROJECT_DIR$/voicetv/voicetv.iml" />
     </modules>
   </component>
 </project>
