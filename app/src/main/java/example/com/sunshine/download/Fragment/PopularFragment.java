@@ -2,12 +2,20 @@ package example.com.sunshine.download.Fragment;
 
 import android.content.Intent;
 import android.graphics.PointF;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.transition.Fade;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Exo.ExoConstants;
 import example.com.sunshine.Exo.PlayActivity;
+import example.com.sunshine.Main.GridDetailAcitivty;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Adapter.HeaderPagerAdapter;
 import example.com.sunshine.download.Adapter.HomeGridViewAdapter;
@@ -42,6 +51,7 @@ import example.com.sunshine.download.Http.Configuration;
 import example.com.sunshine.download.Http.SystemUtils;
 import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.Http.entity.RadioInfo;
+import example.com.sunshine.download.Utils.DetailsTransition;
 import example.com.sunshine.download.Utils.Font;
 import example.com.sunshine.download.Utils.MyGridView;
 import example.com.sunshine.download.request.CategoryRadioInfo;
@@ -185,8 +195,49 @@ public class PopularFragment extends BaseFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Util.setIntnetPlay(getActivity().getSupportFragmentManager(),R.id.fragment_play);
+//            Util.setIntnetPlay(getActivity().getSupportFragmentManager(),R.id.fragment_play);
 
+            RadioInfo radioInfo =(RadioInfo) parent.getAdapter().getItem(position);
+            if (categoryRadioInfos != null) {
+                for (int i = 0; i < categoryRadioInfos.size(); i++) {
+                    CategoryRadioInfo cateRadioInfo = categoryRadioInfos
+                            .get(i);
+                    if (cateRadioInfo != null
+                            && cateRadioInfo.getIndexType() == 2) {
+
+                        Fragment newFragment = new GridDetailFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("image",radioInfo.getImgUrl());
+                        bundle.putString("transitionName", "transition" + position);
+                        newFragment.setArguments(bundle);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+                            setSharedElementReturnTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.change_image_transform));
+                            setExitTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.no_transition));
+
+                            newFragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.change_image_transform));
+                            newFragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.no_transition));
+                        }
+
+//                        newFragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).
+//                        inflateTransition(R.transition.change_image_transform));
+//                        newFragment.setEnterTransition(TransitionInflater.from(getActivity()).
+//                        inflateTransition(android.R.transition.explode));
+
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_full, newFragment, "GridDetailFragment");
+                        fragmentTransaction.addToBackStack("GridDetailFragment");
+                        fragmentTransaction.addSharedElement(
+                                (ImageView)view.findViewById(R.id.gv_radio_img),
+                                ViewCompat.getTransitionName((ImageView)view.findViewById(R.id.gv_radio_img)));
+                        fragmentTransaction.commit();
+
+
+                    }
+                }
+            }
         }
     }
 
@@ -433,7 +484,7 @@ public class PopularFragment extends BaseFragment {
         }
     }
 
-     class HomeMoreClickListener implements View.OnClickListener {
+    class HomeMoreClickListener implements View.OnClickListener {
         private String url;
 
         private int isFee;

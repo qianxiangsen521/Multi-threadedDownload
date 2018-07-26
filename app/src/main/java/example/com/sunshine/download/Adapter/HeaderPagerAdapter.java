@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -23,6 +26,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import example.com.sunshine.Main.GridDetailAcitivty;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Fragment.PopularFragment;
 import example.com.sunshine.download.Http.Configuration;
@@ -136,8 +140,25 @@ public class HeaderPagerAdapter extends PagerAdapter {
                             radioInfo.setAlbumId(Integer.parseInt(aid));
                         }
                     }
-                    Util.setIntnetPlay(homeFragment.getActivity().getSupportFragmentManager(),R.id.fragment_play);
+//                    Util.setIntnetPlay(homeFragment.getActivity().getSupportFragmentManager(),R.id.fragment_play);
 //                    DetailPlayerActivity.lanuchActivity(homeFragment.getActivity(), radioInfo);
+
+                    Intent intent = new Intent(homeFragment.getActivity(), GridDetailAcitivty.class);
+
+                    intent.putExtra("title", radioInfo.getAlbum_name());
+                    intent.putExtra("image",radioInfo.getImgUrl());
+                    Bundle bundle = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(homeFragment.getActivity(),
+                                    viewHolder.topicView,
+                                    "Sign in or register")
+                            .toBundle();
+
+                    if (Build.VERSION.SDK_INT >= 21) {
+                        homeFragment.getActivity().startActivity(intent, bundle);
+                    } else {
+                        intent.putExtras(bundle);
+                        homeFragment. getActivity().startActivity(intent);
+                    }
                 }
             }
         });

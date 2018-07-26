@@ -2,6 +2,8 @@ package example.com.sunshine.download.Adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -82,7 +84,10 @@ public class HomePageGVAdapter extends BaseAdapter {
 		convertView.setTag(info);
 		radioDes.setText(info.getRecommed());
 		loadImage(info.getImgUrl(), radioImage);
-
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			// the view being shared
+			radioImage.setTransitionName("transition" + position);
+		}
 		return convertView;
 	}
 
