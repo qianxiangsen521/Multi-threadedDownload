@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -221,19 +222,18 @@ public class PopularFragment extends BaseFragment {
                             newFragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.no_transition));
                         }
 
-//                        newFragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).
-//                        inflateTransition(R.transition.change_image_transform));
-//                        newFragment.setEnterTransition(TransitionInflater.from(getActivity()).
-//                        inflateTransition(android.R.transition.explode));
+                        newFragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).
+                        inflateTransition(R.transition.change_image_transform));
+                        newFragment.setEnterTransition(TransitionInflater.from(getActivity()).
+                        inflateTransition(android.R.transition.explode));
 
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_full, newFragment, "GridDetailFragment");
-                        fragmentTransaction.addToBackStack("GridDetailFragment");
+                        fragmentTransaction.replace(R.id.fragment_full, newFragment);
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.addSharedElement(
                                 (ImageView)view.findViewById(R.id.gv_radio_img),
                                 ViewCompat.getTransitionName((ImageView)view.findViewById(R.id.gv_radio_img)));
                         fragmentTransaction.commit();
-
 
                     }
                 }
