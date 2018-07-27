@@ -12,15 +12,23 @@
 	多线程下载的项目，使用线程池(Executors.newFixedThreadPool(2))对线程的管理
 	支持断点续传，第一个版本默认可以两个线程同时下载
 	
+版本:1.1.0
+
+	优化项目已存在的问题
+	添加广播详情页面,用到了ActivityOptionsCompat共享元素动画
+	fragment中跳转使用共享元素动画　 
 
 
 仿喜马拉雅 效果图
 
 多线程下载 效果图
 
-![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif)   
+      
 
-
+<div>
+<img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif" width="240px" height="426px"/>
+<img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/open.gif" width="240px" height="426px"/>
+</div>
 
 用法
 	
