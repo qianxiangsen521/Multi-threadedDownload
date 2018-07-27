@@ -24,9 +24,10 @@
 多线程下载 效果图
 
       
+![image](https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/image.png)
 
+Activity切换 效果图
 <div>
-<img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif" width="480px" height="720px"/>
 <img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/open.gif" width="480px" height="720px"/>
 </div>
 
