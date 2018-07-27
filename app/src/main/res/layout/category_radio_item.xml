@@ -16,7 +16,6 @@
             android:layout_gravity="center_horizontal"
             android:scaleType="fitXY"
             />
-<!--android:transitionName="MyTransition"-->
         <ImageView
             android:id="@+id/gv_radio_bg_img"
             android:layout_width="fill_parent"

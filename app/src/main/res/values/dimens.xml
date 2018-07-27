@@ -35,4 +35,12 @@
     <dimen name="vertical_page_margin">@dimen/margin_medium</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
+
+    <!-- Preview (grid item) dimensions -->
+    <dimen name="kitten_preview_size">120dp</dimen>
+    <dimen name="kitten_preview_padding">16dp</dimen>
+
+    <!-- Details dimensions -->
+    <dimen name="details_image_size">240dp</dimen>
+    <dimen name="details_top_spacing">48dp</dimen>
 </resources>

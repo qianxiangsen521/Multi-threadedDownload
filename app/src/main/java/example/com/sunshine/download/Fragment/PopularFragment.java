@@ -42,12 +42,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Exo.ExoConstants;
 import example.com.sunshine.Exo.PlayActivity;
+import example.com.sunshine.Main.GridActivity;
 import example.com.sunshine.Main.GridDetailAcitivty;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Adapter.HeaderPagerAdapter;
 import example.com.sunshine.download.Adapter.HomeGridViewAdapter;
 import example.com.sunshine.download.Adapter.HomePageGVAdapter;
 import example.com.sunshine.download.Application.TLiveApplication;
+import example.com.sunshine.download.Home.PopularDetailsActivity;
 import example.com.sunshine.download.Http.Configuration;
 import example.com.sunshine.download.Http.SystemUtils;
 import example.com.sunshine.download.Http.entity.BaseResponse;
@@ -188,56 +190,68 @@ public class PopularFragment extends BaseFragment {
         homeGridViewAdapter = new HomeGridViewAdapter(this.getActivity());
         homeGridView.setAdapter(homeGridViewAdapter);
         addHeaderView(mContainer);
-        homeGridView.setOnItemClickListener(new HomeBottomGvListener());
+        homeGridView.setOnItemClickListener(new HomeGvListener());
 
+    }
+
+    class HomeGvListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//            RadioInfo radioInfo =(RadioInfo) parent.getAdapter().getItem(position);
+//            ImageView imageView = (ImageView)view.findViewById(R.id.home_center_img);
+//            Intent intent = new Intent(getActivity(), PopularDetailsActivity.class);
+//
+//            intent.putExtra("title", radioInfo.getAlbum_name());
+//            intent.putExtra("image",radioInfo.getImgUrl());
+//                Bundle bundle = ActivityOptionsCompat
+//                    .makeSceneTransitionAnimation(getActivity(),
+//                            imageView,
+//                            imageView.getTransitionName())
+//                    .toBundle();
+//
+//            if (Build.VERSION.SDK_INT >= 21) {
+//                getActivity().startActivity(intent, bundle);
+//            } else {
+//                intent.putExtras(bundle);
+//               getActivity().startActivity(intent);
+//            }
+            startActivity(GridActivity.class);
+        }
     }
 
     class HomeBottomGvListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            Util.setIntnetPlay(getActivity().getSupportFragmentManager(),R.id.fragment_play);
 
             RadioInfo radioInfo =(RadioInfo) parent.getAdapter().getItem(position);
-            if (categoryRadioInfos != null) {
-                for (int i = 0; i < categoryRadioInfos.size(); i++) {
-                    CategoryRadioInfo cateRadioInfo = categoryRadioInfos
-                            .get(i);
-                    if (cateRadioInfo != null
-                            && cateRadioInfo.getIndexType() == 2) {
 
-                        Fragment newFragment = new GridDetailFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("image",radioInfo.getImgUrl());
-                        bundle.putString("transitionName", "transition" + position);
-                        newFragment.setArguments(bundle);
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-
-                            setSharedElementReturnTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.change_image_transform));
-                            setExitTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.no_transition));
-
-                            newFragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.change_image_transform));
-                            newFragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.no_transition));
-                        }
-
-                        newFragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).
-                        inflateTransition(R.transition.change_image_transform));
-                        newFragment.setEnterTransition(TransitionInflater.from(getActivity()).
-                        inflateTransition(android.R.transition.explode));
-
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_full, newFragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.addSharedElement(
-                                (ImageView)view.findViewById(R.id.gv_radio_img),
-                                ViewCompat.getTransitionName((ImageView)view.findViewById(R.id.gv_radio_img)));
-                        fragmentTransaction.commit();
-
-                    }
-                }
+            GridDetailFragment kittenDetails = GridDetailFragment.newInstance(
+                    "transition" + position
+                    ,radioInfo.getImgUrl()
+            );
+            // Note that we need the API version check here because the actual transition classes (e.g. Fade)
+            // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
+            // ARE available in the support library (though they don't do anything on API < 21)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                kittenDetails.setSharedElementEnterTransition(new DetailsTransition());
+                kittenDetails.setEnterTransition(new Fade());
+                setExitTransition(new Fade());
+                kittenDetails.setSharedElementReturnTransition(new DetailsTransition());
             }
+
+            ImageView imageView = (ImageView)view.findViewById(R.id.gv_radio_img);
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .addSharedElement(imageView,
+                            imageView.getTransitionName()
+                            )
+                    .replace(R.id.fragment_full, kittenDetails)
+                    .addToBackStack(null)
+                    .commit();
+
+
         }
     }
 

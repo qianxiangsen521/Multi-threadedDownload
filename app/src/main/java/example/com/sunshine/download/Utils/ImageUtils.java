@@ -449,7 +449,7 @@ public class ImageUtils {
 			Glide.with(context)
 					.load(path)
 					.placeholder(defaultId)
-					.crossFade()
+					.crossFade().skipMemoryCache(true)
 					.into(imageView);
 		} else {
 			imageView.setImageResource(defaultId);

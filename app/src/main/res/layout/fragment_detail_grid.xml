@@ -31,7 +31,6 @@
                 android:scaleType="centerCrop"
                 android:layout_gravity="center"
                 />
-            <!--android:transitionName="MyTransition"-->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"

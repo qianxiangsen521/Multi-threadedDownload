@@ -69,7 +69,7 @@ public abstract  class BaseFragment extends Fragment implements View.OnClickList
             if (null != getLoadingTargetView()) {
                 mVaryViewHelperController = new VaryViewHelperController(getLoadingTargetView());
             }
-//            initData();
+            initData();
             return view;
         }
 
@@ -79,7 +79,6 @@ public abstract  class BaseFragment extends Fragment implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
-        initData();
     }
 
     @Override

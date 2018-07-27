@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "example.com.sunshine"
         minSdkVersion 21
@@ -39,37 +39,36 @@ android {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:support-v13:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.jakewharton:butterknife:8.8.1'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:cardview-v7:25.3.1'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:design:25.3.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.squareup.okio:okio:1.12.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.squareup.okio:okio:1.12.0'
     testCompile 'junit:junit:4.12'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
-    compile 'com.google.dagger:dagger:2.8'
-    compile 'com.karumi:dexter:4.1.0'
-    compile files('libs/volley-20150110-with-sources.jar')
-    compile 'com.bigkoo:convenientbanner:2.0.5'
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.25'
-    compile 'com.android.support:support-annotations:24.2.0'
-    compile 'com.tencent.wcdb:wcdb-android:1.0.2'
-    compile 'com.google.android.exoplayer:exoplayer:r2.4.3'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
-    compile 'jp.wasabeef:glide-transformations:2.0.2'
-    compile 'com.cleveroad:audiovisualization:1.0.0'
-    compile 'com.github.GrenderG:Toasty:1.2.5'
-    compile files('libs/gson-2.3.1.jar')
+    implementation 'com.google.dagger:dagger:2.8'
+    implementation 'com.karumi:dexter:4.1.0'
+    implementation files('libs/volley-20150110-with-sources.jar')
+    implementation 'com.bigkoo:convenientbanner:2.0.5'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.25'
+    implementation 'com.android.support:support-annotations:24.2.0'
+    implementation 'com.tencent.wcdb:wcdb-android:1.0.2'
+    implementation 'com.google.android.exoplayer:exoplayer:r2.4.3'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation 'com.cleveroad:audiovisualization:1.0.0'
+    implementation 'com.github.GrenderG:Toasty:1.2.5'
+    implementation files('libs/gson-2.3.1.jar')
     // ViewModel and LiveData
     implementation 'android.arch.lifecycle:extensions:1.1.0'
     // alternatively, just ViewModel

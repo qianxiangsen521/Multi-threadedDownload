@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -42,7 +44,7 @@ public class GridDetailAcitivty extends AppCompatActivity {
 //        int topicWidth = createTopicWidth();
 //        image_view.getLayoutParams().width = topicWidth;
 //        image_view.getLayoutParams().height = topicWidth;
-        ImageUtils.loadImg(this,imgUrl,R.mipmap.home_recommend_album_bg,image_view);
+//        ImageUtils.loadImg(this,imgUrl,R.mipmap.home_recommend_album_bg,image_view);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,8 +52,8 @@ public class GridDetailAcitivty extends AppCompatActivity {
                 finish();
             }
         });
-
     }
+
 
 
     private int createTopicWidth() {
@@ -62,4 +64,10 @@ public class GridDetailAcitivty extends AppCompatActivity {
         return (int) ((double) (width - margin) / 3 + (double) (width - margin) % 3);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        ActivityCompat.finishAfterTransition(this);
+    }
 }
