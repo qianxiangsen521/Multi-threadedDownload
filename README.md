@@ -26,8 +26,8 @@
       
 
 <div>
-<img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif" width="240px" height="426px"/>
-<img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/open.gif" width="240px" height="426px"/>
+<img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/music.gif" width="480px" height="720px"/>
+<img src="https://github.com/qianxiangsen521/Multi-threadedDownload/blob/master/gif/open.gif" width="480px" height="720px"/>
 </div>
 
 用法
