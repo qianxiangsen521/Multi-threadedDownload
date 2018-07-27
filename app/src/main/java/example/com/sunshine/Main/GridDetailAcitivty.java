@@ -41,10 +41,10 @@ public class GridDetailAcitivty extends AppCompatActivity {
         mToolbar.setTitle(title);
         setSupportActionBar(mToolbar);
         image_view = (ImageView) findViewById(R.id.image_view);
-//        int topicWidth = createTopicWidth();
-//        image_view.getLayoutParams().width = topicWidth;
-//        image_view.getLayoutParams().height = topicWidth;
-//        ImageUtils.loadImg(this,imgUrl,R.mipmap.home_recommend_album_bg,image_view);
+        int topicWidth = createTopicWidth();
+        image_view.getLayoutParams().width = topicWidth;
+        image_view.getLayoutParams().height = topicWidth;
+        ImageUtils.loadImg(this,imgUrl,R.mipmap.home_recommend_album_bg,image_view);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

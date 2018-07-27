@@ -41,15 +41,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.sunshine.Exo.ExoConstants;
-import example.com.sunshine.Exo.PlayActivity;
-import example.com.sunshine.Main.GridActivity;
 import example.com.sunshine.Main.GridDetailAcitivty;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Adapter.HeaderPagerAdapter;
 import example.com.sunshine.download.Adapter.HomeGridViewAdapter;
 import example.com.sunshine.download.Adapter.HomePageGVAdapter;
 import example.com.sunshine.download.Application.TLiveApplication;
-import example.com.sunshine.download.Home.PopularDetailsActivity;
 import example.com.sunshine.download.Http.Configuration;
 import example.com.sunshine.download.Http.SystemUtils;
 import example.com.sunshine.download.Http.entity.BaseResponse;
@@ -198,25 +195,24 @@ public class PopularFragment extends BaseFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            RadioInfo radioInfo =(RadioInfo) parent.getAdapter().getItem(position);
-//            ImageView imageView = (ImageView)view.findViewById(R.id.home_center_img);
-//            Intent intent = new Intent(getActivity(), PopularDetailsActivity.class);
-//
-//            intent.putExtra("title", radioInfo.getAlbum_name());
-//            intent.putExtra("image",radioInfo.getImgUrl());
-//                Bundle bundle = ActivityOptionsCompat
-//                    .makeSceneTransitionAnimation(getActivity(),
-//                            imageView,
-//                            imageView.getTransitionName())
-//                    .toBundle();
-//
-//            if (Build.VERSION.SDK_INT >= 21) {
-//                getActivity().startActivity(intent, bundle);
-//            } else {
-//                intent.putExtras(bundle);
-//               getActivity().startActivity(intent);
-//            }
-            startActivity(GridActivity.class);
+            RadioInfo radioInfo =(RadioInfo) parent.getAdapter().getItem(position);
+            ImageView imageView = (ImageView)view.findViewById(R.id.home_center_img);
+            Intent intent = new Intent(getActivity(), GridDetailAcitivty.class);
+
+            intent.putExtra("title", radioInfo.getName());
+            intent.putExtra("image",radioInfo.getImgUrl());
+                Bundle bundle = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(getActivity(),
+                            imageView,
+                            imageView.getTransitionName())
+                    .toBundle();
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                getActivity().startActivity(intent, bundle);
+            } else {
+                intent.putExtras(bundle);
+               getActivity().startActivity(intent);
+            }
         }
     }
 

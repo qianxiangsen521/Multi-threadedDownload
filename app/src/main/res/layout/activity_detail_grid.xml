@@ -17,7 +17,7 @@
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginTop="167dp"
-            app:expandedTitleGravity="left"
+            app:expandedTitleGravity="center"
             app:collapsedTitleGravity="left"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
 

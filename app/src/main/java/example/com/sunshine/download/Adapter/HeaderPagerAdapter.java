@@ -117,11 +117,11 @@ public class HeaderPagerAdapter extends PagerAdapter {
                 radioInfo = (RadioInfo) v.getTag();
                 imageview = v;
                 String type = radioInfo.getType();
-                if (type.equals("8")) {
-                    String downloadUrl = radioInfo.getDownloadUrl();
-                    if (TextUtils.isEmpty(downloadUrl)){
-                        return;
-                    }
+//                if (type.equals("8")) {
+//                    String downloadUrl = radioInfo.getDownloadUrl();
+//                    if (TextUtils.isEmpty(downloadUrl)){
+//                        return;
+//                    }
 //                    String aid = radioInfo.getAid();
 //                    Intent intent = new Intent(homeFragment.getActivity(),
 //                            CeremonyActivity.class);
@@ -129,36 +129,36 @@ public class HeaderPagerAdapter extends PagerAdapter {
 //                    intent.putExtra("aid", aid);
 //
 //                    homeFragment.getActivity().startActivity(intent);
-                } else if(type.equals("10")){
+//                } else if(type.equals("10")){
 //                    EventBus.getDefault().post(new YoudaoEvent("Youdao"));
-                } else {
-                    if (type.equals("4") || type.equals("5")) {
-                        String url = radioInfo.getAlbumListUrl();
-                        String[] args = url.split("aid=");
-                        if (args.length >= 1) {
-                            String aid = args[1];
-                            radioInfo.setAlbumId(Integer.parseInt(aid));
-                        }
-                    }
+//                } else {
+//                    if (type.equals("4") || type.equals("5")) {
+//                        String url = radioInfo.getAlbumListUrl();
+//                        String[] args = url.split("aid=");
+//                        if (args.length >= 1) {
+//                            String aid = args[1];
+//                            radioInfo.setAlbumId(Integer.parseInt(aid));
+//                        }
+//                    }
 //                    Util.setIntnetPlay(homeFragment.getActivity().getSupportFragmentManager(),R.id.fragment_play);
 //                    DetailPlayerActivity.lanuchActivity(homeFragment.getActivity(), radioInfo);
+//                }
 
-                    Intent intent = new Intent(homeFragment.getActivity(), GridDetailAcitivty.class);
+                Intent intent = new Intent(homeFragment.getActivity(), GridDetailAcitivty.class);
 
-                    intent.putExtra("title", radioInfo.getAlbum_name());
-                    intent.putExtra("image",radioInfo.getImgUrl());
-                    Bundle bundle = ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(homeFragment.getActivity(),
-                                    viewHolder.topicView,
-                                    "Sign in or register")
-                            .toBundle();
+                intent.putExtra("title", radioInfo.getName());
+                intent.putExtra("image",radioInfo.getImgUrl());
+                Bundle bundle = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(homeFragment.getActivity(),
+                                viewHolder.topicView,
+                                "Sign in or register")
+                        .toBundle();
 
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        homeFragment.getActivity().startActivity(intent, bundle);
-                    } else {
-                        intent.putExtras(bundle);
-                        homeFragment. getActivity().startActivity(intent);
-                    }
+                if (Build.VERSION.SDK_INT >= 21) {
+                    homeFragment.getActivity().startActivity(intent, bundle);
+                } else {
+                    intent.putExtras(bundle);
+                    homeFragment. getActivity().startActivity(intent);
                 }
             }
         });
