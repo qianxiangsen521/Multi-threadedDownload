@@ -1,6 +1,7 @@
 package example.com.sunshine.Exo;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import com.google.android.exoplayer2.ExoPlayer;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import example.com.sunshine.Exo.E.MessageEvent;
 import example.com.sunshine.Exo.E.NextEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
@@ -23,6 +26,7 @@ import example.com.sunshine.IRemoteService;
 import example.com.sunshine.IRemoteServiceCallback;
 import example.com.sunshine.download.Application.TLiveApplication;
 import example.com.sunshine.download.Home.Main111Activity;
+import example.com.sunshine.util.Util;
 
 /**
  * Created by qianxiangsen on 2017/7/11.
@@ -141,7 +145,9 @@ public class PlayManager  {
             c.stopService(new Intent(c, ExoService.class));
         }
     }
-    public static void exitApp(Context context) {
+
+
+    public static void onRestartApp(Context context){
         Intent intent = new Intent(context, Main111Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

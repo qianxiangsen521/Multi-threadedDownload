@@ -1,7 +1,9 @@
 package example.com.sunshine.download.Application;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -28,8 +30,6 @@ public class TLiveApplication  extends Application{
     public DisplayMetrics mDisplayMetrics;
 
     protected String userAgent;
-
-
 
     @Override
     public void onCreate() {

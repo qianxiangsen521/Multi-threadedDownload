@@ -1,18 +1,11 @@
 package example.com.sunshine.download.Home;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,7 +15,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
 
@@ -36,14 +28,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import example.com.sunshine.Exo.E.MessageEvent;
+import example.com.sunshine.Exo.E.ExitEvent;
 import example.com.sunshine.Exo.E.PlayEvent;
 import example.com.sunshine.Exo.ExoConstants;
-import example.com.sunshine.Exo.ExoService;
-import example.com.sunshine.Exo.PlayActivity;
-import example.com.sunshine.Exo.PlayInfo;
 import example.com.sunshine.Exo.PlayManager;
-import example.com.sunshine.IRemoteService;
 import example.com.sunshine.R;
 import example.com.sunshine.dagger.ActivityMobule;
 import example.com.sunshine.dagger.DaggerActivityComponent;
@@ -123,12 +111,10 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         }
 
         ButterKnife.bind(this);
-
+        PlayManager.getInstance().bindPlayService();
         if (savedInstanceState != null) {
             mFragCurrentIndex = savedInstanceState.getInt("curChoice", 0);
         }
-
-        PlayManager.getInstance().bindPlayService();
         //移除fragment覆盖部分
         getWindow().setBackgroundDrawable(null);
 
@@ -149,8 +135,8 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         radioButton3.setOnClickListener(this);
         radioButton4.setOnClickListener(this);
         openPlayer.setOnClickListener(this);
-
     }
+
 
     @Override
     protected void initData() {
@@ -254,17 +240,13 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
                 switchFragment(3, false);
                 break;
             case R.id.common_playing_player:
-                Util.setIntnetPlay(getSupportFragmentManager(),R.id.fragment_play);
+                Util.setIntnetPlay(getSupportFragmentManager(),
+                        R.id.fragment_play,Util.PLAY_TAG_FRAGMENT);
                 break;
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        initIntent(intent);
-        super.onNewIntent(intent);
 
-    }
 
     // 把显示的Fragment隐藏
     private void setSelected(int pos, boolean isSelected) {
@@ -283,13 +265,23 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mFragCurrentIndex);
     }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        initIntent(intent);
+        super.onNewIntent(intent);
+
+    }
+
     private void initIntent(Intent intent) {
         boolean exit = intent.getBooleanExtra(ParamExit,false);
-        if (exit) {
-            destoryInstance();
-            return;
+        if (exit){
+            Util.setIntnetPlay(getSupportFragmentManager(),
+                    R.id.fragment_play,Util.PLAY_TAG_FRAGMENT);
         }
     }
+
+
+
     /**
      * @param index
      */
@@ -348,14 +340,14 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
             stopPlayAnimation();
         }
     }
-
-
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onExitEvent(ExitEvent exitEvent){
+        destoryInstance();
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.d("TAG", "onKeyDown: "+getSupportFragmentManager().getBackStackEntryCount());
             if (getSupportFragmentManager().getBackStackEntryCount() >= 1) {
                 getSupportFragmentManager().popBackStack();
             } else {
@@ -372,17 +364,18 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
-
-        destoryInstance();
+        moveTaskToBack();
 
 
     }
-    private void destoryInstance(){
+    private void moveTaskToBack(){
         if (playing){
             PlayManager.getInstance().stop();
         }
+    }
+    private void destoryInstance(){
+        moveTaskToBack();
         PlayManager.Exit(this);
-
         System.exit(0);
     }
 

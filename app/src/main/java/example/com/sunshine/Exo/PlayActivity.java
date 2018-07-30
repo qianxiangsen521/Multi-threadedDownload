@@ -81,6 +81,7 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
 
     private Animation operatingAnim;
 
+
     public static PlayActivity newInstance(String url) {
         PlayActivity f = new PlayActivity();
 
@@ -163,7 +164,6 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     @Override
     protected void initView(Bundle savedInstanceState, View rootView) {
         ButterKnife.bind(this,rootView);
-
         formatBuilder = new StringBuilder();
         formatter = new Formatter(formatBuilder, Locale.getDefault());
         playInfo = new PlayInfo();
@@ -203,6 +203,7 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
 
         Bundle bundle = getArguments();
         playInfo.setPlayUrl(bundle.getString("url"));
+
         PlayManager.play(mContext,playInfo);
 
         openPlayer.setOnClickListener(new View.OnClickListener() {
@@ -339,9 +340,9 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (enter) {
-            return AnimationUtils.loadAnimation(mContext, R.anim.slide_botton_bottom);
+            return AnimationUtils.loadAnimation(activity, R.anim.slide_botton_bottom);
         } else {
-            return AnimationUtils.loadAnimation(mContext, R.anim.slide_top_bottom);
+            return AnimationUtils.loadAnimation(activity, R.anim.slide_top_bottom);
         }
     }
 

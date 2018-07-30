@@ -125,7 +125,8 @@ public class HomeFragment extends BaseFragment{
         switch (v.getId()){
             case R.id.ib_download:
 
-                Util.addFragment(R.id.fragment_full,downFragment,getActivity().getSupportFragmentManager());
+                Util.addFragment(R.id.fragment_full,downFragment,
+                        getActivity().getSupportFragmentManager(),Util.DOWN_TAG_FRAGMENT);
                 break;
         }
 

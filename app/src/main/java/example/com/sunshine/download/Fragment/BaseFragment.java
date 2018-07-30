@@ -1,5 +1,6 @@
 package example.com.sunshine.download.Fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public abstract  class BaseFragment extends Fragment implements View.OnClickList
     protected abstract void initData();
 
     protected static Context mContext;
+    protected Activity activity;
     private WeakReference<Context> mWeakReference;
 
     private View view;
@@ -57,6 +59,7 @@ public abstract  class BaseFragment extends Fragment implements View.OnClickList
         super.onAttach(context);
         mWeakReference = new WeakReference<>(context);
         mContext = mWeakReference.get();
+        activity = getActivity();
     }
 
     @Override
@@ -268,9 +271,9 @@ public abstract  class BaseFragment extends Fragment implements View.OnClickList
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (enter) {
-            return AnimationUtils.loadAnimation(mContext, R.anim.slide_laft_bottom);
+            return AnimationUtils.makeInAnimation(activity, false);
         } else {
-            return AnimationUtils.loadAnimation(mContext, R.anim.slide_right_bottom);
+            return  AnimationUtils.makeOutAnimation(activity, true);
             }
         }
 

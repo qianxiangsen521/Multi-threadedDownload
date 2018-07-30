@@ -42,7 +42,7 @@
         android:theme="@style/AppThemeNoBar">
         <activity
             android:name=".download.Home.Main111Activity"
-            android:launchMode="standard"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

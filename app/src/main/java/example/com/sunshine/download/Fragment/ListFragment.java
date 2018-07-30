@@ -82,15 +82,6 @@ public class ListFragment extends BaseFragment{
         recyclerView.setHasFixedSize(true);
         setItemDecoration();
         reloadAdapter();
-        listDetailAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-
-                MusicInfo info = (MusicInfo) adapter.getData().get(position);
-                Util.setIntnetPlay(getActivity().getSupportFragmentManager(),R.id.fragment_play,info.data);
-            }
-        });
     }
 
     static Observable<ArrayList<MusicInfo>> sampleObservable() {

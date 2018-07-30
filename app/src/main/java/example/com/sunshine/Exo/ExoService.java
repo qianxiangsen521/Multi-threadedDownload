@@ -1,5 +1,6 @@
 package example.com.sunshine.Exo;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,6 +20,7 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -59,6 +61,7 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -624,10 +627,10 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
     }
 
     private void showNotifiction(){
-
-        android.support.v4.app. NotificationCompat.Builder mBuilder = new android.support.v4.app.NotificationCompat.Builder(this);
-
-
+        if (player == null){
+            return;
+        }
+        android.support.v7.app. NotificationCompat.Builder mBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(new ComponentName("example.com.sunshine", "example.com.sunshine.download.Home.Main111Activity"));
@@ -648,6 +651,9 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
         remoteViews.setOnClickPendingIntent(R.id.img_notifyPlayOrPause,
                 PendingIntent.getBroadcast(this, 0, new Intent(ACTION_PLAY_ONLINE), 0));
+
+        remoteViews.setOnClickPendingIntent(R.id.content_notfication,
+                PendingIntent.getBroadcast(this,0,new Intent(ACTION_PLAY_CONTENT),0));
 
         remoteViews.setImageViewResource(R.id.exit, R.mipmap.notify_btn_close);
         remoteViews.setOnClickPendingIntent(R.id.exit,
@@ -679,6 +685,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         m_IntentFilter.addAction(ACTION_PLAY_ONLINE);
         m_IntentFilter.addAction(ACTION_NEXT_RADIO);
         m_IntentFilter.addAction(ACTION_EXIT_RADIO);
+        m_IntentFilter.addAction(ACTION_PLAY_CONTENT);
 
         registerReceiver(mPlayControlReceiver, m_IntentFilter);
     }
@@ -697,6 +704,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
     public static final String ACTION_EXIT_RADIO = "cn.cnr.fm.action.exit";
 
+    public static final String ACTION_PLAY_CONTENT = "cn.cnr.fm.action.content";
 
     private class HeadsetReceiver extends BroadcastReceiver {
 
@@ -713,10 +721,11 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
                 }
             } else if (action.equals(ACTION_NEXT_RADIO)) {
                 next();
+            } else if (action.equals(ACTION_PLAY_CONTENT)){
+                PlayManager.onRestartApp(context);
             }
             showNotifiction();
 
         }
     }
-
 }
