@@ -135,6 +135,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         radioButton3.setOnClickListener(this);
         radioButton4.setOnClickListener(this);
         openPlayer.setOnClickListener(this);
+        initIntent(getIntent());
     }
 
 

@@ -15,7 +15,6 @@
         <item name="colorPrimary">@color/av_color_bg</item>
         <item name="colorPrimaryDark">@color/av_color_bg</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
 
 

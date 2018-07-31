@@ -55,9 +55,11 @@ import example.com.sunshine.download.Utils.DetailsTransition;
 import example.com.sunshine.download.Utils.Font;
 import example.com.sunshine.download.Utils.MyGridView;
 import example.com.sunshine.download.request.CategoryRadioInfo;
+import example.com.sunshine.download.request.CnrLog;
 import example.com.sunshine.download.request.HomeBottomResponse;
 import example.com.sunshine.download.request.HomeTopResponse;
 import example.com.sunshine.download.request.HttpManger;
+import example.com.sunshine.download.request.JsonDataFactory;
 import example.com.sunshine.util.Util;
 import example.com.sunshine.view.ScrollListenerHorizontalScrollView;
 
@@ -392,16 +394,26 @@ public class PopularFragment extends BaseFragment {
 
     // 加载顶部焦点图数据
     private void loadHomeHeaderData() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("version", SystemUtils.getAppVersionName(getActivity()));
-        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.HOME_HEADER_RUL, map, true);
+//        HashMap<String, String> map = new HashMap<String, String>();
+//        map.put("version", SystemUtils.getAppVersionName(getActivity()));
+//        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.HOME_HEADER_RUL, map, true);
+
+        List<RadioInfo> notes = JsonDataFactory.getRadioInfoList(CnrLog.topjson);
+        HomeTopResponse topResponse = new HomeTopResponse();
+        topResponse.setRadioInfos(notes);
+        onDataReady(topResponse);
     }
 
     // 加载底部分类数据
     private void loadHomeBottomData() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("sn", SystemUtils.getMd5UniqueID(this.getActivity()));
-        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.HOME_BOTTOM_URL, map, true);
+//        HashMap<String, String> map = new HashMap<String, String>();
+//        map.put("sn", SystemUtils.getMd5UniqueID(this.getActivity()));
+//        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.HOME_BOTTOM_URL, map, true);
+
+        List<CategoryRadioInfo> categoryRadioInfos = JsonDataFactory.getHomeCategoryList(CnrLog.bottonjson);
+        HomeBottomResponse bottomResponse = new HomeBottomResponse();
+        bottomResponse.setCategoryRadioInfos(categoryRadioInfos);
+        onDataReady(bottomResponse);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.animation.Animation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,8 +23,11 @@ import example.com.sunshine.download.Http.Configuration;
 import example.com.sunshine.download.Http.SystemUtils;
 import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.View.LoginView;
+import example.com.sunshine.download.request.CategoryRadioInfo;
+import example.com.sunshine.download.request.CnrLog;
 import example.com.sunshine.download.request.HomeBottomResponse;
 import example.com.sunshine.download.request.HttpManger;
+import example.com.sunshine.download.request.JsonDataFactory;
 import example.com.sunshine.download.request.StringTool;
 import example.com.sunshine.util.Util;
 
@@ -64,9 +68,14 @@ public class RecommendFragment extends BaseFragment implements LoginView {
 
     // 加载底部分类数据
     private void loadHomeBottomData() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("sn", SystemUtils.getMd5UniqueID(this.getActivity()));
-        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.HOME_BOTTOM_URL, map, true);
+//        HashMap<String, String> map = new HashMap<String, String>();
+//        map.put("sn", SystemUtils.getMd5UniqueID(this.getActivity()));
+//        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.HOME_BOTTOM_URL, map, true);
+
+        List<CategoryRadioInfo> categoryRadioInfos = JsonDataFactory.getHomeCategoryList(CnrLog.bottonjson);
+        HomeBottomResponse bottomResponse = new HomeBottomResponse();
+        bottomResponse.setCategoryRadioInfos(categoryRadioInfos);
+        onDataReady(bottomResponse);
     }
 
 

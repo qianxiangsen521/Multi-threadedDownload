@@ -80,6 +80,7 @@ public class CnrRequest<T> extends JsonRequest<BaseResponse<T>> {
             return topResponse;
         }
         if (url.equals(Configuration.HOME_BOTTOM_URL)) {
+
             List<CategoryRadioInfo> categoryRadioInfos = JsonDataFactory.getHomeCategoryList(json);
             HomeBottomResponse bottomResponse = new HomeBottomResponse();
             bottomResponse.setCategoryRadioInfos(categoryRadioInfos);

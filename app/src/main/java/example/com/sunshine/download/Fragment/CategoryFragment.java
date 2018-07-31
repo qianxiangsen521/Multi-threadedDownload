@@ -25,7 +25,9 @@ import example.com.sunshine.download.Http.entity.BaseResponse;
 import example.com.sunshine.download.request.CategoryInfo;
 import example.com.sunshine.download.request.CategoryInfoList;
 import example.com.sunshine.download.request.CategoryResponse;
+import example.com.sunshine.download.request.CnrLog;
 import example.com.sunshine.download.request.HttpManger;
+import example.com.sunshine.download.request.JsonDataFactory;
 import example.com.sunshine.download.request.StringTool;
 import example.com.sunshine.util.ToastyUtils;
 
@@ -81,9 +83,14 @@ public class CategoryFragment extends BaseFragment {
 
     // 加载底部分类数据
     private void loadCategoryData() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("sn", SystemUtils.getMd5UniqueID(this.getActivity()));
-        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.CATEGORY_INDEX, map, true);
+//        HashMap<String, String> map = new HashMap<String, String>();
+//        map.put("sn", SystemUtils.getMd5UniqueID(this.getActivity()));
+//        HttpManger.getInstance(getActivity(), this).sendPostRequest(Configuration.CATEGORY_INDEX, map, true);
+
+        ArrayList<CategoryInfoList> categoryList = JsonDataFactory.parseCategoryIndex(CnrLog.category);
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setCategoryList(categoryList);
+        onDataReady(categoryResponse);
     }
 
     @Override
