@@ -226,21 +226,25 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
     }
     @Override
     public void onClick(View v) {
-        setSelected(mFragCurrentIndex, false);
         switch (v.getId()) {
             case R.id.find:
+                setSelected(mFragCurrentIndex, false);
                 switchFragment(0, false);
                 break;
             case R.id.custom:
+                setSelected(mFragCurrentIndex, false);
                 switchFragment(1, false);
                 break;
             case R.id.square:
+                setSelected(mFragCurrentIndex, false);
                 switchFragment(2, false);
                 break;
             case R.id.myspace:
+                setSelected(mFragCurrentIndex, false);
                 switchFragment(3, false);
                 break;
             case R.id.common_playing_player:
+                setSelected(mFragCurrentIndex, true);
                 Util.setIntnetPlay(getSupportFragmentManager(),
                         R.id.fragment_play,Util.PLAY_TAG_FRAGMENT);
                 break;
@@ -257,7 +261,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
             radioButton2.setSelected(isSelected);
         } else if (pos == 2) {
             radioButton3.setSelected(isSelected);
-        } else {
+        } else if (pos == 3){
             radioButton4.setSelected(isSelected);
         }
     }

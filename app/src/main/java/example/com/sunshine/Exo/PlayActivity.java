@@ -340,7 +340,7 @@ public class PlayActivity extends BaseFragment implements SeekBar.OnSeekBarChang
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (enter) {
-            return AnimationUtils.loadAnimation(activity, R.anim.slide_botton_bottom);
+            return AnimationUtils.makeInChildBottomAnimation(activity);
         } else {
             return AnimationUtils.loadAnimation(activity, R.anim.slide_top_bottom);
         }
