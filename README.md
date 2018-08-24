@@ -15,7 +15,7 @@
 版本:1.1.0
 
 	优化项目已存在的问题
-	添加广播详情页面,用到了ActivityOptionsCompat共享元素动画
+	添加广播详情页面,用到了ActivityOptionsCompat共享视觉元素
 	fragment中跳转使用共享元素动画　 
 
 

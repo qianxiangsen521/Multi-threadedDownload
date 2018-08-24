@@ -22,6 +22,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -36,7 +37,11 @@ import example.com.sunshine.Exo.Utils.MusicUtils;
 import example.com.sunshine.HTTP.HttpMessage;
 import example.com.sunshine.R;
 import example.com.sunshine.download.Adapter.ListDetailAdapter;
+import example.com.sunshine.download.Adapter.RecyclerViewAdapterExample;
 import example.com.sunshine.download.Http.Configuration;
+import example.com.sunshine.download.request.CategoryRadioInfo;
+import example.com.sunshine.download.request.CnrLog;
+import example.com.sunshine.download.request.JsonDataFactory;
 import example.com.sunshine.download.request.VolleySingleton;
 import example.com.sunshine.entity.HomeEntity;
 import example.com.sunshine.util.Util;
@@ -53,14 +58,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ListFragment extends BaseFragment{
 
-    private RecyclerView recyclerView;
-    private ListDetailAdapter listDetailAdapter;
-
-    private final CompositeDisposable disposables = new CompositeDisposable();
-
-
-    private ArrayList<MusicInfo> artistList = new ArrayList<>();
-
+    private RecyclerView recycler;
+    private List<CategoryRadioInfo> categoryRadioInfos;
+    private RecyclerViewAdapterExample recyclerViewAdapterExample;
     @Inject
     public ListFragment() {
 
@@ -73,52 +73,19 @@ public class ListFragment extends BaseFragment{
 
     @Override
     protected void initView(Bundle savedInstanceState, View rootView) {
+        loadData();
+        recycler = (RecyclerView)rootView.findViewById(R.id.recyclerview);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewAdapterExample = new RecyclerViewAdapterExample(getActivity(),categoryRadioInfos);
+        recycler.setAdapter(recyclerViewAdapterExample);
 
-
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        listDetailAdapter = new ListDetailAdapter(artistList);
-        recyclerView.setAdapter(listDetailAdapter);
-        recyclerView.setHasFixedSize(true);
-        setItemDecoration();
-        reloadAdapter();
     }
 
-    static Observable<ArrayList<MusicInfo>> sampleObservable() {
-        return Observable.defer(new Callable<ObservableSource<ArrayList<MusicInfo>>>() {
-            @Override public ObservableSource<ArrayList<MusicInfo>> call() throws Exception {
-                ArrayList<MusicInfo> artistList = (ArrayList) MusicUtils.
-                        queryMusic(mContext, 1 + "", IConstants.START_FROM_ARTIST);
 
-                return Observable.just(artistList);
-            }
-        });
-    }
-    public void reloadAdapter() {
+    private void loadData() {
 
-        showLoading();
-        disposables.add(sampleObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<ArrayList<MusicInfo>>() {
-                    @Override public void onComplete() {
-                        Log.d("TAG", "onComplete()");
-                    }
+        categoryRadioInfos = JsonDataFactory.getHomeCategoryList(CnrLog.bottonjson);
 
-                    @Override public void onError(Throwable e) {
-                        Log.e("TAG", "onError()", e);
-                    }
-
-                    @Override public void onNext(ArrayList<MusicInfo> string) {
-                        refreshView();
-                        listDetailAdapter.addData(string);
-                    }
-                }));
-    }
-
-    private void setItemDecoration() {
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(itemDecoration);
     }
 
 
@@ -130,13 +97,6 @@ public class ListFragment extends BaseFragment{
     protected void OnClick(View v) {
 
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        disposables.clear();
-    }
-
 
 
     @Override

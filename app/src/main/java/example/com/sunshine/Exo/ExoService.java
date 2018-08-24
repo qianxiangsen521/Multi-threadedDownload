@@ -19,6 +19,7 @@ import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -630,7 +631,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
         if (player == null){
             return;
         }
-        android.support.v7.app. NotificationCompat.Builder mBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
+       NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(new ComponentName("example.com.sunshine", "example.com.sunshine.download.Home.Main111Activity"));
@@ -674,7 +675,7 @@ public class ExoService extends Service implements  ExoPlayer.EventListener{
 
 
 //            mNotificationManager.notify(requestCode, mBuilder.mNotification);
-        startForeground(requestCode, mBuilder.mNotification);
+        startForeground(requestCode, mBuilder.build());
     }
 
     private void registerPlayControlReceiver() {

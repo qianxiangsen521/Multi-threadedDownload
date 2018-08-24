@@ -1,5 +1,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Multi-threadedDownload</string>
+
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -32,7 +33,10 @@
         <item>LinearInterpolator</item>
         <item>OvershootInterpolator</item>
     </string-array>
-
+    <string name="ima_not_loaded">Playing sample without ads, as the IMA extension was not loaded</string>
+    <string name="application_name">AudioDemo</string>
+    <string name="download_start_error">Failed to start download</string>
+    <string name="error_unrecognized_abr_algorithm">Unrecognized ABR algorithm</string>
     <string-array name="durations">
         <item>100ms</item>
         <item>300ms</item>
@@ -280,5 +284,7 @@ Varial deck switch 1080 bail betty cab flip. Transfer wall ride Guy Mariano bear
 
     <string name="details_title_text">Cupcake ipsum dolor</string>
     <string name="details_body_text">Sit amet chocolate cake sweet macaroon chupa chups. Bear claw carrot cake chocolate bar biscuit chocolate cookie. Chocolate sesame snaps candy canes bear claw dragée tootsie roll.</string>
-    <string name="accessbiliityNo">请为App打开辅助功能开关！！</string>
+    <string name="accessbiliityNo"
+
+        >请为App打开辅助功能开关！！</string>
 </resources>

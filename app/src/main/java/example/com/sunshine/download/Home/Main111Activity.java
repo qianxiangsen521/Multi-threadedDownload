@@ -90,7 +90,7 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
 
     private boolean playing;
 
-    String[] perms = {Manifest.permission.READ_PHONE_STATE};
+    String[] perms = {Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_EXTERNAL_STORAGE};
 
     private static final int RC_LOCATION_CONTACTS_PERM = 1001;
 
@@ -264,6 +264,9 @@ public class Main111Activity extends BaseActivity implements View.OnClickListene
         } else if (pos == 3){
             radioButton4.setSelected(isSelected);
         }
+
+
+
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {

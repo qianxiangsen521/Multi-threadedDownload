@@ -45,6 +45,7 @@ public class GridDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+//        postponeEnterTransition();
         view = inflater.inflate(R.layout.fragment_detail_grid,null);
 
         image_view = (ImageView) view.findViewById(R.id.image_view);

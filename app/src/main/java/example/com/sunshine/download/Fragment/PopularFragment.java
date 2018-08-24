@@ -233,15 +233,17 @@ public class PopularFragment extends BaseFragment {
             // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
             // ARE available in the support library (though they don't do anything on API < 21)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                kittenDetails.setSharedElementEnterTransition(new DetailsTransition());
                 kittenDetails.setEnterTransition(new Fade());
-                setExitTransition(new Fade());
-                kittenDetails.setSharedElementReturnTransition(new DetailsTransition());
+                kittenDetails.setSharedElementEnterTransition(new DetailsTransition());
+                kittenDetails.postponeEnterTransition();
+                kittenDetails.startPostponedEnterTransition();
+//                setExitTransition(new Fade());
+//                kittenDetails.setSharedElementReturnTransition(new DetailsTransition());
             }
 
             ImageView imageView = (ImageView)view.findViewById(R.id.gv_radio_img);
             getActivity().getSupportFragmentManager()
-                    .beginTransaction()
+                    .beginTransaction().setReorderingAllowed(true)
                     .addSharedElement(imageView,
                             imageView.getTransitionName()
                             )

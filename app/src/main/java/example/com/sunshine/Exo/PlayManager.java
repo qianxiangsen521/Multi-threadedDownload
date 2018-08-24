@@ -94,6 +94,7 @@ public class PlayManager  {
         Intent i = new Intent(context, ExoService.class);
         i.setAction(ExoConstants.ACTION_PLAY);
         i.putExtra(ExoConstants.PLAY_URL,playInfo.getPlayUrl());
+        i.putExtra(ExoConstants.ABR_ALGORITHM_EXTRA, ExoConstants.ABR_ALGORITHM_DEFAULT);
         startPlayService(context,i);
 
     }

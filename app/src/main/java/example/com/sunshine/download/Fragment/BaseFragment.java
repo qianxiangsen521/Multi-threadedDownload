@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,14 +55,17 @@ public abstract  class BaseFragment extends Fragment implements View.OnClickList
      **/
     protected abstract void OnClick(View v);
 
+    private  FragmentManager fragmentManager;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mWeakReference = new WeakReference<>(context);
         mContext = mWeakReference.get();
-        activity = getActivity();
+        activity = (Activity) mContext;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -288,5 +293,24 @@ public abstract  class BaseFragment extends Fragment implements View.OnClickList
             if (!NetWorkUtil.isNetworkConnected()) {
                 showNetError();
             }
+        }
+
+        public void addFragment(int layoutId,BaseFragment fragment,String tag){
+
+           if (fragmentManager == null){
+               fragmentManager = getActivity().getSupportFragmentManager();
+           }
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            Fragment fragmentNow = fragmentManager.findFragmentByTag(tag);
+//            fragmentTransaction.setTransitionStyle()
+            if (fragmentNow != null) {
+                fragmentTransaction.show(fragmentNow);
+
+            }else {
+                fragmentTransaction.replace(layoutId, fragment,tag);
+                //加入Back返回栈
+                fragmentTransaction.addToBackStack(null);
+            }
+            fragmentTransaction.commit();
         }
     }
